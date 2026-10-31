@@ -44,8 +44,11 @@ void main() {
     final root = RenderPositionedBox(
       child: snapSize = RenderPixelSnapSize(
         RenderConstrainedBox(
-            additionalConstraints:
-                const BoxConstraints.tightFor(width: 99.2, height: 99.8)),
+          additionalConstraints: const BoxConstraints.tightFor(
+            width: 99.2,
+            height: 99.8,
+          ),
+        ),
         pixelSnap,
         PixelSnapMode.snap,
       ),
@@ -63,8 +66,11 @@ void main() {
     final root = RenderPositionedBox(
       alignment: Alignment.center.pixelSnap(pixelSnap),
       child: box = RenderConstrainedBox(
-          additionalConstraints:
-              const BoxConstraints.tightFor(width: 11, height: 13)),
+        additionalConstraints: const BoxConstraints.tightFor(
+          width: 11,
+          height: 13,
+        ),
+      ),
     );
     layout(root);
 

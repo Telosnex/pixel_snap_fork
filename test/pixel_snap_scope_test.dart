@@ -3,8 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:pixel_snap_fork/pixel_snap.dart';
 
 void main() {
-  testWidgets('scope resolves and shares PixelSnap for its subtree',
-      (tester) async {
+  testWidgets('scope resolves and shares PixelSnap for its subtree', (
+    tester,
+  ) async {
     final resolved = <PixelSnap>[];
 
     await tester.pumpWidget(
@@ -36,8 +37,9 @@ void main() {
     expect(identical(resolved.first, resolved.last), isTrue);
   });
 
-  testWidgets('scope updates when the MediaQuery pixel ratio changes',
-      (tester) async {
+  testWidgets('scope updates when the MediaQuery pixel ratio changes', (
+    tester,
+  ) async {
     PixelSnap? resolved;
 
     Widget app(double devicePixelRatio) {
@@ -61,8 +63,9 @@ void main() {
     expect(resolved!.devicePixelRatio, 2);
   });
 
-  testWidgets('override composes with the resolved parent configuration',
-      (tester) async {
+  testWidgets('override composes with the resolved parent configuration', (
+    tester,
+  ) async {
     PixelSnap? resolved;
     double customSnap(
       double value,
@@ -93,8 +96,9 @@ void main() {
     expect(resolved!(2), 3.5);
   });
 
-  testWidgets('PixelSnap.of remains compatible without a scope',
-      (tester) async {
+  testWidgets('PixelSnap.of remains compatible without a scope', (
+    tester,
+  ) async {
     PixelSnap? resolved;
 
     await tester.pumpWidget(
@@ -113,10 +117,7 @@ void main() {
   });
 }
 
-Widget _mediaQuery({
-  required double devicePixelRatio,
-  required Widget child,
-}) {
+Widget _mediaQuery({required double devicePixelRatio, required Widget child}) {
   return MediaQuery(
     data: MediaQueryData(devicePixelRatio: devicePixelRatio),
     child: child,

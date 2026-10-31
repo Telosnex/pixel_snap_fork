@@ -244,10 +244,7 @@ class Parser {
       final name = field.name!;
 
       // The type with nullability inside, but without the nullable suffix.
-      final type = field.type.getDisplayString().replaceAll(
-        RegExp(r'\?$'),
-        '',
-      );
+      final type = field.type.getDisplayString().replaceAll(RegExp(r'\?$'), '');
       final nullable =
           field.type.nullabilitySuffix == NullabilitySuffix.question;
       final parameter = constructor.formalParameters.firstWhereOrNull(
@@ -283,9 +280,10 @@ class Parser {
       _gatherFields(type.superclass!, fields, true);
     }
     // The wrapper declares the same fields: their types need imports.
-    for (final field in [type, type.superclass!].expand(
-      (t) => t.element.fields,
-    )) {
+    for (final field in [
+      type,
+      type.superclass!,
+    ].expand((t) => t.element.fields)) {
       if (field.isOriginDeclaration && !field.isStatic) {
         _collectReferences((await _declaration(field)).parent!);
       }
@@ -381,12 +379,14 @@ class Parser {
       }
       // Not public: use the import of the source file that provides the name,
       // with its configurations (conditional imports).
-      final directive = unit.directives.whereType<ImportDirective>().firstWhereOrNull(
-        (d) =>
-            d.prefix == null &&
-            d.libraryImport?.importedLibrary != null &&
-            _exports(d.libraryImport!.importedLibrary!, name, top),
-      );
+      final directive = unit.directives
+          .whereType<ImportDirective>()
+          .firstWhereOrNull(
+            (d) =>
+                d.prefix == null &&
+                d.libraryImport?.importedLibrary != null &&
+                _exports(d.libraryImport!.importedLibrary!, name, top),
+          );
       if (directive == null) {
         // Declared in the source file itself.
         _addImport(ImportSpec(uri: library.uri.toString(), show: {name}));

@@ -65,7 +65,9 @@ class RawImage extends widgets.RawImage {
 
   @override
   void updateRenderObject(
-      widgets.BuildContext context, RenderImagePixelSnap renderObject) {
+    widgets.BuildContext context,
+    RenderImagePixelSnap renderObject,
+  ) {
     final pixelSnap = PixelSnap.of(context);
     assert(
       image?.debugGetOpenHandleStackTraces()?.isNotEmpty ?? true,

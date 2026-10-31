@@ -21,17 +21,16 @@ class ButtonState {
 
   static ButtonState of(BuildContext context) {
     final state = context.dependOnInheritedWidgetOfExactType<_ButtonState>();
-    assert(state != null,
-        'ButtonState.of() called with a context that does not contain a Button.');
+    assert(
+      state != null,
+      'ButtonState.of() called with a context that does not contain a Button.',
+    );
     return state!.state;
   }
 }
 
 class _ButtonState extends InheritedWidget {
-  const _ButtonState({
-    required super.child,
-    required this.state,
-  });
+  const _ButtonState({required super.child, required this.state});
 
   final ButtonState state;
 
@@ -179,8 +178,8 @@ class _CustomButtonState extends State<CustomButton> {
       // currently. Manually changing focus doesn't reset traversal history,
       // which can result in unexpected directional movement after.
       FocusTraversalGroup.of(context)
-          // ignore: invalid_use_of_protected_member
-          .invalidateScopeData(focusNode.nearestScope!);
+      // ignore: invalid_use_of_protected_member
+      .invalidateScopeData(focusNode.nearestScope!);
       FocusScope.of(context).requestFocus(focusNode);
     }
   }
@@ -232,17 +231,19 @@ class _CustomButtonState extends State<CustomButton> {
             gestures: {
               TapGestureRecognizer:
                   GestureRecognizerFactoryWithHandlers<TapGestureRecognizer>(
-                () => TapGestureRecognizer(),
-                (instance) {
-                  instance.onTapUp = _onTapUp;
-                },
-              ),
+                    () => TapGestureRecognizer(),
+                    (instance) {
+                      instance.onTapUp = _onTapUp;
+                    },
+                  ),
               _PanGestureRecognizer:
                   GestureRecognizerFactoryWithHandlers<_PanGestureRecognizer>(
-                      () => _PanGestureRecognizer(), (instance) {
-                instance.onDown = _onPanDown;
-                instance.onEnd = _onPanEnd;
-              }),
+                    () => _PanGestureRecognizer(),
+                    (instance) {
+                      instance.onDown = _onPanDown;
+                      instance.onEnd = _onPanEnd;
+                    },
+                  ),
             },
             child: _ButtonState(
               state: state,

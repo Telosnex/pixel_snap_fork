@@ -56,11 +56,9 @@ class RenderImagePixelSnap extends RenderImage {
     }
 
     return constraints.pixelSnapConstrainSizeAndAttemptToPreserveAspectRatio(
-        pixelSnap,
-        Size(
-          image!.width.toDouble() / scale,
-          image!.height.toDouble() / scale,
-        ));
+      pixelSnap,
+      Size(image!.width.toDouble() / scale, image!.height.toDouble() / scale),
+    );
   }
 
   @override

@@ -15,10 +15,7 @@ class GeneratorException implements Exception {
 class Generator {
   Generator(this.contents);
 
-  final List<String> _ourCustomClasses = [
-    'RawImage',
-    'ScrollController',
-  ];
+  final List<String> _ourCustomClasses = ['RawImage', 'ScrollController'];
 
   String generateWidgets() {
     _buffer.clear();
@@ -71,11 +68,12 @@ class Generator {
     final classes = [
       ..._ourCustomClasses,
       ...contents.forkedClasses.map((e) => e.className),
-      ...contents.classes.map((e) => e.className)
+      ...contents.classes.map((e) => e.className),
     ].join(', ');
 
     _buffer.writeln(
-        'export \'package:${name}_ui/${name}_ui.dart\' hide $classes;');
+      'export \'package:${name}_ui/${name}_ui.dart\' hide $classes;',
+    );
     _buffer.writeln('export \'widgets.dart\';');
 
     return _buffer.toString();
@@ -85,13 +83,12 @@ class Generator {
   /// context.
   void _writeForkedClass(String source) {
     var contents = source;
-    contents = contents.replaceAllMapped(
-      RegExp('return Render(.*)\\('),
-      (match) {
-        final name = match.group(1);
-        return 'return Render$name(pixelSnap: PixelSnap.of(context),';
-      },
-    );
+    contents = contents.replaceAllMapped(RegExp('return Render(.*)\\('), (
+      match,
+    ) {
+      final name = match.group(1);
+      return 'return Render$name(pixelSnap: PixelSnap.of(context),';
+    });
     contents = contents.replaceAllMapped(
       RegExp('renderObject\\n(\\s+)\\.\\.'),
       (match) {
@@ -114,15 +111,20 @@ class Generator {
       var code = constructor.code.replaceAll('super.child', 'this.child');
       for (final f in c.fields) {
         if (f.fromSuperClass) {
-          final defaultCode =
-              f.defaultValue != null ? ' = ${f.defaultValue!}' : '';
-          code =
-              code.replaceAll('super.${f.name}', 'this.${f.name} $defaultCode');
+          final defaultCode = f.defaultValue != null
+              ? ' = ${f.defaultValue!}'
+              : '';
+          code = code.replaceAll(
+            'super.${f.name}',
+            'this.${f.name} $defaultCode',
+          );
         }
       }
       if (c.className == 'AnimatedCrossFade') {
-        code = code.replaceAll('defaultLayoutBuilder',
-            'widgets.AnimatedCrossFade.defaultLayoutBuilder');
+        code = code.replaceAll(
+          'defaultLayoutBuilder',
+          'widgets.AnimatedCrossFade.defaultLayoutBuilder',
+        );
       }
       _buffer.writeln(code);
     }
@@ -141,7 +143,8 @@ class Generator {
         _buffer.writeln(field.docString);
       }
       _buffer.writeln(
-          'final ${field.type}${field.nullable ? '?' : ''} ${field.name};');
+        'final ${field.type}${field.nullable ? '?' : ''} ${field.name};',
+      );
     }
 
     _buffer.writeln();

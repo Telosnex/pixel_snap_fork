@@ -68,8 +68,10 @@ class MainApp extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.all(10).copyWith(top: 0),
                     decoration: _simpleDecoration,
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 4, horizontal: 4),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 4,
+                      horizontal: 4,
+                    ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: List.generate(
@@ -129,9 +131,7 @@ class MainApp extends StatelessWidget {
                     alignment: Alignment.center,
                     widthFactor: 0.7,
                     heightFactor: 0.7,
-                    child: Container(
-                      decoration: _simpleDecoration,
-                    ),
+                    child: Container(decoration: _simpleDecoration),
                   ),
                 ),
               ),
@@ -145,9 +145,7 @@ class MainApp extends StatelessWidget {
                     alignment: Alignment.center,
                     widthFactor: 0.7,
                     heightFactor: 0.7,
-                    child: Container(
-                      decoration: _simpleDecoration,
-                    ),
+                    child: Container(decoration: _simpleDecoration),
                   ),
                 ),
               ),

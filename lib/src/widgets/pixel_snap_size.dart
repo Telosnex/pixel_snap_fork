@@ -15,16 +15,14 @@ class PixelSnapSize extends SingleChildRenderObjectWidget {
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    return RenderPixelSnapSize(
-      null,
-      PixelSnap.of(context),
-      pixelSnapMode,
-    );
+    return RenderPixelSnapSize(null, PixelSnap.of(context), pixelSnapMode);
   }
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderPixelSnapSize renderObject) {
+    BuildContext context,
+    covariant RenderPixelSnapSize renderObject,
+  ) {
     super.updateRenderObject(context, renderObject);
     renderObject.pixelSnap = PixelSnap.of(context);
     renderObject.pixelSnapMode = pixelSnapMode;
@@ -32,11 +30,7 @@ class PixelSnapSize extends SingleChildRenderObjectWidget {
 }
 
 class RenderPixelSnapSize extends RenderShiftedBox {
-  RenderPixelSnapSize(
-    super.child,
-    this.pixelSnap,
-    this.pixelSnapMode,
-  );
+  RenderPixelSnapSize(super.child, this.pixelSnap, this.pixelSnapMode);
 
   PixelSnap pixelSnap;
   PixelSnapMode pixelSnapMode;
@@ -75,10 +69,9 @@ class RenderPixelSnapSize extends RenderShiftedBox {
       return constraints.constrain(Size.zero);
     }
     child!.layout(constraints, parentUsesSize: true);
-    return constraints.constrain(child!.size.pixelSnap(
-      pixelSnap,
-      pixelSnapMode,
-    ));
+    return constraints.constrain(
+      child!.size.pixelSnap(pixelSnap, pixelSnapMode),
+    );
   }
 
   @override
@@ -88,9 +81,8 @@ class RenderPixelSnapSize extends RenderShiftedBox {
       return;
     }
     child!.layout(constraints, parentUsesSize: true);
-    size = constraints.constrain(child!.size.pixelSnap(
-      pixelSnap,
-      pixelSnapMode,
-    ));
+    size = constraints.constrain(
+      child!.size.pixelSnap(pixelSnap, pixelSnapMode),
+    );
   }
 }
