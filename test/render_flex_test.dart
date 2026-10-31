@@ -204,6 +204,57 @@ void main() {
       expect((box2.parentData as BoxParentData).offset.dx, 21);
       expect((box3.parentData as BoxParentData).offset.dx, 39);
     });
+
+    double dx(RenderBox box) => (box.parentData as BoxParentData).offset.dx;
+
+    RenderFlex spacedFlex(MainAxisAlignment alignment, double spacing) {
+      const constraints = BoxConstraints.tightFor(width: 10, height: 10);
+      return RenderFlex(
+        pixelSnap: pixelSnap,
+        textDirection: TextDirection.ltr,
+        mainAxisAlignment: alignment,
+        spacing: spacing,
+        children: [
+          RenderConstrainedBox(additionalConstraints: constraints),
+          RenderConstrainedBox(additionalConstraints: constraints),
+          RenderConstrainedBox(additionalConstraints: constraints),
+        ],
+      );
+    }
+
+    List<double> offsets(RenderFlex flex) {
+      final result = <double>[];
+      flex.visitChildren((child) => result.add(dx(child as RenderBox)));
+      return result;
+    }
+
+    test('Spacing with free space keeps every gap', () {
+      final flex = spacedFlex(MainAxisAlignment.start, 8);
+      layout(
+        flex,
+        constraints: const BoxConstraints.tightFor(width: 100, height: 100),
+      );
+      expect(offsets(flex), [0, 18, 36]);
+    });
+
+    test('Spacing is snapped and the last gap takes the remainder', () {
+      final flex = spacedFlex(MainAxisAlignment.center, 1.3);
+      layout(
+        flex,
+        constraints: const BoxConstraints.tightFor(width: 100, height: 100),
+      );
+      // 30 + 2 * 1.3 = 32.6 wide: the gaps are 1 and 2 (2.6 snaps to 3).
+      expect(offsets(flex), [34, 45, 57]);
+    });
+
+    test('Spacing with spaceBetween', () {
+      final flex = spacedFlex(MainAxisAlignment.spaceBetween, 8);
+      layout(
+        flex,
+        constraints: const BoxConstraints.tightFor(width: 101, height: 100),
+      );
+      expect(offsets(flex), [0, 45, 91]);
+    });
   });
 
   group('Original Tests', () {
