@@ -30,10 +30,29 @@ class PixelSnapSize extends SingleChildRenderObjectWidget {
 }
 
 class RenderPixelSnapSize extends RenderShiftedBox {
-  RenderPixelSnapSize(super.child, this.pixelSnap, this.pixelSnapMode);
+  RenderPixelSnapSize(super.child, this._pixelSnap, this._pixelSnapMode);
 
-  PixelSnap pixelSnap;
-  PixelSnapMode pixelSnapMode;
+  PixelSnap _pixelSnap;
+
+  PixelSnap get pixelSnap => _pixelSnap;
+
+  set pixelSnap(PixelSnap value) {
+    if (_pixelSnap != value) {
+      _pixelSnap = value;
+      markNeedsLayout();
+    }
+  }
+
+  PixelSnapMode _pixelSnapMode;
+
+  PixelSnapMode get pixelSnapMode => _pixelSnapMode;
+
+  set pixelSnapMode(PixelSnapMode value) {
+    if (_pixelSnapMode != value) {
+      _pixelSnapMode = value;
+      markNeedsLayout();
+    }
+  }
 
   @override
   double computeMinIntrinsicWidth(double height) {
@@ -68,9 +87,8 @@ class RenderPixelSnapSize extends RenderShiftedBox {
     if (child == null) {
       return constraints.constrain(Size.zero);
     }
-    child!.layout(constraints, parentUsesSize: true);
     return constraints.constrain(
-      child!.size.pixelSnap(pixelSnap, pixelSnapMode),
+      child!.getDryLayout(constraints).pixelSnap(pixelSnap, pixelSnapMode),
     );
   }
 

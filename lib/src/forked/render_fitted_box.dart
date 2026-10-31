@@ -22,7 +22,7 @@ class RenderFittedBox extends rendering.RenderFittedBox {
   PixelSnap get pixelSnap => _pixelSnap;
 
   set pixelSnap(PixelSnap value) {
-    if (value != value) {
+    if (_pixelSnap != value) {
       _pixelSnap = value;
       alignment = _originalAlignment;
       markNeedsLayout();

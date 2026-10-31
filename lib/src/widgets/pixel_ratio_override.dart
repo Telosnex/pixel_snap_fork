@@ -44,7 +44,7 @@ class _InflateLayout extends SingleChildRenderObjectWidget {
 }
 
 class _RenderInflateLayout extends RenderShiftedBox {
-  _RenderInflateLayout(RenderBox? child, this._scale) : super(child);
+  _RenderInflateLayout(super.child, this._scale);
 
   double _scale;
 

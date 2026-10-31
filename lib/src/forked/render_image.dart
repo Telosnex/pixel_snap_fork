@@ -22,8 +22,8 @@ class RenderImagePixelSnap extends RenderImage {
     super.invertColors,
     super.isAntiAlias,
     super.filterQuality,
-    required PixelSnap pixelSnap,
-  }) : _pixelSnap = pixelSnap;
+    required this._pixelSnap,
+  });
 
   PixelSnap _pixelSnap;
 

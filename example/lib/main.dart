@@ -64,7 +64,7 @@ class MainApp extends StatelessWidget {
               ),
               PixelSnapSize(
                 child: PixelSnapOverride(
-                  pixelSnapFunction: (value, _, __) => value,
+                  pixelSnapFunction: (value, _, _) => value,
                   child: Container(
                     margin: const EdgeInsets.all(10).copyWith(top: 0),
                     decoration: _simpleDecoration,

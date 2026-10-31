@@ -25,8 +25,8 @@ class RenderParagraph extends rendering.RenderParagraph {
     super.selectionColor,
     super.registrar,
     super.devicePixelRatio,
-    required PixelSnap pixelSnap,
-  }) : _pixelSnap = pixelSnap;
+    required this._pixelSnap,
+  });
 
   PixelSnap _pixelSnap;
 
