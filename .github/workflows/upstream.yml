@@ -1,0 +1,63 @@
+name: Upstream
+
+# Tells, before a Flutter release reaches the pinned version, what it needs
+# here: new generated widgets, merges into the forks, analyzer or test
+# failures. The steps run even when an earlier one fails, so one run shows
+# every problem.
+
+on:
+  push:
+    # ci/** branches run it too: a new workflow cannot be started by hand
+    # before it is on main.
+    branches: ['ci/**']
+  schedule:
+    - cron: '17 7 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: upstream-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  # The jobs share the steps of the first (YAML anchor).
+  flutter-stable:
+    name: Flutter stable
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FLUTTER: stable
+    steps: &upstream_steps
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@0554f3662445d678e2effbd838d15968d673f7af # v0.5.6
+        with:
+          version: ${{ env.FLUTTER }}
+      - run: flutter pub get && (cd generator && dart pub get)
+      - name: Generated widgets are current
+        run: |
+          (cd generator && dart run bin/generate.dart)
+          git diff --stat --exit-code lib/src/generated
+      - name: Forks are current
+        if: ${{ !cancelled() }}
+        run: dart run bin/forks.dart check
+        working-directory: generator
+      - if: ${{ !cancelled() }}
+        run: flutter analyze
+      - if: ${{ !cancelled() }}
+        run: flutter test -r expanded
+
+  flutter-beta:
+    name: Flutter beta
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FLUTTER: beta
+    steps: *upstream_steps

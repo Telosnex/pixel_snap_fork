@@ -1,39 +1,38 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# pixel_snap_generator
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+This package keeps the Flutter code in pixel_snap_fork current. It has two tools.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
+- `bin/generate.dart` writes `lib/src/generated/`.
+- `bin/forks.dart` merges new Flutter releases into the files that the package copies in full.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+The tools use the Flutter SDK that the package root resolves to. Run `flutter pub get` in the package root before you use them.
 
-## Features
+## How the package replaces Flutter widgets
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+`lib/src/widgets_in.dart` lists the widgets. Each widget has one of two annotations.
 
-## Getting started
+- `@GeneratePixelSnap<T>()` makes a wrapper. The wrapper is a `StatelessWidget` with the same constructors and fields as `T`. Its `build` method snaps the sizes, paddings, decorations and alignments, and then builds Flutter's `T`.
+- `@GeneratePixelSnapFork<T>()` copies the Flutter source of `T`. The generator gives each `Render*` object that the copy makes the `PixelSnap` of the context. Use it when a wrapper cannot do the work, for example when the widget must make a pixel-snapping render object.
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+A fork uses private declarations of its Flutter library. The generator finds them in the copied code and copies them too. It also finds the import for each name that the copied code uses. The imports keep their conditions, for example `if (dart.library.js_interop)`.
 
-## Usage
+`localOverrides` in `lib/generator.dart` maps the names that the package defines itself (for example `RenderFlex` and `RawImage`) to their files. Copied code that uses such a name uses the version of the package.
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+The render objects are in `lib/src/forked/`. Most of them extend Flutter's render object and override a small number of methods. `render_flex.dart` is a full copy, because the snapping is inside the layout code.
 
-```dart
-const like = 'sample';
-```
+## Update for a new Flutter release
 
-## Additional information
+1. In the package root, change to the new Flutter and run `flutter pub get`.
+2. In `generator/`, run `dart run bin/generate.dart`.
+3. In `generator/`, run `dart run bin/forks.dart update`. If it reports conflicts, resolve the conflict markers in the fork.
+4. In the package root, run `flutter analyze` and `flutter test`.
+5. In `generator/`, run `dart test`.
+6. Compare `lib/src/forked/` with the new Flutter source of each render object that the files extend. The tools do not track these subclasses. `RenderFittedBox` and `RawImage` contain copies of Flutter methods.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+`bin/forks.dart check` fails when Flutter changed a forked file. The test `lib/src/generated is current with the Flutter SDK` fails when the generated files do not match the output of the generator. The Unit workflow runs both with the pinned Flutter. The Upstream workflow runs them every night with Flutter stable and beta.
+
+## How the fork merge works
+
+`upstream/` holds the Flutter file that each fork started from, formatted like the package. `upstream/flutter_version.txt` holds its Flutter version. `update` uses `git merge-file`. It applies the changes between the old and the new Flutter file to the fork, and keeps the changes of the fork. Then it replaces the file in `upstream/` with the new Flutter file.
+
+To fork one more Flutter file in full, add it to `forks` in `bin/forks.dart`. Put the formatted Flutter file in `upstream/` before you change the copy in `lib/src/forked/`.

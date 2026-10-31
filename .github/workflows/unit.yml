@@ -34,15 +34,14 @@ jobs:
       # flutter pub get resolves example/ too; the root analyze also reads
       # generator/.
       - run: flutter pub get && (cd generator && flutter pub get)
-      # Generated files (first line "// GENERATED ...") keep their generator's
-      # layout.
-      - run: |
-          git ls-files '*.dart' |
-            while read -r f; do head -1 "$f" | grep -qiE '^// *generated' || echo "$f"; done |
-            xargs dart format --output=none --set-exit-if-changed
+      - run: dart format --output=none --set-exit-if-changed .
       - run: flutter analyze --fatal-infos
       - run: flutter test -r expanded
       - run: flutter analyze --fatal-infos && flutter test -r expanded
         working-directory: example
-      - run: flutter analyze --fatal-infos && flutter test -r expanded
+      # The generator's tests include a check that lib/src/generated matches
+      # what the generator makes from this Flutter.
+      - run: dart analyze --fatal-infos && dart test -r expanded
+        working-directory: generator
+      - run: dart run bin/forks.dart check
         working-directory: generator
