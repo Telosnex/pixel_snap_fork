@@ -184,6 +184,32 @@ class Box extends SingleChildRenderObjectWidget {
       );
     });
 
+    test('makes Text and RichText subclasses of Flutter\'s', () {
+      String source(String name) => contents.forkedClasses
+          .singleWhere((c) => c.className == name)
+          .contents;
+
+      final text = source('Text');
+      expect(text, contains('class Text extends widgets.Text {'));
+      expect(text, contains('const Text(super.data, {super.key, '));
+      expect(text, contains('}) : super.rich();'));
+      expect(text, contains('Widget build(BuildContext context)'));
+      // Flutter's Text has the fields and debugFillProperties.
+      expect(text, isNot(contains('final String? data;')));
+      expect(text, isNot(contains('debugFillProperties')));
+
+      final richText = source('RichText');
+      expect(richText, contains('class RichText extends widgets.RichText {'));
+      expect(richText, contains('required super.text,'));
+      expect(richText, contains('RenderParagraph createRenderObject('));
+      expect(richText, contains('void updateRenderObject('));
+      // Private, so not visible in Flutter's class: copied because the render
+      // object methods use it.
+      expect(richText, contains('double _getDevicePixelRatio('));
+      // Used only by the constructor, which Flutter's class keeps.
+      expect(richText, isNot(contains('_effectiveTextScalerFrom')));
+    });
+
     test("uses this package's render objects", () {
       expect(contents.localImports, contains('../forked/render_flex.dart'));
       expect(

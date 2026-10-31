@@ -13,11 +13,9 @@ import 'package:flutter/foundation.dart'
     show
         DiagnosticPropertiesBuilder,
         DiagnosticsProperty,
-        DiagnosticsTreeStyle,
         DoubleProperty,
         EnumProperty,
         FlagProperty,
-        IntProperty,
         StringProperty,
         kDebugMode,
         kIsWeb,
@@ -3745,885 +3743,6 @@ class Center extends Align {
   const Center({super.key, super.widthFactor, super.heightFactor, super.child});
 }
 
-/// A run of text with a single style.
-///
-/// The [Text] widget displays a string of text with single style. The string
-/// might break across multiple lines or might all be displayed on the same line
-/// depending on the layout constraints.
-///
-/// The [style] argument is optional. When omitted, the text will use the style
-/// from the closest enclosing [DefaultTextStyle]. If the given style's
-/// [TextStyle.inherit] property is true (the default), the given style will
-/// be merged with the closest enclosing [DefaultTextStyle]. This merging
-/// behavior is useful, for example, to make the text bold while using the
-/// default font family and size.
-///
-/// {@tool snippet}
-///
-/// This example shows how to display text using the [Text] widget with the
-/// [overflow] set to [TextOverflow.ellipsis].
-///
-/// ![If the text overflows, the Text widget displays an ellipsis to trim the overflowing text](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_ellipsis.png)
-///
-/// ```dart
-/// Container(
-///   width: 100,
-///   decoration: BoxDecoration(border: Border.all()),
-///   child: const Text(
-///     'Hello, how are you?',
-///     overflow: TextOverflow.ellipsis,
-///   ),
-/// )
-/// ```
-/// {@end-tool}
-///
-/// {@tool snippet}
-///
-/// Setting [maxLines] to `1` is not equivalent to disabling soft wrapping with
-/// [softWrap]. This is apparent when using [TextOverflow.fade] as the following
-/// examples show.
-///
-/// ![If a second line overflows the Text widget displays a horizontal fade](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_fade_max_lines.png)
-///
-/// ```dart
-/// const Text(
-///   'Hello, how are you?',
-///   overflow: TextOverflow.fade,
-///   maxLines: 1,
-/// )
-/// ```
-///
-/// Here soft wrapping is enabled and the [Text] widget tries to wrap the words
-/// "how are you?" to a second line. This is prevented by the [maxLines] value
-/// of `1`. The result is that a second line overflows and the fade appears in a
-/// horizontal direction at the bottom.
-///
-/// ![If a single line overflows the Text widget displays a horizontal fade](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_fade_soft_wrap.png)
-///
-/// ```dart
-/// const Text(
-///   'Hello, how are you?',
-///   overflow: TextOverflow.fade,
-///   softWrap: false,
-/// )
-/// ```
-///
-/// Here soft wrapping is disabled with `softWrap: false` and the [Text] widget
-/// attempts to display its text in a single unbroken line. The result is that
-/// the single line overflows and the fade appears in a vertical direction at
-/// the right.
-///
-/// {@end-tool}
-///
-/// Using the [Text.rich] constructor, the [Text] widget can
-/// display a paragraph with differently styled [TextSpan]s. The sample
-/// that follows displays "Hello beautiful world" with different styles
-/// for each word.
-///
-/// {@tool snippet}
-///
-/// ![The word "Hello" is shown with the default text styles. The word "beautiful" is italicized. The word "world" is bold.](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_rich.png)
-///
-/// ```dart
-/// const Text.rich(
-///   TextSpan(
-///     text: 'Hello', // default text style
-///     children: <TextSpan>[
-///       TextSpan(text: ' beautiful ', style: TextStyle(fontStyle: FontStyle.italic)),
-///       TextSpan(text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
-///     ],
-///   ),
-/// )
-/// ```
-/// {@end-tool}
-///
-/// ## Interactivity
-///
-/// To make [Text] react to touch events, wrap it in a [GestureDetector] widget
-/// with a [GestureDetector.onTap] handler.
-///
-/// In a Material Design application, consider using a [TextButton] instead, or
-/// if that isn't appropriate, at least using an [InkWell] instead of
-/// [GestureDetector].
-///
-/// To make sections of the text interactive, use [RichText] and specify a
-/// [TapGestureRecognizer] as the [TextSpan.recognizer] of the relevant part of
-/// the text.
-///
-/// ## Selection
-///
-/// [Text] is not selectable by default. To make a [Text] selectable, one can
-/// wrap a subtree with a [SelectionArea] widget. To exclude a part of a subtree
-/// under [SelectionArea] from selection, once can also wrap that part of the
-/// subtree with [SelectionContainer.disabled].
-///
-/// {@tool dartpad}
-/// This sample demonstrates how to disable selection for a Text under a
-/// SelectionArea.
-///
-/// ** See code in examples/api/lib/material/selection_container/selection_container_disabled.0.dart **
-/// {@end-tool}
-///
-/// See also:
-///
-///  * [RichText], which gives you more control over the text styles.
-///  * [DefaultTextStyle], which sets default styles for [Text] widgets.
-///  * [SelectableRegion], which provides an overview of the selection system.
-class Text extends StatelessWidget {
-  /// Creates a text widget.
-  ///
-  /// If the [style] argument is null, the text will use the style from the
-  /// closest enclosing [DefaultTextStyle].
-  ///
-  /// The [overflow] property's behavior is affected by the [softWrap] argument.
-  /// If the [softWrap] is true or null, the glyph causing overflow, and those
-  /// that follow, will not be rendered. Otherwise, it will be shown with the
-  /// given overflow option.
-  const Text(
-    String this.data, {
-    super.key,
-    this.style,
-    this.strutStyle,
-    this.textAlign,
-    this.textDirection,
-    this.locale,
-    this.softWrap,
-    this.overflow,
-    @Deprecated(
-      'Use textScaler instead. '
-      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
-      'This feature was deprecated after v3.12.0-2.0.pre.',
-    )
-    this.textScaleFactor,
-    this.textScaler,
-    this.maxLines,
-    this.semanticsLabel,
-    this.semanticsIdentifier,
-    this.textWidthBasis,
-    this.textHeightBehavior,
-    this.selectionColor,
-  }) : textSpan = null,
-       assert(
-         textScaler == null || textScaleFactor == null,
-         'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
-       );
-
-  /// Creates a text widget with a [InlineSpan].
-  ///
-  /// The following subclasses of [InlineSpan] may be used to build rich text:
-  ///
-  /// * [TextSpan]s define text and children [InlineSpan]s.
-  /// * [WidgetSpan]s define embedded inline widgets.
-  ///
-  /// See [RichText] which provides a lower-level way to draw text.
-  const Text.rich(
-    InlineSpan this.textSpan, {
-    super.key,
-    this.style,
-    this.strutStyle,
-    this.textAlign,
-    this.textDirection,
-    this.locale,
-    this.softWrap,
-    this.overflow,
-    @Deprecated(
-      'Use textScaler instead. '
-      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
-      'This feature was deprecated after v3.12.0-2.0.pre.',
-    )
-    this.textScaleFactor,
-    this.textScaler,
-    this.maxLines,
-    this.semanticsLabel,
-    this.semanticsIdentifier,
-    this.textWidthBasis,
-    this.textHeightBehavior,
-    this.selectionColor,
-  }) : data = null,
-       assert(
-         textScaler == null || textScaleFactor == null,
-         'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
-       );
-
-  /// The text to display.
-  ///
-  /// This will be null if a [textSpan] is provided instead.
-  final String? data;
-
-  /// The text to display as a [InlineSpan].
-  ///
-  /// This will be null if [data] is provided instead.
-  final InlineSpan? textSpan;
-
-  /// If non-null, the style to use for this text.
-  ///
-  /// If the style's "inherit" property is true, the style will be merged with
-  /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
-  /// replace the closest enclosing [DefaultTextStyle].
-  ///
-  /// The user or platform may override this [style]'s [TextStyle.fontWeight],
-  /// [TextStyle.height], [TextStyle.letterSpacing], and [TextStyle.wordSpacing]
-  /// via a [MediaQuery] ancestor's [MediaQueryData.boldText],
-  /// [MediaQueryData.lineHeightScaleFactorOverride],
-  /// [MediaQueryData.letterSpacingOverride], and [MediaQueryData.wordSpacingOverride]
-  /// regardless of its [TextStyle.inherit] value.
-  final TextStyle? style;
-
-  /// {@macro flutter.painting.textPainter.strutStyle}
-  ///
-  /// The user or platform may override this [strutStyle]'s [StrutStyle.height]
-  /// via a [MediaQuery] ancestor's [MediaQueryData.lineHeightScaleFactorOverride].
-  final StrutStyle? strutStyle;
-
-  /// How the text should be aligned horizontally.
-  final TextAlign? textAlign;
-
-  /// The directionality of the text.
-  ///
-  /// This decides how [textAlign] values like [TextAlign.start] and
-  /// [TextAlign.end] are interpreted.
-  ///
-  /// This is also used to disambiguate how to render bidirectional text. For
-  /// example, if the [data] is an English phrase followed by a Hebrew phrase,
-  /// in a [TextDirection.ltr] context the English phrase will be on the left
-  /// and the Hebrew phrase to its right, while in a [TextDirection.rtl]
-  /// context, the English phrase will be on the right and the Hebrew phrase on
-  /// its left.
-  ///
-  /// Defaults to the ambient [Directionality], if any.
-  final TextDirection? textDirection;
-
-  /// Used to select a font when the same Unicode character can
-  /// be rendered differently, depending on the locale.
-  ///
-  /// It's rarely necessary to set this property. By default its value
-  /// is inherited from the enclosing app with `Localizations.localeOf(context)`.
-  ///
-  /// See [RenderParagraph.locale] for more information.
-  final Locale? locale;
-
-  /// Whether the text should break at soft line breaks.
-  ///
-  /// If false, the glyphs in the text will be positioned as if there was unlimited horizontal space.
-  final bool? softWrap;
-
-  /// How visual overflow should be handled.
-  ///
-  /// If this is null [TextStyle.overflow] will be used, otherwise the value
-  /// from the nearest [DefaultTextStyle] ancestor will be used.
-  final TextOverflow? overflow;
-
-  /// Deprecated. Will be removed in a future version of Flutter. Use
-  /// [textScaler] instead.
-  ///
-  /// The number of font pixels for each logical pixel.
-  ///
-  /// For example, if the text scale factor is 1.5, text will be 50% larger than
-  /// the specified font size.
-  ///
-  /// The value given to the constructor as textScaleFactor. If null, will
-  /// use the [MediaQueryData.textScaleFactor] obtained from the ambient
-  /// [MediaQuery], or 1.0 if there is no [MediaQuery] in scope.
-  @Deprecated(
-    'Use textScaler instead. '
-    'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
-    'This feature was deprecated after v3.12.0-2.0.pre.',
-  )
-  final double? textScaleFactor;
-
-  /// {@macro flutter.painting.textPainter.textScaler}
-  final TextScaler? textScaler;
-
-  /// An optional maximum number of lines for the text to span, wrapping if necessary.
-  /// If the text exceeds the given number of lines, it will be truncated according
-  /// to [overflow].
-  ///
-  /// If this is 1, text will not wrap. Otherwise, text will be wrapped at the
-  /// edge of the box.
-  ///
-  /// If this is null, but there is an ambient [DefaultTextStyle] that specifies
-  /// an explicit number for its [DefaultTextStyle.maxLines], then the
-  /// [DefaultTextStyle] value will take precedence. You can use a [RichText]
-  /// widget directly to entirely override the [DefaultTextStyle].
-  final int? maxLines;
-
-  /// {@template flutter.widgets.Text.semanticsLabel}
-  /// An alternative semantics label for this text.
-  ///
-  /// If present, the semantics of this widget will contain this value instead
-  /// of the actual text. This will overwrite any of the semantics labels applied
-  /// directly to the [TextSpan]s.
-  ///
-  /// This is useful for replacing abbreviations or shorthands with the full
-  /// text value:
-  ///
-  /// ```dart
-  /// const Text(r'$$', semanticsLabel: 'Double dollars')
-  /// ```
-  /// {@endtemplate}
-  final String? semanticsLabel;
-
-  /// A unique identifier for the semantics node for this widget.
-  ///
-  /// This is useful for cases where the text widget needs to have a uniquely
-  /// identifiable ID that is recognized through the automation tools without
-  /// having a dependency on the actual content of the text that can possibly be
-  /// dynamic in nature.
-  final String? semanticsIdentifier;
-
-  /// {@macro flutter.painting.textPainter.textWidthBasis}
-  final TextWidthBasis? textWidthBasis;
-
-  /// {@macro dart.ui.textHeightBehavior}
-  final ui.TextHeightBehavior? textHeightBehavior;
-
-  /// The color to use when painting the selection.
-  ///
-  /// This is ignored if [SelectionContainer.maybeOf] returns null
-  /// in the [BuildContext] of the [Text] widget.
-  ///
-  /// If null, the ambient [DefaultSelectionStyle] is used (if any); failing
-  /// that, the selection color defaults to [DefaultSelectionStyle.defaultColor]
-  /// (semi-transparent grey).
-  final Color? selectionColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
-    TextStyle? effectiveTextStyle = style;
-    if (style == null || style!.inherit) {
-      effectiveTextStyle = defaultTextStyle.style.merge(style);
-    }
-    if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!.merge(
-        const TextStyle(fontWeight: FontWeight.bold),
-      );
-    }
-    // TODO(Renzo-Olivares): Investigate ways the framework can automatically
-    // apply MediaQueryData.paragraphSpacingOverride to its own text components.
-    // See: https://github.com/flutter/flutter/issues/177953 and https://github.com/flutter/flutter/issues/177408.
-    final double? lineHeightScaleFactor =
-        MediaQuery.maybeLineHeightScaleFactorOverrideOf(context);
-    final double? letterSpacing = MediaQuery.maybeLetterSpacingOverrideOf(
-      context,
-    );
-    final double? wordSpacing = MediaQuery.maybeWordSpacingOverrideOf(context);
-    final TextSpan effectiveTextSpan =
-        _OverridingTextStyleTextSpanUtils.applyTextSpacingOverrides(
-          lineHeightScaleFactor: lineHeightScaleFactor,
-          letterSpacing: letterSpacing,
-          wordSpacing: wordSpacing,
-          textSpan: TextSpan(
-            style: effectiveTextStyle,
-            text: data,
-            locale: locale,
-            children: textSpan != null ? <InlineSpan>[textSpan!] : null,
-          ),
-        );
-    final StrutStyle? effectiveStrutStyle = strutStyle?.merge(
-      StrutStyle(height: lineHeightScaleFactor),
-    );
-    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
-      (final TextScaler textScaler, _) => textScaler,
-      // For unmigrated apps, fall back to textScaleFactor.
-      (null, final double textScaleFactor) => TextScaler.linear(
-        textScaleFactor,
-      ),
-      (null, null) => MediaQuery.textScalerOf(context),
-    };
-    late Widget result;
-    if (registrar != null) {
-      result = MouseRegion(
-        cursor:
-            DefaultSelectionStyle.of(context).mouseCursor ??
-            SystemMouseCursors.text,
-        child: _SelectableTextContainer(
-          textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-          textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-          locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
-          softWrap: softWrap ?? defaultTextStyle.softWrap,
-          overflow:
-              overflow ??
-              effectiveTextStyle?.overflow ??
-              defaultTextStyle.overflow,
-          textScaler: textScaler,
-          maxLines: maxLines ?? defaultTextStyle.maxLines,
-          strutStyle: effectiveStrutStyle,
-          textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-          textHeightBehavior:
-              textHeightBehavior ??
-              defaultTextStyle.textHeightBehavior ??
-              DefaultTextHeightBehavior.maybeOf(context),
-          selectionColor:
-              selectionColor ??
-              DefaultSelectionStyle.of(context).selectionColor ??
-              DefaultSelectionStyle.defaultColor,
-          text: effectiveTextSpan,
-        ),
-      );
-    } else {
-      result = RichText(
-        textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-        textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-        locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
-        softWrap: softWrap ?? defaultTextStyle.softWrap,
-        overflow:
-            overflow ??
-            effectiveTextStyle?.overflow ??
-            defaultTextStyle.overflow,
-        textScaler: textScaler,
-        maxLines: maxLines ?? defaultTextStyle.maxLines,
-        strutStyle: effectiveStrutStyle,
-        textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-        textHeightBehavior:
-            textHeightBehavior ??
-            defaultTextStyle.textHeightBehavior ??
-            DefaultTextHeightBehavior.maybeOf(context),
-        selectionColor:
-            selectionColor ??
-            DefaultSelectionStyle.of(context).selectionColor ??
-            DefaultSelectionStyle.defaultColor,
-        text: effectiveTextSpan,
-      );
-    }
-    if (semanticsLabel != null || semanticsIdentifier != null) {
-      result = Semantics(
-        textDirection: textDirection,
-        label: semanticsLabel,
-        identifier: semanticsIdentifier,
-        child: ExcludeSemantics(
-          excluding: semanticsLabel != null,
-          child: result,
-        ),
-      );
-    }
-    return result;
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('data', data, showName: false));
-    if (textSpan != null) {
-      properties.add(
-        textSpan!.toDiagnosticsNode(
-          name: 'textSpan',
-          style: DiagnosticsTreeStyle.transition,
-        ),
-      );
-    }
-    style?.debugFillProperties(properties);
-    properties.add(
-      EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null),
-    );
-    properties.add(
-      EnumProperty<TextDirection>(
-        'textDirection',
-        textDirection,
-        defaultValue: null,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<Locale>('locale', locale, defaultValue: null),
-    );
-    properties.add(
-      FlagProperty(
-        'softWrap',
-        value: softWrap,
-        ifTrue: 'wrapping at box width',
-        ifFalse: 'no wrapping except at line break characters',
-        showName: true,
-      ),
-    );
-    properties.add(
-      EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null),
-    );
-    properties.add(
-      DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null),
-    );
-    properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
-    properties.add(
-      EnumProperty<TextWidthBasis>(
-        'textWidthBasis',
-        textWidthBasis,
-        defaultValue: null,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<ui.TextHeightBehavior>(
-        'textHeightBehavior',
-        textHeightBehavior,
-        defaultValue: null,
-      ),
-    );
-    if (semanticsLabel != null) {
-      properties.add(StringProperty('semanticsLabel', semanticsLabel));
-    }
-    if (semanticsIdentifier != null) {
-      properties.add(
-        StringProperty('semanticsIdentifier', semanticsIdentifier),
-      );
-    }
-  }
-}
-
-/// A paragraph of rich text.
-///
-/// {@youtube 560 315 https://www.youtube.com/watch?v=rykDVh-QFfw}
-///
-/// The [RichText] widget displays text that uses multiple different styles. The
-/// text to display is described using a tree of [TextSpan] objects, each of
-/// which has an associated style that is used for that subtree. The text might
-/// break across multiple lines or might all be displayed on the same line
-/// depending on the layout constraints.
-///
-/// Text displayed in a [RichText] widget must be explicitly styled. When
-/// picking which style to use, consider using [DefaultTextStyle.of] the current
-/// [BuildContext] to provide defaults. [MediaQuery.maybeBoldTextOf],
-/// [MediaQuery.maybeLineHeightScaleFactorOverrideOf],
-/// [MediaQuery.maybeLetterSpacingOverrideOf], [MediaQuery.maybeWordSpacingOverrideOf],
-/// and [MediaQuery.maybeParagraphSpacingOverrideOf] can also be used to ensure the styling
-/// for your text is accessible. For more details on how to style text in
-/// a [RichText] widget, see the documentation for [TextStyle].
-///
-/// Consider using the [Text] widget to integrate with the [DefaultTextStyle]
-/// automatically. When all the text uses the same style, the default constructor
-/// is less verbose. The [Text.rich] constructor allows you to style multiple
-/// spans with the default text style while still allowing specified styles per
-/// span.
-///
-/// {@tool snippet}
-///
-/// This sample demonstrates how to mix and match text with different text
-/// styles using the [RichText] Widget. It displays the text "Hello bold world,"
-/// emphasizing the word "bold" using a bold font weight.
-///
-/// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/rich_text.png)
-///
-/// ```dart
-/// RichText(
-///   text: TextSpan(
-///     text: 'Hello ',
-///     style: DefaultTextStyle.of(context).style,
-///     children: const <TextSpan>[
-///       TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
-///       TextSpan(text: ' world!'),
-///     ],
-///   ),
-/// )
-/// ```
-/// {@end-tool}
-///
-/// ## Selections
-///
-/// To make this [RichText] Selectable, the [RichText] needs to be in the
-/// subtree of a [SelectionArea] or [SelectableRegion] and a
-/// [SelectionRegistrar] needs to be assigned to the
-/// [RichText.selectionRegistrar]. One can use
-/// [SelectionContainer.maybeOf] to get the [SelectionRegistrar] from a context
-/// that is below the [SelectionArea] or [SelectableRegion] in the widget tree.
-/// This enables users to select the text in [RichText]s with mice or touch
-/// events.
-///
-/// If the same build method creates both the [SelectionArea] and the
-/// [RichText], use a [Builder] so that [SelectionContainer.maybeOf] is called
-/// with a [BuildContext] below the [SelectionArea] in the widget tree.
-///
-/// The [selectionColor] also needs to be set if the selection is enabled to
-/// draw the selection highlights.
-///
-/// {@tool snippet}
-///
-/// This sample demonstrates how to assign a [SelectionRegistrar] for RichTexts
-/// in the SelectionArea subtree.
-///
-/// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/rich_text.png)
-///
-/// ```dart
-/// SelectionArea(
-///   child: Builder(
-///     builder: (BuildContext context) {
-///       return RichText(
-///         text: const TextSpan(text: 'Hello'),
-///         selectionRegistrar: SelectionContainer.maybeOf(context),
-///         selectionColor: const Color(0xAF6694e8),
-///       );
-///     },
-///   ),
-/// )
-/// ```
-/// {@end-tool}
-///
-/// See also:
-///
-///  * [TextStyle], which discusses how to style text.
-///  * [TextSpan], which is used to describe the text in a paragraph.
-///  * [Text], which automatically applies the ambient styles described by a
-///    [DefaultTextStyle] to a single string.
-///  * [Text.rich], a const text widget that provides similar functionality
-///    as [RichText]. [Text.rich] will inherit [TextStyle] from [DefaultTextStyle].
-///  * [SelectableRegion], which provides an overview of the selection system.
-class RichText extends MultiChildRenderObjectWidget {
-  /// Creates a paragraph of rich text.
-  ///
-  /// The [maxLines] property may be null (and indeed defaults to null), but if
-  /// it is not null, it must be greater than zero.
-  ///
-  /// The [textDirection], if null, defaults to the ambient [Directionality],
-  /// which in that case must not be null.
-  RichText({
-    super.key,
-    required this.text,
-    this.textAlign = TextAlign.start,
-    this.textDirection,
-    this.softWrap = true,
-    this.overflow = TextOverflow.clip,
-    @Deprecated(
-      'Use textScaler instead. '
-      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
-      'This feature was deprecated after v3.12.0-2.0.pre.',
-    )
-    double textScaleFactor = 1.0,
-    TextScaler textScaler = TextScaler.noScaling,
-    this.maxLines,
-    this.locale,
-    this.strutStyle,
-    this.textWidthBasis = TextWidthBasis.parent,
-    this.textHeightBehavior,
-    this.selectionRegistrar,
-    this.selectionColor,
-  }) : assert(maxLines == null || maxLines > 0),
-       assert(selectionRegistrar == null || selectionColor != null),
-       assert(
-         textScaleFactor == 1.0 || identical(textScaler, TextScaler.noScaling),
-         'Use textScaler instead.',
-       ),
-       textScaler = _effectiveTextScalerFrom(textScaler, textScaleFactor),
-       super(
-         children: WidgetSpan.extractFromInlineSpan(
-           text,
-           _effectiveTextScalerFrom(textScaler, textScaleFactor),
-         ),
-       );
-
-  static TextScaler _effectiveTextScalerFrom(
-    TextScaler textScaler,
-    double textScaleFactor,
-  ) {
-    return switch ((textScaler, textScaleFactor)) {
-      (final TextScaler scaler, 1.0) => scaler,
-      (TextScaler.noScaling, final double textScaleFactor) => TextScaler.linear(
-        textScaleFactor,
-      ),
-      (final TextScaler scaler, _) => scaler,
-    };
-  }
-
-  /// The text to display in this widget.
-  final InlineSpan text;
-
-  /// How the text should be aligned horizontally.
-  final TextAlign textAlign;
-
-  /// The directionality of the text.
-  ///
-  /// This decides how [textAlign] values like [TextAlign.start] and
-  /// [TextAlign.end] are interpreted.
-  ///
-  /// This is also used to disambiguate how to render bidirectional text. For
-  /// example, if the [text] is an English phrase followed by a Hebrew phrase,
-  /// in a [TextDirection.ltr] context the English phrase will be on the left
-  /// and the Hebrew phrase to its right, while in a [TextDirection.rtl]
-  /// context, the English phrase will be on the right and the Hebrew phrase on
-  /// its left.
-  ///
-  /// Defaults to the ambient [Directionality], if any. If there is no ambient
-  /// [Directionality], then this must not be null.
-  final TextDirection? textDirection;
-
-  /// Whether the text should break at soft line breaks.
-  ///
-  /// If false, the glyphs in the text will be positioned as if there was unlimited horizontal space.
-  final bool softWrap;
-
-  /// How visual overflow should be handled.
-  final TextOverflow overflow;
-
-  /// Deprecated. Will be removed in a future version of Flutter. Use
-  /// [textScaler] instead.
-  ///
-  /// The number of font pixels for each logical pixel.
-  ///
-  /// For example, if the text scale factor is 1.5, text will be 50% larger than
-  /// the specified font size.
-  @Deprecated(
-    'Use textScaler instead. '
-    'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
-    'This feature was deprecated after v3.12.0-2.0.pre.',
-  )
-  double get textScaleFactor => textScaler.textScaleFactor;
-
-  /// {@macro flutter.painting.textPainter.textScaler}
-  final TextScaler textScaler;
-
-  /// An optional maximum number of lines for the text to span, wrapping if necessary.
-  /// If the text exceeds the given number of lines, it will be truncated according
-  /// to [overflow].
-  ///
-  /// If this is 1, text will not wrap. Otherwise, text will be wrapped at the
-  /// edge of the box.
-  final int? maxLines;
-
-  /// Used to select a font when the same Unicode character can
-  /// be rendered differently, depending on the locale.
-  ///
-  /// It's rarely necessary to set this property. By default its value
-  /// is inherited from the enclosing app with `Localizations.localeOf(context)`.
-  ///
-  /// See [RenderParagraph.locale] for more information.
-  final Locale? locale;
-
-  /// {@macro flutter.painting.textPainter.strutStyle}
-  final StrutStyle? strutStyle;
-
-  /// {@macro flutter.painting.textPainter.textWidthBasis}
-  final TextWidthBasis textWidthBasis;
-
-  /// {@macro dart.ui.textHeightBehavior}
-  final ui.TextHeightBehavior? textHeightBehavior;
-
-  /// The [SelectionRegistrar] this rich text is subscribed to.
-  ///
-  /// If this is set, [selectionColor] must be non-null.
-  final SelectionRegistrar? selectionRegistrar;
-
-  /// The color to use when painting the selection.
-  ///
-  /// This is ignored if [selectionRegistrar] is null.
-  ///
-  /// See the section on selections in the [RichText] top-level API
-  /// documentation for more details on enabling selection in [RichText]
-  /// widgets.
-  final Color? selectionColor;
-
-  double _getDevicePixelRatio(BuildContext context) =>
-      MediaQuery.maybeDevicePixelRatioOf(context) ??
-      View.maybeOf(context)?.devicePixelRatio ??
-      1.0;
-
-  @override
-  RenderParagraph createRenderObject(BuildContext context) {
-    assert(textDirection != null || debugCheckHasDirectionality(context));
-    return RenderParagraph(
-      pixelSnap: PixelSnap.of(context),
-      text,
-      textAlign: textAlign,
-      textDirection: textDirection ?? Directionality.of(context),
-      softWrap: softWrap,
-      overflow: overflow,
-      textScaler: textScaler,
-      maxLines: maxLines,
-      strutStyle: strutStyle,
-      textWidthBasis: textWidthBasis,
-      textHeightBehavior: textHeightBehavior,
-      locale: locale ?? Localizations.maybeLocaleOf(context),
-      registrar: selectionRegistrar,
-      selectionColor: selectionColor,
-      devicePixelRatio: _getDevicePixelRatio(context),
-    );
-  }
-
-  @override
-  void updateRenderObject(BuildContext context, RenderParagraph renderObject) {
-    assert(textDirection != null || debugCheckHasDirectionality(context));
-    renderObject
-      ..pixelSnap = PixelSnap.of(context)
-      ..text = text
-      ..textAlign = textAlign
-      ..textDirection = textDirection ?? Directionality.of(context)
-      ..softWrap = softWrap
-      ..overflow = overflow
-      ..textScaler = textScaler
-      ..maxLines = maxLines
-      ..strutStyle = strutStyle
-      ..textWidthBasis = textWidthBasis
-      ..textHeightBehavior = textHeightBehavior
-      ..locale = locale ?? Localizations.maybeLocaleOf(context)
-      ..registrar = selectionRegistrar
-      ..selectionColor = selectionColor
-      ..devicePixelRatio = _getDevicePixelRatio(context);
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(
-      EnumProperty<TextAlign>(
-        'textAlign',
-        textAlign,
-        defaultValue: TextAlign.start,
-      ),
-    );
-    properties.add(
-      EnumProperty<TextDirection>(
-        'textDirection',
-        textDirection,
-        defaultValue: null,
-      ),
-    );
-    properties.add(
-      FlagProperty(
-        'softWrap',
-        value: softWrap,
-        ifTrue: 'wrapping at box width',
-        ifFalse: 'no wrapping except at line break characters',
-        showName: true,
-      ),
-    );
-    properties.add(
-      EnumProperty<TextOverflow>(
-        'overflow',
-        overflow,
-        defaultValue: TextOverflow.clip,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<TextScaler>(
-        'textScaler',
-        textScaler,
-        defaultValue: TextScaler.noScaling,
-      ),
-    );
-    properties.add(IntProperty('maxLines', maxLines, ifNull: 'unlimited'));
-    properties.add(
-      EnumProperty<TextWidthBasis>(
-        'textWidthBasis',
-        textWidthBasis,
-        defaultValue: TextWidthBasis.parent,
-      ),
-    );
-    properties.add(StringProperty('text', text.toPlainText()));
-    properties.add(
-      DiagnosticsProperty<Locale>('locale', locale, defaultValue: null),
-    );
-    properties.add(
-      DiagnosticsProperty<StrutStyle>(
-        'strutStyle',
-        strutStyle,
-        defaultValue: null,
-      ),
-    );
-    properties.add(
-      DiagnosticsProperty<TextHeightBehavior>(
-        'textHeightBehavior',
-        textHeightBehavior,
-        defaultValue: null,
-      ),
-    );
-  }
-}
-
 /// Scales and positions its child within itself according to [fit].
 ///
 /// {@youtube 560 315 https://www.youtube.com/watch?v=T4Uehk3_wlY}
@@ -5620,90 +4739,487 @@ class Image extends StatefulWidget {
   }
 }
 
-/// A utility class for overriding the text styles of a [TextSpan] tree.
-// When changes are made to this class, the equivalent API in editable_text.dart
-// must also be updated.
-// TODO(Renzo-Olivares): Remove after investigating a solution for overriding all
-// styles for children in an [InlineSpan] tree, see: https://github.com/flutter/flutter/issues/177952.
-class _OverridingTextStyleTextSpanUtils {
-  static TextSpan applyTextSpacingOverrides({
-    double? lineHeightScaleFactor,
-    double? letterSpacing,
-    double? wordSpacing,
-    required TextSpan textSpan,
-  }) {
-    if (lineHeightScaleFactor == null &&
-        letterSpacing == null &&
-        wordSpacing == null) {
-      return textSpan;
-    }
-    return _applyTextStyleOverrides(
-      TextStyle(
-        height: lineHeightScaleFactor,
-        letterSpacing: letterSpacing,
-        wordSpacing: wordSpacing,
-      ),
-      textSpan,
-    );
-  }
+/// A run of text with a single style.
+///
+/// The [Text] widget displays a string of text with single style. The string
+/// might break across multiple lines or might all be displayed on the same line
+/// depending on the layout constraints.
+///
+/// The [style] argument is optional. When omitted, the text will use the style
+/// from the closest enclosing [DefaultTextStyle]. If the given style's
+/// [TextStyle.inherit] property is true (the default), the given style will
+/// be merged with the closest enclosing [DefaultTextStyle]. This merging
+/// behavior is useful, for example, to make the text bold while using the
+/// default font family and size.
+///
+/// {@tool snippet}
+///
+/// This example shows how to display text using the [Text] widget with the
+/// [overflow] set to [TextOverflow.ellipsis].
+///
+/// ![If the text overflows, the Text widget displays an ellipsis to trim the overflowing text](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_ellipsis.png)
+///
+/// ```dart
+/// Container(
+///   width: 100,
+///   decoration: BoxDecoration(border: Border.all()),
+///   child: const Text(
+///     'Hello, how are you?',
+///     overflow: TextOverflow.ellipsis,
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// {@tool snippet}
+///
+/// Setting [maxLines] to `1` is not equivalent to disabling soft wrapping with
+/// [softWrap]. This is apparent when using [TextOverflow.fade] as the following
+/// examples show.
+///
+/// ![If a second line overflows the Text widget displays a horizontal fade](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_fade_max_lines.png)
+///
+/// ```dart
+/// const Text(
+///   'Hello, how are you?',
+///   overflow: TextOverflow.fade,
+///   maxLines: 1,
+/// )
+/// ```
+///
+/// Here soft wrapping is enabled and the [Text] widget tries to wrap the words
+/// "how are you?" to a second line. This is prevented by the [maxLines] value
+/// of `1`. The result is that a second line overflows and the fade appears in a
+/// horizontal direction at the bottom.
+///
+/// ![If a single line overflows the Text widget displays a horizontal fade](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_fade_soft_wrap.png)
+///
+/// ```dart
+/// const Text(
+///   'Hello, how are you?',
+///   overflow: TextOverflow.fade,
+///   softWrap: false,
+/// )
+/// ```
+///
+/// Here soft wrapping is disabled with `softWrap: false` and the [Text] widget
+/// attempts to display its text in a single unbroken line. The result is that
+/// the single line overflows and the fade appears in a vertical direction at
+/// the right.
+///
+/// {@end-tool}
+///
+/// Using the [Text.rich] constructor, the [Text] widget can
+/// display a paragraph with differently styled [TextSpan]s. The sample
+/// that follows displays "Hello beautiful world" with different styles
+/// for each word.
+///
+/// {@tool snippet}
+///
+/// ![The word "Hello" is shown with the default text styles. The word "beautiful" is italicized. The word "world" is bold.](https://flutter.github.io/assets-for-api-docs/assets/widgets/text_rich.png)
+///
+/// ```dart
+/// const Text.rich(
+///   TextSpan(
+///     text: 'Hello', // default text style
+///     children: <TextSpan>[
+///       TextSpan(text: ' beautiful ', style: TextStyle(fontStyle: FontStyle.italic)),
+///       TextSpan(text: 'world', style: TextStyle(fontWeight: FontWeight.bold)),
+///     ],
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// ## Interactivity
+///
+/// To make [Text] react to touch events, wrap it in a [GestureDetector] widget
+/// with a [GestureDetector.onTap] handler.
+///
+/// In a Material Design application, consider using a [TextButton] instead, or
+/// if that isn't appropriate, at least using an [InkWell] instead of
+/// [GestureDetector].
+///
+/// To make sections of the text interactive, use [RichText] and specify a
+/// [TapGestureRecognizer] as the [TextSpan.recognizer] of the relevant part of
+/// the text.
+///
+/// ## Selection
+///
+/// [Text] is not selectable by default. To make a [Text] selectable, one can
+/// wrap a subtree with a [SelectionArea] widget. To exclude a part of a subtree
+/// under [SelectionArea] from selection, once can also wrap that part of the
+/// subtree with [SelectionContainer.disabled].
+///
+/// {@tool dartpad}
+/// This sample demonstrates how to disable selection for a Text under a
+/// SelectionArea.
+///
+/// ** See code in examples/api/lib/material/selection_container/selection_container_disabled.0.dart **
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [RichText], which gives you more control over the text styles.
+///  * [DefaultTextStyle], which sets default styles for [Text] widgets.
+///  * [SelectableRegion], which provides an overview of the selection system.
+class Text extends widgets.Text {
+  /// Creates a text widget.
+  ///
+  /// If the [style] argument is null, the text will use the style from the
+  /// closest enclosing [DefaultTextStyle].
+  ///
+  /// The [overflow] property's behavior is affected by the [softWrap] argument.
+  /// If the [softWrap] is true or null, the glyph causing overflow, and those
+  /// that follow, will not be rendered. Otherwise, it will be shown with the
+  /// given overflow option.
+  const Text(
+    super.data, {
+    super.key,
+    super.style,
+    super.strutStyle,
+    super.textAlign,
+    super.textDirection,
+    super.locale,
+    super.softWrap,
+    super.overflow,
+    @Deprecated(
+      'Use textScaler instead. '
+      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+      'This feature was deprecated after v3.12.0-2.0.pre.',
+    )
+    super.textScaleFactor,
+    super.textScaler,
+    super.maxLines,
+    super.semanticsLabel,
+    super.semanticsIdentifier,
+    super.textWidthBasis,
+    super.textHeightBehavior,
+    super.selectionColor,
+  });
 
-  static TextSpan _applyTextStyleOverrides(
-    TextStyle overrideTextStyle,
-    TextSpan textSpan,
-  ) {
-    return TextSpan(
-      text: textSpan.text,
-      children: textSpan.children?.map((InlineSpan child) {
-        if (child is TextSpan && child.runtimeType == TextSpan) {
-          return _applyTextStyleOverrides(overrideTextStyle, child);
-        }
-        return child;
-      }).toList(),
-      style: textSpan.style?.merge(overrideTextStyle) ?? overrideTextStyle,
-      recognizer: textSpan.recognizer,
-      mouseCursor: textSpan.mouseCursor,
-      onEnter: textSpan.onEnter,
-      onExit: textSpan.onExit,
-      semanticsLabel: textSpan.semanticsLabel,
-      semanticsIdentifier: textSpan.semanticsIdentifier,
-      locale: textSpan.locale,
-      spellOut: textSpan.spellOut,
+  /// Creates a text widget with a [InlineSpan].
+  ///
+  /// The following subclasses of [InlineSpan] may be used to build rich text:
+  ///
+  /// * [TextSpan]s define text and children [InlineSpan]s.
+  /// * [WidgetSpan]s define embedded inline widgets.
+  ///
+  /// See [RichText] which provides a lower-level way to draw text.
+  const Text.rich(
+    super.textSpan, {
+    super.key,
+    super.style,
+    super.strutStyle,
+    super.textAlign,
+    super.textDirection,
+    super.locale,
+    super.softWrap,
+    super.overflow,
+    @Deprecated(
+      'Use textScaler instead. '
+      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+      'This feature was deprecated after v3.12.0-2.0.pre.',
+    )
+    super.textScaleFactor,
+    super.textScaler,
+    super.maxLines,
+    super.semanticsLabel,
+    super.semanticsIdentifier,
+    super.textWidthBasis,
+    super.textHeightBehavior,
+    super.selectionColor,
+  }) : super.rich();
+
+  @override
+  Widget build(BuildContext context) {
+    final DefaultTextStyle defaultTextStyle = DefaultTextStyle.of(context);
+    TextStyle? effectiveTextStyle = style;
+    if (style == null || style!.inherit) {
+      effectiveTextStyle = defaultTextStyle.style.merge(style);
+    }
+    if (MediaQuery.boldTextOf(context)) {
+      effectiveTextStyle = effectiveTextStyle!.merge(
+        const TextStyle(fontWeight: FontWeight.bold),
+      );
+    }
+    // TODO(Renzo-Olivares): Investigate ways the framework can automatically
+    // apply MediaQueryData.paragraphSpacingOverride to its own text components.
+    // See: https://github.com/flutter/flutter/issues/177953 and https://github.com/flutter/flutter/issues/177408.
+    final double? lineHeightScaleFactor =
+        MediaQuery.maybeLineHeightScaleFactorOverrideOf(context);
+    final double? letterSpacing = MediaQuery.maybeLetterSpacingOverrideOf(
+      context,
     );
+    final double? wordSpacing = MediaQuery.maybeWordSpacingOverrideOf(context);
+    final TextSpan effectiveTextSpan =
+        _OverridingTextStyleTextSpanUtils.applyTextSpacingOverrides(
+          lineHeightScaleFactor: lineHeightScaleFactor,
+          letterSpacing: letterSpacing,
+          wordSpacing: wordSpacing,
+          textSpan: TextSpan(
+            style: effectiveTextStyle,
+            text: data,
+            locale: locale,
+            children: textSpan != null ? <InlineSpan>[textSpan!] : null,
+          ),
+        );
+    final StrutStyle? effectiveStrutStyle = strutStyle?.merge(
+      StrutStyle(height: lineHeightScaleFactor),
+    );
+    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
+    final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
+      (final TextScaler textScaler, _) => textScaler,
+      // For unmigrated apps, fall back to textScaleFactor.
+      (null, final double textScaleFactor) => TextScaler.linear(
+        textScaleFactor,
+      ),
+      (null, null) => MediaQuery.textScalerOf(context),
+    };
+    late Widget result;
+    if (registrar != null) {
+      result = MouseRegion(
+        cursor:
+            DefaultSelectionStyle.of(context).mouseCursor ??
+            SystemMouseCursors.text,
+        child: _SelectableTextContainer(
+          textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+          textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+          locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+          softWrap: softWrap ?? defaultTextStyle.softWrap,
+          overflow:
+              overflow ??
+              effectiveTextStyle?.overflow ??
+              defaultTextStyle.overflow,
+          textScaler: textScaler,
+          maxLines: maxLines ?? defaultTextStyle.maxLines,
+          strutStyle: effectiveStrutStyle,
+          textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
+          textHeightBehavior:
+              textHeightBehavior ??
+              defaultTextStyle.textHeightBehavior ??
+              DefaultTextHeightBehavior.maybeOf(context),
+          selectionColor:
+              selectionColor ??
+              DefaultSelectionStyle.of(context).selectionColor ??
+              DefaultSelectionStyle.defaultColor,
+          text: effectiveTextSpan,
+        ),
+      );
+    } else {
+      result = RichText(
+        textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+        textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+        locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+        softWrap: softWrap ?? defaultTextStyle.softWrap,
+        overflow:
+            overflow ??
+            effectiveTextStyle?.overflow ??
+            defaultTextStyle.overflow,
+        textScaler: textScaler,
+        maxLines: maxLines ?? defaultTextStyle.maxLines,
+        strutStyle: effectiveStrutStyle,
+        textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
+        textHeightBehavior:
+            textHeightBehavior ??
+            defaultTextStyle.textHeightBehavior ??
+            DefaultTextHeightBehavior.maybeOf(context),
+        selectionColor:
+            selectionColor ??
+            DefaultSelectionStyle.of(context).selectionColor ??
+            DefaultSelectionStyle.defaultColor,
+        text: effectiveTextSpan,
+      );
+    }
+    if (semanticsLabel != null || semanticsIdentifier != null) {
+      result = Semantics(
+        textDirection: textDirection,
+        label: semanticsLabel,
+        identifier: semanticsIdentifier,
+        child: ExcludeSemantics(
+          excluding: semanticsLabel != null,
+          child: result,
+        ),
+      );
+    }
+    return result;
   }
 }
 
-class _SelectableTextContainer extends StatefulWidget {
-  const _SelectableTextContainer({
-    required this.text,
-    required this.textAlign,
-    this.textDirection,
-    required this.softWrap,
-    required this.overflow,
-    required this.textScaler,
-    this.maxLines,
-    this.locale,
-    this.strutStyle,
-    required this.textWidthBasis,
-    this.textHeightBehavior,
-    required this.selectionColor,
+/// A paragraph of rich text.
+///
+/// {@youtube 560 315 https://www.youtube.com/watch?v=rykDVh-QFfw}
+///
+/// The [RichText] widget displays text that uses multiple different styles. The
+/// text to display is described using a tree of [TextSpan] objects, each of
+/// which has an associated style that is used for that subtree. The text might
+/// break across multiple lines or might all be displayed on the same line
+/// depending on the layout constraints.
+///
+/// Text displayed in a [RichText] widget must be explicitly styled. When
+/// picking which style to use, consider using [DefaultTextStyle.of] the current
+/// [BuildContext] to provide defaults. [MediaQuery.maybeBoldTextOf],
+/// [MediaQuery.maybeLineHeightScaleFactorOverrideOf],
+/// [MediaQuery.maybeLetterSpacingOverrideOf], [MediaQuery.maybeWordSpacingOverrideOf],
+/// and [MediaQuery.maybeParagraphSpacingOverrideOf] can also be used to ensure the styling
+/// for your text is accessible. For more details on how to style text in
+/// a [RichText] widget, see the documentation for [TextStyle].
+///
+/// Consider using the [Text] widget to integrate with the [DefaultTextStyle]
+/// automatically. When all the text uses the same style, the default constructor
+/// is less verbose. The [Text.rich] constructor allows you to style multiple
+/// spans with the default text style while still allowing specified styles per
+/// span.
+///
+/// {@tool snippet}
+///
+/// This sample demonstrates how to mix and match text with different text
+/// styles using the [RichText] Widget. It displays the text "Hello bold world,"
+/// emphasizing the word "bold" using a bold font weight.
+///
+/// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/rich_text.png)
+///
+/// ```dart
+/// RichText(
+///   text: TextSpan(
+///     text: 'Hello ',
+///     style: DefaultTextStyle.of(context).style,
+///     children: const <TextSpan>[
+///       TextSpan(text: 'bold', style: TextStyle(fontWeight: FontWeight.bold)),
+///       TextSpan(text: ' world!'),
+///     ],
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// ## Selections
+///
+/// To make this [RichText] Selectable, the [RichText] needs to be in the
+/// subtree of a [SelectionArea] or [SelectableRegion] and a
+/// [SelectionRegistrar] needs to be assigned to the
+/// [RichText.selectionRegistrar]. One can use
+/// [SelectionContainer.maybeOf] to get the [SelectionRegistrar] from a context
+/// that is below the [SelectionArea] or [SelectableRegion] in the widget tree.
+/// This enables users to select the text in [RichText]s with mice or touch
+/// events.
+///
+/// If the same build method creates both the [SelectionArea] and the
+/// [RichText], use a [Builder] so that [SelectionContainer.maybeOf] is called
+/// with a [BuildContext] below the [SelectionArea] in the widget tree.
+///
+/// The [selectionColor] also needs to be set if the selection is enabled to
+/// draw the selection highlights.
+///
+/// {@tool snippet}
+///
+/// This sample demonstrates how to assign a [SelectionRegistrar] for RichTexts
+/// in the SelectionArea subtree.
+///
+/// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/rich_text.png)
+///
+/// ```dart
+/// SelectionArea(
+///   child: Builder(
+///     builder: (BuildContext context) {
+///       return RichText(
+///         text: const TextSpan(text: 'Hello'),
+///         selectionRegistrar: SelectionContainer.maybeOf(context),
+///         selectionColor: const Color(0xAF6694e8),
+///       );
+///     },
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// See also:
+///
+///  * [TextStyle], which discusses how to style text.
+///  * [TextSpan], which is used to describe the text in a paragraph.
+///  * [Text], which automatically applies the ambient styles described by a
+///    [DefaultTextStyle] to a single string.
+///  * [Text.rich], a const text widget that provides similar functionality
+///    as [RichText]. [Text.rich] will inherit [TextStyle] from [DefaultTextStyle].
+///  * [SelectableRegion], which provides an overview of the selection system.
+class RichText extends widgets.RichText {
+  /// Creates a paragraph of rich text.
+  ///
+  /// The [maxLines] property may be null (and indeed defaults to null), but if
+  /// it is not null, it must be greater than zero.
+  ///
+  /// The [textDirection], if null, defaults to the ambient [Directionality],
+  /// which in that case must not be null.
+  RichText({
+    super.key,
+    required super.text,
+    super.textAlign,
+    super.textDirection,
+    super.softWrap,
+    super.overflow,
+    @Deprecated(
+      'Use textScaler instead. '
+      'Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. '
+      'This feature was deprecated after v3.12.0-2.0.pre.',
+    )
+    super.textScaleFactor,
+    super.textScaler,
+    super.maxLines,
+    super.locale,
+    super.strutStyle,
+    super.textWidthBasis,
+    super.textHeightBehavior,
+    super.selectionRegistrar,
+    super.selectionColor,
   });
 
-  final TextSpan text;
-  final TextAlign textAlign;
-  final TextDirection? textDirection;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final TextScaler textScaler;
-  final int? maxLines;
-  final Locale? locale;
-  final StrutStyle? strutStyle;
-  final TextWidthBasis textWidthBasis;
-  final ui.TextHeightBehavior? textHeightBehavior;
-  final Color selectionColor;
+  double _getDevicePixelRatio(BuildContext context) =>
+      MediaQuery.maybeDevicePixelRatioOf(context) ??
+      View.maybeOf(context)?.devicePixelRatio ??
+      1.0;
 
   @override
-  State<_SelectableTextContainer> createState() =>
-      _SelectableTextContainerState();
+  RenderParagraph createRenderObject(BuildContext context) {
+    assert(textDirection != null || debugCheckHasDirectionality(context));
+    return RenderParagraph(
+      pixelSnap: PixelSnap.of(context),
+      text,
+      textAlign: textAlign,
+      textDirection: textDirection ?? Directionality.of(context),
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaler: textScaler,
+      maxLines: maxLines,
+      strutStyle: strutStyle,
+      textWidthBasis: textWidthBasis,
+      textHeightBehavior: textHeightBehavior,
+      locale: locale ?? Localizations.maybeLocaleOf(context),
+      registrar: selectionRegistrar,
+      selectionColor: selectionColor,
+      devicePixelRatio: _getDevicePixelRatio(context),
+    );
+  }
+
+  @override
+  void updateRenderObject(BuildContext context, RenderParagraph renderObject) {
+    assert(textDirection != null || debugCheckHasDirectionality(context));
+    renderObject
+      ..pixelSnap = PixelSnap.of(context)
+      ..text = text
+      ..textAlign = textAlign
+      ..textDirection = textDirection ?? Directionality.of(context)
+      ..softWrap = softWrap
+      ..overflow = overflow
+      ..textScaler = textScaler
+      ..maxLines = maxLines
+      ..strutStyle = strutStyle
+      ..textWidthBasis = textWidthBasis
+      ..textHeightBehavior = textHeightBehavior
+      ..locale = locale ?? Localizations.maybeLocaleOf(context)
+      ..registrar = selectionRegistrar
+      ..selectionColor = selectionColor
+      ..devicePixelRatio = _getDevicePixelRatio(context);
+  }
 }
 
 class _ImageState extends State<Image> with WidgetsBindingObserver {
@@ -6072,6 +5588,92 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
       ),
     );
   }
+}
+
+/// A utility class for overriding the text styles of a [TextSpan] tree.
+// When changes are made to this class, the equivalent API in editable_text.dart
+// must also be updated.
+// TODO(Renzo-Olivares): Remove after investigating a solution for overriding all
+// styles for children in an [InlineSpan] tree, see: https://github.com/flutter/flutter/issues/177952.
+class _OverridingTextStyleTextSpanUtils {
+  static TextSpan applyTextSpacingOverrides({
+    double? lineHeightScaleFactor,
+    double? letterSpacing,
+    double? wordSpacing,
+    required TextSpan textSpan,
+  }) {
+    if (lineHeightScaleFactor == null &&
+        letterSpacing == null &&
+        wordSpacing == null) {
+      return textSpan;
+    }
+    return _applyTextStyleOverrides(
+      TextStyle(
+        height: lineHeightScaleFactor,
+        letterSpacing: letterSpacing,
+        wordSpacing: wordSpacing,
+      ),
+      textSpan,
+    );
+  }
+
+  static TextSpan _applyTextStyleOverrides(
+    TextStyle overrideTextStyle,
+    TextSpan textSpan,
+  ) {
+    return TextSpan(
+      text: textSpan.text,
+      children: textSpan.children?.map((InlineSpan child) {
+        if (child is TextSpan && child.runtimeType == TextSpan) {
+          return _applyTextStyleOverrides(overrideTextStyle, child);
+        }
+        return child;
+      }).toList(),
+      style: textSpan.style?.merge(overrideTextStyle) ?? overrideTextStyle,
+      recognizer: textSpan.recognizer,
+      mouseCursor: textSpan.mouseCursor,
+      onEnter: textSpan.onEnter,
+      onExit: textSpan.onExit,
+      semanticsLabel: textSpan.semanticsLabel,
+      semanticsIdentifier: textSpan.semanticsIdentifier,
+      locale: textSpan.locale,
+      spellOut: textSpan.spellOut,
+    );
+  }
+}
+
+class _SelectableTextContainer extends StatefulWidget {
+  const _SelectableTextContainer({
+    required this.text,
+    required this.textAlign,
+    this.textDirection,
+    required this.softWrap,
+    required this.overflow,
+    required this.textScaler,
+    this.maxLines,
+    this.locale,
+    this.strutStyle,
+    required this.textWidthBasis,
+    this.textHeightBehavior,
+    required this.selectionColor,
+  });
+
+  final TextSpan text;
+  final TextAlign textAlign;
+  final TextDirection? textDirection;
+  final bool softWrap;
+  final TextOverflow overflow;
+  final TextScaler textScaler;
+  final int? maxLines;
+  final Locale? locale;
+  final StrutStyle? strutStyle;
+  final TextWidthBasis textWidthBasis;
+  final ui.TextHeightBehavior? textHeightBehavior;
+  final Color selectionColor;
+
+  @override
+  State<_SelectableTextContainer> createState() =>
+      _SelectableTextContainerState();
 }
 
 class _SelectableTextContainerState extends State<_SelectableTextContainer> {

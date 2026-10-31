@@ -211,6 +211,10 @@ PixelSnapSize( // Ensure that child size is properly pixel snapped
     child: ...
 ```
 
+## Tests
+
+`Text` and `RichText` of this package are subclasses of Flutter's. The finders of `flutter_test`, such as `find.text`, find them.
+
 ## Maintenance
 
 Most of the pixel-snapped widgets are generated from the Flutter source. See [generator/README.md](generator/README.md) for how to update the package for a new Flutter release.

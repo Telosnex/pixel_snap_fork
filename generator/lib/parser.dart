@@ -73,6 +73,8 @@ class ForkedClass {
   ForkedClass({required this.className, required this.contents});
 
   final String className;
+
+  /// The source of the class.
   final String contents;
 }
 
@@ -191,6 +193,7 @@ class Parser {
     final generate = rootUnit.libraryElement.topLevelFunctions.first;
     final wrapped = <InterfaceType>[];
     final forked = <InterfaceType>[];
+    final subclassed = <InterfaceType>[];
     for (final annotation in generate.metadata.annotations) {
       final value = annotation.computeConstantValue();
       final type = value!.type as InterfaceType;
@@ -200,9 +203,13 @@ class Parser {
           wrapped.add(target);
         case 'GeneratePixelSnapFork':
           forked.add(target);
+        case 'GeneratePixelSnapSubclass':
+          subclassed.add(target);
       }
     }
-    _provided.addAll([...wrapped, ...forked].map((t) => t.element.name!));
+    _provided.addAll(
+      [...wrapped, ...forked, ...subclassed].map((t) => t.element.name!),
+    );
     _provided.addAll(localOverrides.keys);
 
     for (final type in wrapped) {
@@ -210,6 +217,9 @@ class Parser {
     }
     for (final type in forked) {
       await _processFork(type);
+    }
+    for (final type in subclassed) {
+      await _processSubclass(type);
     }
     // Helpers can use more helpers.
     while (_pendingHelpers.isNotEmpty) {
@@ -319,6 +329,121 @@ class Parser {
     );
     _collectReferences(node);
   }
+
+  /// Makes a subclass of the Flutter class [type]. The subclass keeps the
+  /// constructors, which pass every argument to Flutter's constructor, and
+  /// copies the methods that the subclass must override: the ones that make
+  /// the widget tree or the render object, and the private members that
+  /// they use. Fields and the other members come from Flutter's class.
+  Future<void> _processSubclass(InterfaceType type) async {
+    final element = type.element;
+    final name = element.name!;
+    _seenHelpers.add(element);
+    final node = await _declaration(element);
+    if (node is! ClassDeclaration) {
+      throw ParseException('$name is not a class declaration');
+    }
+    final members = node.body.members;
+
+    final kept = <ClassMember>{
+      for (final m in members.whereType<MethodDeclaration>())
+        if (!m.isStatic &&
+            m.name.lexeme != 'debugFillProperties' &&
+            m.metadata.any((a) => a.name.name == 'override'))
+          m,
+    };
+    // Private members of the class are not visible in another library: copy
+    // the ones that the kept members use.
+    final pending = kept.toList();
+    while (pending.isNotEmpty) {
+      final collector = _ReferenceCollector();
+      pending.removeLast().accept(collector);
+      for (final used in collector.members) {
+        if (!used.isPrivate || used.enclosingElement != element) continue;
+        final declaration = members.firstWhereOrNull((m) => _declares(m, used));
+        if (declaration is! MethodDeclaration) {
+          throw ParseException(
+            '$name: the copied code uses $used. Only private methods and '
+            'getters can be copied into a subclass.',
+          );
+        }
+        if (kept.add(declaration)) pending.add(declaration);
+      }
+    }
+
+    final b = StringBuffer();
+    final unit = node.root as CompilationUnit;
+    final content = unit.declaredFragment!.source.contents.data;
+    String text(AstNode n) => content.substring(n.offset, n.end);
+
+    if (node.documentationComment case final comment?) {
+      b.writeln(text(comment));
+    }
+    b.writeln('class $name extends widgets.$name {');
+    for (final c in members.whereType<ConstructorDeclaration>()) {
+      if (c.factoryKeyword != null || c.redirectedConstructor != null) {
+        throw ParseException('$name: factory constructors are not supported');
+      }
+      if (c.documentationComment case final comment?) {
+        b.writeln(text(comment));
+      }
+      for (final annotation in c.metadata) {
+        b.writeln(text(annotation));
+      }
+      final constructorName = c.name == null ? '' : '.${c.name!.lexeme}';
+      b.write(c.constKeyword == null ? '' : 'const ');
+      b.write('$name$constructorName(');
+      final parameters = c.parameters.parameters;
+      var group = '';
+      for (final p in parameters) {
+        final open = p.isNamed
+            ? '{'
+            : p.isOptionalPositional
+            ? '['
+            : '';
+        if (open != group) {
+          b.write(open);
+          group = open;
+        }
+        for (final annotation in p.metadata) {
+          b.write('${text(annotation)} ');
+        }
+        b.write(p.isRequiredNamed ? 'required ' : '');
+        // Super parameters without a default take the default of Flutter's
+        // constructor.
+        b.write('super.${p.name!.lexeme}, ');
+      }
+      b.write(switch (group) {
+        '{' => '}',
+        '[' => ']',
+        _ => '',
+      });
+      b.write(')');
+      if (constructorName.isNotEmpty) b.write(' : super$constructorName()');
+      b.writeln(';');
+      b.writeln();
+    }
+    for (final m in members.where(kept.contains)) {
+      b.writeln(text(m));
+      b.writeln();
+      _collectReferences(m);
+    }
+    b.writeln('}');
+
+    _forkedClasses.add(ForkedClass(className: name, contents: b.toString()));
+  }
+
+  static bool _declares(ClassMember member, Element element) =>
+      switch (member) {
+        MethodDeclaration() =>
+          member.declaredFragment?.element == element ||
+              (element is PropertyAccessorElement &&
+                  member.name.lexeme == element.name),
+        FieldDeclaration() => member.fields.variables.any(
+          (v) => v.name.lexeme == element.name,
+        ),
+        _ => false,
+      };
 
   Future<void> _processHelper(Element element) async {
     var node = await _declaration(element);
@@ -546,6 +671,9 @@ class Parser {
 class _ReferenceCollector extends RecursiveAstVisitor<void> {
   final elements = <Element>{};
 
+  /// The members of classes that the code uses.
+  final members = <Element>{};
+
   /// Import prefix to the names used with it.
   final prefixed = <String, Set<String>>{};
 
@@ -602,6 +730,7 @@ class _ReferenceCollector extends RecursiveAstVisitor<void> {
       elements.add(enclosing);
     } else if (enclosing is InterfaceElement) {
       // A member: its class comes in by name where the code names it.
+      members.add(element);
     } else {
       elements.add(element);
     }

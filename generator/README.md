@@ -12,9 +12,12 @@ The tools use the Flutter SDK that the package root resolves to. Run `flutter pu
 `lib/src/widgets_in.dart` lists the widgets. Each widget has one of two annotations.
 
 - `@GeneratePixelSnap<T>()` makes a wrapper. The wrapper is a `StatelessWidget` with the same constructors and fields as `T`. Its `build` method snaps the sizes, paddings, decorations and alignments, and then builds Flutter's `T`.
-- `@GeneratePixelSnapFork<T>()` copies the Flutter source of `T`. The generator gives each `Render*` object that the copy makes the `PixelSnap` of the context. Use it when a wrapper cannot do the work, for example when the widget must make a pixel-snapping render object.
+- `@GeneratePixelSnapSubclass<T>()` makes a subclass of Flutter's `T`. The constructors pass every argument to Flutter's constructors. The subclass copies the methods that make the widget tree or the render object (`build`, `createRenderObject`, `updateRenderObject`), and the private members that they use. The fields and the other members come from Flutter's class. The widget is a Flutter `T`, so `find.text`, `tester.widget<T>` and other code that tests for `T` work. Use it when you can.
+- `@GeneratePixelSnapFork<T>()` copies the Flutter source of `T`. Use it when a subclass cannot do the work. For example, a subclass cannot copy a method that uses a private field.
 
-A fork uses private declarations of its Flutter library. The generator finds them in the copied code and copies them too. It also finds the import for each name that the copied code uses. The imports keep their conditions, for example `if (dart.library.js_interop)`.
+In the copied code, the generator gives each `Render*` object the `PixelSnap` of the context.
+
+Copied code uses private declarations of its Flutter library. The generator finds them in the copied code and copies them too. It also finds the import for each name that the copied code uses. The imports keep their conditions, for example `if (dart.library.js_interop)`.
 
 `localOverrides` in `lib/generator.dart` maps the names that the package defines itself (for example `RenderFlex` and `RawImage`) to their files. Copied code that uses such a name uses the version of the package.
 
