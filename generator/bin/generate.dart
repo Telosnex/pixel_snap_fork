@@ -1,47 +1,45 @@
 // ignore_for_file: avoid_print
 
 import 'dart:io';
-import 'package:path/path.dart' as path;
 
 import 'package:args/args.dart';
+import 'package:path/path.dart' as path;
 import 'package:pixel_snap_generator/generator.dart';
 
-void main(List<String> args) {
-  final parser = ArgParser();
-  parser.addOption(
-    'input',
-    abbr: 'i',
-    help: 'Path to input file (widgets_in.dart)',
-  );
-  parser.addOption(
-    'output',
-    abbr: 'o',
-    help: 'Folder for writing generated files',
-  );
+/// Generates lib/src/generated/ of pixel_snap_fork. Run it in generator/.
+Future<void> main(List<String> args) async {
+  final parser = ArgParser()
+    ..addOption(
+      'input',
+      abbr: 'i',
+      help: 'Path to the input file',
+      defaultsTo: '../lib/src/widgets_in.dart',
+    )
+    ..addOption(
+      'output',
+      abbr: 'o',
+      help: 'Folder for the generated files',
+      defaultsTo: '../lib/src/generated',
+    )
+    ..addFlag('help', abbr: 'h', negatable: false);
   final parsed = parser.parse(args);
-  final input = parsed['input'] as String?;
-  final output = parsed['output'] as String?;
-  if (input == null || output == null) {
+  if (parsed.flag('help')) {
     print('Usage:\n${parser.usage}');
+    return;
+  }
+  final inputFile = path.normalize(path.absolute(parsed.option('input')!));
+  final outputPath = path.normalize(path.absolute(parsed.option('output')!));
+
+  if (!File(inputFile).existsSync()) {
+    print('Input file does not exist: $inputFile');
     exit(1);
   }
-  final inputFile = path.normalize(path.absolute(input));
-  final outputPath = path.normalize(path.absolute(output));
-
-  if (File(inputFile).statSync().type != FileSystemEntityType.file) {
-    print('Input file does not exist');
-    exit(1);
-  }
-
-  if (File(outputPath).statSync().type != FileSystemEntityType.directory) {
-    print('Output folder does not exist');
+  if (!Directory(outputPath).existsSync()) {
+    print('Output folder does not exist: $outputPath');
     exit(1);
   }
 
   print('Input: $inputFile');
   print('Output: $outputPath');
-  generate(
-    inputFile: inputFile,
-    outputPath: outputPath,
-  );
+  await generate(inputFile: inputFile, outputPath: outputPath);
 }

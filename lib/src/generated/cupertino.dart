@@ -35,4 +35,5 @@ export 'package:cupertino_ui/cupertino_ui.dart'
         AnimatedPadding,
         AnimatedPhysicalModel,
         AnimatedSize;
+
 export 'widgets.dart';

@@ -35,4 +35,5 @@ export 'package:material_ui/material_ui.dart'
         AnimatedPadding,
         AnimatedPhysicalModel,
         AnimatedSize;
+
 export 'widgets.dart';

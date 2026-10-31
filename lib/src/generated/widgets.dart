@@ -1,43 +1,60 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// Update: cd generator && dart run bin/generate.dart
 // ignore_for_file: unnecessary_null_comparison, deprecated_member_use, deprecated_member_use_from_same_package, implementation_imports
+import 'package:flutter/widgets.dart' hide RawImage;
+import 'package:flutter/widgets.dart' as widgets;
+
+import 'dart:io' show File;
+import 'dart:math' show max, min;
+import 'dart:typed_data' show Uint8List;
+import 'dart:ui' as ui show TextHeightBehavior;
+
+import 'package:flutter/foundation.dart'
+    show
+        DiagnosticPropertiesBuilder,
+        DiagnosticsProperty,
+        DiagnosticsTreeStyle,
+        DoubleProperty,
+        EnumProperty,
+        FlagProperty,
+        IntProperty,
+        StringProperty,
+        kDebugMode,
+        kIsWeb,
+        precisionErrorTolerance;
+import 'package:flutter/rendering.dart'
+    show
+        ClearSelectionEvent,
+        OverflowBoxFit,
+        SelectParagraphSelectionEvent,
+        Selectable,
+        SelectedContentRange,
+        SelectionEdgeUpdateEvent,
+        SelectionEvent,
+        SelectionEventType,
+        SelectionGeometry,
+        SelectionRegistrar,
+        SelectionResult,
+        TextGranularity;
+import 'package:flutter/scheduler.dart' show SchedulerBinding;
+import 'package:flutter/semantics.dart' show SemanticsBinding;
+import 'package:flutter/src/painting/_web_image_info_io.dart'
+    if (dart.library.js_interop) 'package:flutter/src/painting/_web_image_info_web.dart'
+    show WebImageInfo;
+import 'package:flutter/src/widgets/_web_image_io.dart'
+    if (dart.library.js_interop) 'package:flutter/src/widgets/_web_image_web.dart'
+    show RawWebImage;
+
 import '../pixel_snap.dart';
 import '../pixel_snap_ext.dart';
 import '../widgets/pixel_snap_size.dart';
-import 'package:flutter/widgets.dart' hide RawImage;
-import 'package:flutter/foundation.dart';
-import 'package:flutter/semantics.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter/widgets.dart' as widgets;
-import 'package:flutter/rendering.dart'
-    show
-        SelectionRegistrar,
-        OverflowBoxFit,
-        SelectionResult,
-        SelectionEvent,
-        SelectionGeometry,
-        Selectable,
-        SelectionEdgeUpdateEvent,
-        SelectParagraphSelectionEvent,
-        TextGranularity,
-        SelectedContentRange,
-        SelectionEventType,
-        ClearSelectionEvent;
-import 'dart:ui' as ui;
-import 'dart:math' show min, max;
-import 'dart:io' show File;
-import 'package:flutter/src/painting/_web_image_info_io.dart'
-    if (dart.library.js_interop) 'package:flutter/src/painting/_web_image_info_web.dart';
-import 'package:flutter/src/widgets/_web_image_io.dart'
-    if (dart.library.js_interop) 'package:flutter/src/widgets/_web_image_web.dart';
-export 'package:flutter/widgets.dart' hide RawImage, ScrollController;
+import '../forked/raw_image.dart';
+import '../forked/render_fitted_box.dart';
 import '../forked/render_flex.dart';
 import '../forked/render_fractionally_sized_box.dart';
 import '../forked/render_paragraph.dart';
-import '../forked/render_fitted_box.dart';
-import '../forked/raw_image.dart';
 
-const double _kSelectableVerticalComparingThreshold = 3.0;
-typedef _SelectionInfo = ({int contentLength, SelectedContentRange? range});
+export 'package:flutter/widgets.dart' hide RawImage, ScrollController;
 
 /// A widget that aligns its child within itself and optionally sizes itself
 /// based on the child's size.
@@ -179,14 +196,14 @@ class Align extends StatelessWidget {
   /// Creates an alignment widget.
   ///
   /// The alignment defaults to [Alignment.center].
-  const Align(
-      {super.key,
-      this.alignment = Alignment.center,
-      this.widthFactor,
-      this.heightFactor,
-      this.child})
-      : assert(widthFactor == null || widthFactor >= 0.0),
-        assert(heightFactor == null || heightFactor >= 0.0);
+  const Align({
+    super.key,
+    this.alignment = Alignment.center,
+    this.widthFactor,
+    this.heightFactor,
+    this.child,
+  }) : assert(widthFactor == null || widthFactor >= 0.0),
+       assert(heightFactor == null || heightFactor >= 0.0);
 
   /// How to align the child.
   ///
@@ -253,11 +270,12 @@ class Align extends StatelessWidget {
 ///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
 class Baseline extends StatelessWidget {
   /// Creates a widget that positions its child according to the child's baseline.
-  const Baseline(
-      {super.key,
-      required this.baseline,
-      required this.baselineType,
-      this.child});
+  const Baseline({
+    super.key,
+    required this.baseline,
+    required this.baselineType,
+    this.child,
+  });
 
   /// The number of logical pixels from the top of this box at which to position
   /// the child's baseline.
@@ -321,7 +339,7 @@ class Baseline extends StatelessWidget {
 class ConstrainedBox extends StatelessWidget {
   /// Creates a widget that imposes additional constraints on its child.
   ConstrainedBox({super.key, required this.constraints, this.child})
-      : assert(constraints.debugAssertIsValid());
+    : assert(constraints.debugAssertIsValid());
 
   /// The additional constraints to impose on the child.
   final BoxConstraints constraints;
@@ -387,11 +405,12 @@ class DecoratedBox extends StatelessWidget {
   /// Creates a widget that paints a [Decoration].
   ///
   /// By default the decoration paints behind the child.
-  const DecoratedBox(
-      {super.key,
-      required this.decoration,
-      this.position = DecorationPosition.background,
-      this.child});
+  const DecoratedBox({
+    super.key,
+    required this.decoration,
+    this.position = DecorationPosition.background,
+    this.child,
+  });
 
   /// What decoration to paint.
   ///
@@ -560,34 +579,37 @@ class Container extends StatelessWidget {
   /// it would potentially result in the decoration drawing over the background
   /// color. To supply a decoration with a color, use `decoration:
   /// BoxDecoration(color: color)`.
-  Container(
-      {super.key,
-      this.alignment,
-      this.padding,
-      this.color,
-      this.decoration,
-      this.foregroundDecoration,
-      double? width,
-      double? height,
-      BoxConstraints? constraints,
-      this.margin,
-      this.transform,
-      this.transformAlignment,
-      this.child,
-      this.clipBehavior = Clip.none})
-      : assert(margin == null || margin.isNonNegative),
-        assert(padding == null || padding.isNonNegative),
-        assert(decoration == null || decoration.debugAssertIsValid()),
-        assert(constraints == null || constraints.debugAssertIsValid()),
-        assert(decoration != null || clipBehavior == Clip.none),
-        assert(
-            color == null || decoration == null,
-            'Cannot provide both a color and a decoration\n'
-            'To provide both, use "decoration: BoxDecoration(color: color)".'),
-        constraints = (width != null || height != null)
-            ? constraints?.tighten(width: width, height: height) ??
-                BoxConstraints.tightFor(width: width, height: height)
-            : constraints;
+  Container({
+    super.key,
+    this.alignment,
+    this.padding,
+    this.color,
+    this.isAntiAlias = true,
+    this.decoration,
+    this.foregroundDecoration,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
+    this.margin,
+    this.transform,
+    this.transformAlignment,
+    this.child,
+    this.clipBehavior = Clip.none,
+  }) : assert(margin == null || margin.isNonNegative),
+       assert(padding == null || padding.isNonNegative),
+       assert(decoration == null || decoration.debugAssertIsValid()),
+       assert(constraints == null || constraints.debugAssertIsValid()),
+       assert(decoration != null || clipBehavior == Clip.none),
+       assert(
+         color == null || decoration == null,
+         'Cannot provide both a color and a decoration.\n'
+         'The color argument is just a shorthand for "decoration: BoxDecoration(color: color)".\n'
+         'To use both a color and other decoration properties, set the color in the BoxDecoration instead.',
+       ),
+       constraints = (width != null || height != null)
+           ? constraints?.tighten(width: width, height: height) ??
+                 BoxConstraints.tightFor(width: width, height: height)
+           : constraints;
 
   /// The [child] contained by the container.
   ///
@@ -632,6 +654,9 @@ class Container extends StatelessWidget {
   /// color may still be painted by the [decoration] even if this property is
   /// null.
   final Color? color;
+
+  /// {@macro flutter.widgets.ColoredBox.isAntiAlias}
+  final bool isAntiAlias;
 
   /// The decoration to paint behind the [child].
   ///
@@ -684,6 +709,7 @@ class Container extends StatelessWidget {
       alignment: alignment?.pixelSnap(ps),
       padding: padding?.pixelSnap(ps),
       color: color,
+      isAntiAlias: isAntiAlias,
       decoration: decoration?.pixelSnap(ps),
       foregroundDecoration: foregroundDecoration?.pixelSnap(ps),
       constraints: constraints?.pixelSnap(ps),
@@ -737,8 +763,8 @@ class IntrinsicWidth extends StatelessWidget {
   ///
   /// This class is relatively expensive. Avoid using it where possible.
   const IntrinsicWidth({super.key, this.stepWidth, this.stepHeight, this.child})
-      : assert(stepWidth == null || stepWidth >= 0.0),
-        assert(stepHeight == null || stepHeight >= 0.0);
+    : assert(stepWidth == null || stepWidth >= 0.0),
+      assert(stepHeight == null || stepHeight >= 0.0);
 
   /// If non-null, force the child's width to be a multiple of this value.
   ///
@@ -806,13 +832,13 @@ class LimitedBox extends StatelessWidget {
   /// Creates a box that limits its size only when it's unconstrained.
   ///
   /// The [maxWidth] and [maxHeight] arguments must not be negative.
-  const LimitedBox(
-      {super.key,
-      this.maxWidth = double.infinity,
-      this.maxHeight = double.infinity,
-      this.child})
-      : assert(maxWidth >= 0.0),
-        assert(maxHeight >= 0.0);
+  const LimitedBox({
+    super.key,
+    this.maxWidth = double.infinity,
+    this.maxHeight = double.infinity,
+    this.child,
+  }) : assert(maxWidth >= 0.0),
+       assert(maxHeight >= 0.0);
 
   /// The maximum width limit to apply in the absence of a
   /// [BoxConstraints.maxWidth] constraint.
@@ -862,15 +888,16 @@ class LimitedBox extends StatelessWidget {
 ///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
 class OverflowBox extends StatelessWidget {
   /// Creates a widget that lets its child overflow itself.
-  const OverflowBox(
-      {super.key,
-      this.alignment = Alignment.center,
-      this.minWidth,
-      this.maxWidth,
-      this.minHeight,
-      this.maxHeight,
-      this.fit = OverflowBoxFit.max,
-      this.child});
+  const OverflowBox({
+    super.key,
+    this.alignment = Alignment.center,
+    this.minWidth,
+    this.maxWidth,
+    this.minHeight,
+    this.maxHeight,
+    this.fit = OverflowBoxFit.max,
+    this.child,
+  });
 
   /// How to align the child.
   ///
@@ -1007,24 +1034,17 @@ class Padding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
-    Widget res = widgets.Padding(
-      padding: padding.pixelSnap(ps),
-      child: child,
-    );
+    Widget res = widgets.Padding(padding: padding.pixelSnap(ps), child: child);
     return res;
   }
 }
 
 /// A box with a specified size.
 ///
-/// If given a child, this widget forces it to have a specific width and/or height.
-/// These values will be ignored if this widget's parent does not permit them.
-/// For example, this happens if the parent is the screen (forces the child to
-/// be the same size as the parent), or another [SizedBox] (forces its child to
-/// have a specific width and/or height). This can be remedied by wrapping the
-/// child [SizedBox] in a widget that does permit it to be any size up to the
-/// size of the parent, such as [Center] or [Align].
+/// {@youtube 560 315 https://www.youtube.com/watch?v=EHPu_DzRfqA}
 ///
+/// If given a child, this widget will try to size its child as close to the
+/// specified [height] and [width] as possible given the parent's constraints.
 /// If either the width or height is null, this widget will try to size itself to
 /// match the child's size in that dimension. If the child's size depends on the
 /// size of its parent, the height and width must be provided.
@@ -1036,8 +1056,6 @@ class Padding extends StatelessWidget {
 /// The [SizedBox.expand] constructor can be used to make a [SizedBox] that
 /// sizes itself to fit the parent. It is equivalent to setting [width] and
 /// [height] to [double.infinity].
-///
-/// {@youtube 560 315 https://www.youtube.com/watch?v=EHPu_DzRfqA}
 ///
 /// {@tool snippet}
 ///
@@ -1052,6 +1070,36 @@ class Padding extends StatelessWidget {
 /// )
 /// ```
 /// {@end-tool}
+///
+/// ## Troubleshooting
+///
+/// ### Why is my [SizedBox] ignored?
+///
+/// In Flutter's layout protocol constraints go down, and sizes go up.
+/// A widget must respect the constraints passed by its parent. This can cause a
+/// [SizedBox]'s values to be ignored:
+///
+/// {@tool snippet}
+///
+/// This snippet makes the [ColoredBox] size 200x200. The 100x100 size is
+/// ignored because it is incompatible with its parent constraints of exactly
+/// 200x200:
+///
+/// ```dart
+/// const SizedBox(
+///   width: 200.0,
+///   height: 200.0,
+///   child: SizedBox( // Ignored!
+///     width: 100.0,
+///     height: 100.0,
+///     child: ColoredBox(color: Colors.green),
+///   ),
+/// )
+/// ```
+/// {@end-tool}
+///
+/// This can be fixed by wrapping the child [SizedBox] in a widget that lets
+/// it be any size up to the size of the parent, such as [Center] or [Align].
 ///
 /// See also:
 ///
@@ -1076,23 +1124,21 @@ class SizedBox extends StatelessWidget {
 
   /// Creates a box that will become as large as its parent allows.
   const SizedBox.expand({super.key, this.child})
-      : width = double.infinity,
-        height = double.infinity;
+    : width = double.infinity,
+      height = double.infinity;
 
   /// Creates a box that will become as small as its parent allows.
-  const SizedBox.shrink({super.key, this.child})
-      : width = 0.0,
-        height = 0.0;
+  const SizedBox.shrink({super.key, this.child}) : width = 0.0, height = 0.0;
 
   /// Creates a box with the specified size.
   SizedBox.fromSize({super.key, this.child, Size? size})
-      : width = size?.width,
-        height = size?.height;
+    : width = size?.width,
+      height = size?.height;
 
   /// Creates a box whose [width] and [height] are equal.
   const SizedBox.square({super.key, this.child, double? dimension})
-      : width = dimension,
-        height = dimension;
+    : width = dimension,
+      height = dimension;
 
   /// If non-null, requires the child to have exactly this width.
   final double? width;
@@ -1132,11 +1178,12 @@ class SizedBox extends StatelessWidget {
 ///  * The [catalog of layout widgets](https://flutter.dev/widgets/layout/).
 class SizedOverflowBox extends StatelessWidget {
   /// Creates a widget of a given size that lets its child overflow.
-  const SizedOverflowBox(
-      {super.key,
-      required this.size,
-      this.alignment = Alignment.center,
-      this.child});
+  const SizedOverflowBox({
+    super.key,
+    required this.size,
+    this.alignment = Alignment.center,
+    this.child,
+  });
 
   /// How to align the child.
   ///
@@ -1226,17 +1273,17 @@ class Positioned extends StatelessWidget {
   ///    position using `start` and `end` rather than `left` and `right`.
   ///  * [PositionedDirectional], which is similar to [Positioned.directional]
   ///    but adapts to the ambient [Directionality].
-  const Positioned(
-      {super.key,
-      this.left,
-      this.top,
-      this.right,
-      this.bottom,
-      this.width,
-      this.height,
-      required this.child})
-      : assert(left == null || right == null || width == null),
-        assert(top == null || bottom == null || height == null);
+  const Positioned({
+    super.key,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.width,
+    this.height,
+    required this.child,
+  }) : assert(left == null || right == null || width == null),
+       assert(top == null || bottom == null || height == null);
 
   /// Creates a Positioned object with the values from the given [Rect].
   ///
@@ -1244,37 +1291,39 @@ class Positioned extends StatelessWidget {
   /// from the given [Rect]. The [right] and [bottom] properties are
   /// set to null.
   Positioned.fromRect({super.key, required Rect rect, required this.child})
-      : left = rect.left,
-        top = rect.top,
-        width = rect.width,
-        height = rect.height,
-        right = null,
-        bottom = null;
+    : left = rect.left,
+      top = rect.top,
+      width = rect.width,
+      height = rect.height,
+      right = null,
+      bottom = null;
 
   /// Creates a Positioned object with the values from the given [RelativeRect].
   ///
   /// This sets the [left], [top], [right], and [bottom] properties from the
   /// given [RelativeRect]. The [height] and [width] properties are set to null.
-  Positioned.fromRelativeRect(
-      {super.key, required RelativeRect rect, required this.child})
-      : left = rect.left,
-        top = rect.top,
-        right = rect.right,
-        bottom = rect.bottom,
-        width = null,
-        height = null;
+  Positioned.fromRelativeRect({
+    super.key,
+    required RelativeRect rect,
+    required this.child,
+  }) : left = rect.left,
+       top = rect.top,
+       right = rect.right,
+       bottom = rect.bottom,
+       width = null,
+       height = null;
 
   /// Creates a Positioned object with [left], [top], [right], and [bottom] set
   /// to 0.0 unless a value for them is passed.
-  const Positioned.fill(
-      {super.key,
-      this.left = 0.0,
-      this.top = 0.0,
-      this.right = 0.0,
-      this.bottom = 0.0,
-      required this.child})
-      : width = null,
-        height = null;
+  const Positioned.fill({
+    super.key,
+    this.left = 0.0,
+    this.top = 0.0,
+    this.right = 0.0,
+    this.bottom = 0.0,
+    required this.child,
+  }) : width = null,
+       height = null;
 
   /// Creates a widget that controls where a child of a [Stack] is positioned.
   ///
@@ -1292,29 +1341,31 @@ class Positioned extends StatelessWidget {
   /// See also:
   ///
   ///  * [PositionedDirectional], which adapts to the ambient [Directionality].
-  factory Positioned.directional(
-      {Key? key,
-      required TextDirection textDirection,
-      double? start,
-      double? top,
-      double? end,
-      double? bottom,
-      double? width,
-      double? height,
-      required Widget child}) {
+  factory Positioned.directional({
+    Key? key,
+    required TextDirection textDirection,
+    double? start,
+    double? top,
+    double? end,
+    double? bottom,
+    double? width,
+    double? height,
+    required Widget child,
+  }) {
     final (double? left, double? right) = switch (textDirection) {
       TextDirection.rtl => (end, start),
-      TextDirection.ltr => (start, end)
+      TextDirection.ltr => (start, end),
     };
     return Positioned(
-        key: key,
-        left: left,
-        top: top,
-        right: right,
-        bottom: bottom,
-        width: width,
-        height: height,
-        child: child);
+      key: key,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+      width: width,
+      height: height,
+      child: child,
+    );
   }
 
   /// {@macro flutter.widgets.ProxyWidget.child}
@@ -1413,16 +1464,16 @@ class PhysicalModel extends StatelessWidget {
   ///
   /// The [shape], [elevation], [color], [clipBehavior], and [shadowColor] must
   /// not be null. Additionally, the [elevation] must be non-negative.
-  const PhysicalModel(
-      {super.key,
-      this.shape = BoxShape.rectangle,
-      this.clipBehavior = Clip.none,
-      this.borderRadius,
-      this.elevation = 0.0,
-      required this.color,
-      this.shadowColor = const Color(0xFF000000),
-      this.child})
-      : assert(elevation >= 0.0);
+  const PhysicalModel({
+    super.key,
+    this.shape = BoxShape.rectangle,
+    this.clipBehavior = Clip.none,
+    this.borderRadius,
+    this.elevation = 0.0,
+    required this.color,
+    this.shadowColor = const Color(0xFF000000),
+    this.child,
+  }) : assert(elevation >= 0.0);
 
   /// The type of shape.
   final BoxShape shape;
@@ -1531,17 +1582,19 @@ class PhysicalModel extends StatelessWidget {
 ///  * [Canvas], the class that a custom painter uses to paint.
 class CustomPaint extends StatelessWidget {
   /// Creates a widget that delegates its painting.
-  const CustomPaint(
-      {super.key,
-      this.painter,
-      this.foregroundPainter,
-      this.size = Size.zero,
-      this.isComplex = false,
-      this.willChange = false,
-      this.child})
-      : assert(painter != null ||
-            foregroundPainter != null ||
-            (!isComplex && !willChange));
+  const CustomPaint({
+    super.key,
+    this.painter,
+    this.foregroundPainter,
+    this.size = Size.zero,
+    this.isComplex = false,
+    this.willChange = false,
+    this.child,
+  }) : assert(
+         painter != null ||
+             foregroundPainter != null ||
+             (!isComplex && !willChange),
+       );
 
   /// The painter that paints before the children.
   final CustomPainter? painter;
@@ -1656,23 +1709,24 @@ class CustomPaint extends StatelessWidget {
 ///  * [ImageIcon], for showing icons from [AssetImage]s or other [ImageProvider]s.
 class Icon extends StatelessWidget {
   /// Creates an icon.
-  const Icon(this.icon,
-      {super.key,
-      this.size,
-      this.fill,
-      this.weight,
-      this.grade,
-      this.opticalSize,
-      this.color,
-      this.shadows,
-      this.semanticLabel,
-      this.textDirection,
-      this.applyTextScaling,
-      this.blendMode,
-      this.fontWeight})
-      : assert(fill == null || (0.0 <= fill && fill <= 1.0)),
-        assert(weight == null || (0.0 < weight)),
-        assert(opticalSize == null || (0.0 < opticalSize));
+  const Icon(
+    this.icon, {
+    super.key,
+    this.size,
+    this.fill,
+    this.weight,
+    this.grade,
+    this.opticalSize,
+    this.color,
+    this.shadows,
+    this.semanticLabel,
+    this.textDirection,
+    this.applyTextScaling,
+    this.blendMode,
+    this.fontWeight,
+  }) : assert(fill == null || (0.0 <= fill && fill <= 1.0)),
+       assert(weight == null || (0.0 < weight)),
+       assert(opticalSize == null || (0.0 < opticalSize));
 
   /// The icon to display. The available icons are described in [Icons].
   ///
@@ -1873,8 +1927,18 @@ class ImageIcon extends StatelessWidget {
   /// Creates an image icon.
   ///
   /// The [size] and [color] default to the value given by the current [IconTheme].
-  const ImageIcon(this.image,
-      {super.key, this.size, this.color, this.semanticLabel});
+  const ImageIcon(
+    this.image, {
+    super.key,
+    this.size,
+    this.color,
+    this.semanticLabel,
+    this.useOriginalColors = false,
+  }) : assert(
+         !(useOriginalColors && color != null),
+         'Cannot provide a color while useOriginalColors is true. '
+         'To use a specific color, set useOriginalColors to false or omit it.',
+       );
 
   /// The image to display as the icon.
   ///
@@ -1909,6 +1973,21 @@ class ImageIcon extends StatelessWidget {
   ///    underlying	 [Semantics] widget.
   final String? semanticLabel;
 
+  /// Whether to render the image using its original colors.
+  ///
+  /// If this is false (the default), the image is colorized by merging the
+  /// [color] (or, if that is null, the [IconTheme] color) with the image
+  /// using [BlendMode.srcIn]. This is the standard behavior for icons.
+  ///
+  /// If this is true, the color-blend filter is disabled, and the image is
+  /// rendered with its original colors. This allows multi-colored images,
+  /// such as brand logos, to be displayed accurately.
+  ///
+  /// If this is true, [color] must be null.
+  ///
+  /// Defaults to false.
+  final bool useOriginalColors;
+
   @override
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
@@ -1917,6 +1996,7 @@ class ImageIcon extends StatelessWidget {
       size: size?.pixelSnap(ps),
       color: color,
       semanticLabel: semanticLabel,
+      useOriginalColors: useOriginalColors,
     );
     if (size == null) {
       res = PixelSnapSize(child: res);
@@ -1959,17 +2039,17 @@ class ImageIcon extends StatelessWidget {
 class AnimatedAlign extends StatelessWidget {
   /// Creates a widget that positions its child by an alignment that animates
   /// implicitly.
-  const AnimatedAlign(
-      {super.key,
-      required this.alignment,
-      this.child,
-      this.heightFactor,
-      this.widthFactor,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : assert(widthFactor == null || widthFactor >= 0.0),
-        assert(heightFactor == null || heightFactor >= 0.0);
+  const AnimatedAlign({
+    super.key,
+    required this.alignment,
+    this.child,
+    this.heightFactor,
+    this.widthFactor,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : assert(widthFactor == null || widthFactor >= 0.0),
+       assert(heightFactor == null || heightFactor >= 0.0);
 
   /// How to align the child.
   ///
@@ -2069,38 +2149,39 @@ class AnimatedAlign extends StatelessWidget {
 ///  * [AnimatedCrossFade], which fades between two children and interpolates their sizes.
 class AnimatedContainer extends StatelessWidget {
   /// Creates a container that animates its parameters implicitly.
-  AnimatedContainer(
-      {super.key,
-      this.alignment,
-      this.padding,
-      Color? color,
-      Decoration? decoration,
-      this.foregroundDecoration,
-      double? width,
-      double? height,
-      BoxConstraints? constraints,
-      this.margin,
-      this.transform,
-      this.transformAlignment,
-      this.child,
-      this.clipBehavior = Clip.none,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : assert(margin == null || margin.isNonNegative),
-        assert(padding == null || padding.isNonNegative),
-        assert(decoration == null || decoration.debugAssertIsValid()),
-        assert(constraints == null || constraints.debugAssertIsValid()),
-        assert(
-            color == null || decoration == null,
-            'Cannot provide both a color and a decoration\n'
-            'The color argument is just a shorthand for "decoration: BoxDecoration(color: color)".'),
-        decoration =
-            decoration ?? (color != null ? BoxDecoration(color: color) : null),
-        constraints = (width != null || height != null)
-            ? constraints?.tighten(width: width, height: height) ??
-                BoxConstraints.tightFor(width: width, height: height)
-            : constraints;
+  AnimatedContainer({
+    super.key,
+    this.alignment,
+    this.padding,
+    Color? color,
+    Decoration? decoration,
+    this.foregroundDecoration,
+    double? width,
+    double? height,
+    BoxConstraints? constraints,
+    this.margin,
+    this.transform,
+    this.transformAlignment,
+    this.child,
+    this.clipBehavior = Clip.none,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : assert(margin == null || margin.isNonNegative),
+       assert(padding == null || padding.isNonNegative),
+       assert(decoration == null || decoration.debugAssertIsValid()),
+       assert(constraints == null || constraints.debugAssertIsValid()),
+       assert(
+         color == null || decoration == null,
+         'Cannot provide both a color and a decoration\n'
+         'The color argument is just a shorthand for "decoration: BoxDecoration(color: color)".',
+       ),
+       decoration =
+           decoration ?? (color != null ? BoxDecoration(color: color) : null),
+       constraints = (width != null || height != null)
+           ? constraints?.tighten(width: width, height: height) ??
+                 BoxConstraints.tightFor(width: width, height: height)
+           : constraints;
 
   /// The [child] contained by the container.
   ///
@@ -2264,19 +2345,22 @@ class AnimatedCrossFade extends StatelessWidget {
   /// The [duration] of the animation is the same for all components (fade in,
   /// fade out, and size), and you can pass [Interval]s instead of [Curve]s in
   /// order to have finer control, e.g., creating an overlap between the fades.
-  const AnimatedCrossFade(
-      {super.key,
-      required this.firstChild,
-      required this.secondChild,
-      this.firstCurve = Curves.linear,
-      this.secondCurve = Curves.linear,
-      this.sizeCurve = Curves.linear,
-      this.alignment = Alignment.topCenter,
-      required this.crossFadeState,
-      required this.duration,
-      this.reverseDuration,
-      this.layoutBuilder = widgets.AnimatedCrossFade.defaultLayoutBuilder,
-      this.excludeBottomFocus = true});
+  const AnimatedCrossFade({
+    super.key,
+    required this.firstChild,
+    required this.secondChild,
+    this.firstCurve = Curves.linear,
+    this.secondCurve = Curves.linear,
+    this.sizeCurve = Curves.linear,
+    this.alignment = Alignment.topCenter,
+    required this.crossFadeState,
+    required this.duration,
+    this.reverseDuration,
+    this.layoutBuilder = widgets.AnimatedCrossFade.defaultLayoutBuilder,
+    this.excludeBottomFocus = true,
+    this.clipBehavior = Clip.hardEdge,
+    this.onEnd,
+  });
 
   /// The child that is visible when [crossFadeState] is
   /// [CrossFadeState.showFirst]. It fades out when transitioning
@@ -2352,6 +2436,25 @@ class AnimatedCrossFade extends StatelessWidget {
   /// cross-fade animation.
   final bool excludeBottomFocus;
 
+  /// Controls whether the content is clipped during the cross-fade transition.
+  ///
+  /// During the size transition between [firstChild] and [secondChild],
+  /// the content is clipped by default to prevent it from overflowing the
+  /// bounding box of the animating widget.
+  ///
+  /// Set this to [Clip.none] to disable clipping entirely. This can be
+  /// useful for widgets with shadows or visual effects that extend beyond
+  /// their bounds.
+  ///
+  /// Defaults to [Clip.hardEdge].
+  final Clip clipBehavior;
+
+  /// Called every time an animation completes.
+  ///
+  /// This can be useful to trigger additional actions (e.g. another animation)
+  /// at the end of the current animation.
+  final void Function()? onEnd;
+
   @override
   Widget build(BuildContext context) {
     final ps = PixelSnap.of(context);
@@ -2367,6 +2470,8 @@ class AnimatedCrossFade extends StatelessWidget {
       alignment: alignment.pixelSnap(ps),
       layoutBuilder: layoutBuilder,
       excludeBottomFocus: excludeBottomFocus,
+      clipBehavior: clipBehavior,
+      onEnd: onEnd,
     );
     return res;
   }
@@ -2418,35 +2523,35 @@ class AnimatedPositioned extends StatelessWidget {
   /// [width]), and only two out of the three vertical values ([top],
   /// [bottom], [height]), can be set. In each case, at least one of
   /// the three must be null.
-  const AnimatedPositioned(
-      {super.key,
-      required this.child,
-      this.left,
-      this.top,
-      this.right,
-      this.bottom,
-      this.width,
-      this.height,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : assert(left == null || right == null || width == null),
-        assert(top == null || bottom == null || height == null);
+  const AnimatedPositioned({
+    super.key,
+    required this.child,
+    this.left,
+    this.top,
+    this.right,
+    this.bottom,
+    this.width,
+    this.height,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : assert(left == null || right == null || width == null),
+       assert(top == null || bottom == null || height == null);
 
   /// Creates a widget that animates the rectangle it occupies implicitly.
-  AnimatedPositioned.fromRect(
-      {super.key,
-      required this.child,
-      required Rect rect,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : left = rect.left,
-        top = rect.top,
-        width = rect.width,
-        height = rect.height,
-        right = null,
-        bottom = null;
+  AnimatedPositioned.fromRect({
+    super.key,
+    required this.child,
+    required Rect rect,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : left = rect.left,
+       top = rect.top,
+       width = rect.width,
+       height = rect.height,
+       right = null,
+       bottom = null;
 
   /// The widget below this widget in the tree.
   ///
@@ -2533,14 +2638,14 @@ class AnimatedPositioned extends StatelessWidget {
 class AnimatedPadding extends StatelessWidget {
   /// Creates a widget that insets its child by a value that animates
   /// implicitly.
-  AnimatedPadding(
-      {super.key,
-      required this.padding,
-      this.child,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : assert(padding.isNonNegative);
+  AnimatedPadding({
+    super.key,
+    required this.padding,
+    this.child,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : assert(padding.isNonNegative);
 
   /// The amount of space by which to inset the child.
   final EdgeInsetsGeometry padding;
@@ -2598,21 +2703,21 @@ class AnimatedPhysicalModel extends StatelessWidget {
   /// Animating [color] is optional and is controlled by the [animateColor] flag.
   ///
   /// Animating [shadowColor] is optional and is controlled by the [animateShadowColor] flag.
-  const AnimatedPhysicalModel(
-      {super.key,
-      required this.child,
-      this.shape = BoxShape.rectangle,
-      this.clipBehavior = Clip.none,
-      this.borderRadius,
-      this.elevation = 0.0,
-      required this.color,
-      this.animateColor = true,
-      required this.shadowColor,
-      this.animateShadowColor = true,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.onEnd})
-      : assert(elevation >= 0.0);
+  const AnimatedPhysicalModel({
+    super.key,
+    required this.child,
+    this.shape = BoxShape.rectangle,
+    this.clipBehavior = Clip.none,
+    this.borderRadius,
+    this.elevation = 0.0,
+    required this.color,
+    this.animateColor = true,
+    required this.shadowColor,
+    this.animateShadowColor = true,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.onEnd,
+  }) : assert(elevation >= 0.0);
 
   /// The widget below this widget in the tree.
   ///
@@ -2700,15 +2805,16 @@ class AnimatedPhysicalModel extends StatelessWidget {
 ///  * [SizeTransition], which changes its size based on an [Animation].
 class AnimatedSize extends StatelessWidget {
   /// Creates a widget that animates its size to match that of its child.
-  const AnimatedSize(
-      {super.key,
-      this.child,
-      this.alignment = Alignment.center,
-      this.curve = Curves.linear,
-      required this.duration,
-      this.reverseDuration,
-      this.clipBehavior = Clip.hardEdge,
-      this.onEnd});
+  const AnimatedSize({
+    super.key,
+    this.child,
+    this.alignment = Alignment.center,
+    this.curve = Curves.linear,
+    required this.duration,
+    this.reverseDuration,
+    this.clipBehavior = Clip.hardEdge,
+    this.onEnd,
+  });
 
   /// The widget below this widget in the tree.
   ///
@@ -2874,10 +2980,10 @@ class Flex extends MultiChildRenderObjectWidget {
     this.spacing = 0.0,
     super.children,
   }) : assert(
-          !identical(crossAxisAlignment, CrossAxisAlignment.baseline) ||
-              textBaseline != null,
-          'textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline',
-        );
+         !identical(crossAxisAlignment, CrossAxisAlignment.baseline) ||
+             textBaseline != null,
+         'textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline',
+       );
   // Cannot use == in the assert above instead of identical because of https://github.com/dart-lang/language/issues/1811.
 
   /// The direction to use as the main axis.
@@ -3034,7 +3140,9 @@ class Flex extends MultiChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant RenderFlex renderObject) {
+    BuildContext context,
+    covariant RenderFlex renderObject,
+  ) {
     renderObject
       ..pixelSnap = PixelSnap.of(context)
       ..direction = direction
@@ -3052,16 +3160,29 @@ class Flex extends MultiChildRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<Axis>('direction', direction));
-    properties.add(EnumProperty<MainAxisAlignment>(
-        'mainAxisAlignment', mainAxisAlignment));
     properties.add(
-      EnumProperty<MainAxisSize>('mainAxisSize', mainAxisSize,
-          defaultValue: MainAxisSize.max),
+      EnumProperty<MainAxisAlignment>('mainAxisAlignment', mainAxisAlignment),
     );
-    properties.add(EnumProperty<CrossAxisAlignment>(
-        'crossAxisAlignment', crossAxisAlignment));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
-        defaultValue: null));
+    properties.add(
+      EnumProperty<MainAxisSize>(
+        'mainAxisSize',
+        mainAxisSize,
+        defaultValue: MainAxisSize.max,
+      ),
+    );
+    properties.add(
+      EnumProperty<CrossAxisAlignment>(
+        'crossAxisAlignment',
+        crossAxisAlignment,
+      ),
+    );
+    properties.add(
+      EnumProperty<TextDirection>(
+        'textDirection',
+        textDirection,
+        defaultValue: null,
+      ),
+    );
     properties.add(
       EnumProperty<VerticalDirection>(
         'verticalDirection',
@@ -3069,10 +3190,16 @@ class Flex extends MultiChildRenderObjectWidget {
         defaultValue: VerticalDirection.down,
       ),
     );
-    properties.add(EnumProperty<TextBaseline>('textBaseline', textBaseline,
-        defaultValue: null));
-    properties.add(EnumProperty<Clip>('clipBehavior', clipBehavior,
-        defaultValue: Clip.none));
+    properties.add(
+      EnumProperty<TextBaseline>(
+        'textBaseline',
+        textBaseline,
+        defaultValue: null,
+      ),
+    );
+    properties.add(
+      EnumProperty<Clip>('clipBehavior', clipBehavior, defaultValue: Clip.none),
+    );
     properties.add(DoubleProperty('spacing', spacing, defaultValue: 0.0));
   }
 }
@@ -3508,8 +3635,8 @@ class FractionallySizedBox extends SingleChildRenderObjectWidget {
     this.widthFactor,
     this.heightFactor,
     super.child,
-  })  : assert(widthFactor == null || widthFactor >= 0.0),
-        assert(heightFactor == null || heightFactor >= 0.0);
+  }) : assert(widthFactor == null || widthFactor >= 0.0),
+       assert(heightFactor == null || heightFactor >= 0.0);
 
   /// {@template flutter.widgets.basic.fractionallySizedBox.widthFactor}
   /// If non-null, the fraction of the incoming width given to the child.
@@ -3568,7 +3695,9 @@ class FractionallySizedBox extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, RenderFractionallySizedOverflowBox renderObject) {
+    BuildContext context,
+    RenderFractionallySizedOverflowBox renderObject,
+  ) {
     renderObject
       ..pixelSnap = PixelSnap.of(context)
       ..alignment = alignment
@@ -3580,12 +3709,15 @@ class FractionallySizedBox extends SingleChildRenderObjectWidget {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties
-        .add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment));
-    properties
-        .add(DoubleProperty('widthFactor', widthFactor, defaultValue: null));
-    properties
-        .add(DoubleProperty('heightFactor', heightFactor, defaultValue: null));
+    properties.add(
+      DiagnosticsProperty<AlignmentGeometry>('alignment', alignment),
+    );
+    properties.add(
+      DoubleProperty('widthFactor', widthFactor, defaultValue: null),
+    );
+    properties.add(
+      DoubleProperty('heightFactor', heightFactor, defaultValue: null),
+    );
   }
 }
 
@@ -3770,11 +3902,11 @@ class Text extends StatelessWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
     this.selectionColor,
-  })  : textSpan = null,
-        assert(
-          textScaler == null || textScaleFactor == null,
-          'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
-        );
+  }) : textSpan = null,
+       assert(
+         textScaler == null || textScaleFactor == null,
+         'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
+       );
 
   /// Creates a text widget with a [InlineSpan].
   ///
@@ -3807,11 +3939,11 @@ class Text extends StatelessWidget {
     this.textWidthBasis,
     this.textHeightBehavior,
     this.selectionColor,
-  })  : data = null,
-        assert(
-          textScaler == null || textScaleFactor == null,
-          'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
-        );
+  }) : data = null,
+       assert(
+         textScaler == null || textScaleFactor == null,
+         'textScaleFactor is deprecated and cannot be specified when textScaler is specified.',
+       );
 
   /// The text to display.
   ///
@@ -3828,9 +3960,19 @@ class Text extends StatelessWidget {
   /// If the style's "inherit" property is true, the style will be merged with
   /// the closest enclosing [DefaultTextStyle]. Otherwise, the style will
   /// replace the closest enclosing [DefaultTextStyle].
+  ///
+  /// The user or platform may override this [style]'s [TextStyle.fontWeight],
+  /// [TextStyle.height], [TextStyle.letterSpacing], and [TextStyle.wordSpacing]
+  /// via a [MediaQuery] ancestor's [MediaQueryData.boldText],
+  /// [MediaQueryData.lineHeightScaleFactorOverride],
+  /// [MediaQueryData.letterSpacingOverride], and [MediaQueryData.wordSpacingOverride]
+  /// regardless of its [TextStyle.inherit] value.
   final TextStyle? style;
 
   /// {@macro flutter.painting.textPainter.strutStyle}
+  ///
+  /// The user or platform may override this [strutStyle]'s [StrutStyle.height]
+  /// via a [MediaQuery] ancestor's [MediaQueryData.lineHeightScaleFactorOverride].
   final StrutStyle? strutStyle;
 
   /// How the text should be aligned horizontally.
@@ -3953,77 +4095,96 @@ class Text extends StatelessWidget {
       effectiveTextStyle = defaultTextStyle.style.merge(style);
     }
     if (MediaQuery.boldTextOf(context)) {
-      effectiveTextStyle = effectiveTextStyle!
-          .merge(const TextStyle(fontWeight: FontWeight.bold));
+      effectiveTextStyle = effectiveTextStyle!.merge(
+        const TextStyle(fontWeight: FontWeight.bold),
+      );
     }
-    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
-      (final TextScaler textScaler, _) => textScaler,
-      // For unmigrated apps, fall back to textScaleFactor.
-      (null, final double textScaleFactor) =>
-        TextScaler.linear(textScaleFactor),
-      (null, null) => MediaQuery.textScalerOf(context),
-    };
-    late Widget result;
-    if (registrar != null) {
-      result = MouseRegion(
-        cursor: DefaultSelectionStyle.of(context).mouseCursor ??
-            SystemMouseCursors.text,
-        child: _SelectableTextContainer(
-          textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-          textDirection:
-              textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-          locale:
-              locale, // RichText uses Localizations.localeOf to obtain a default if this is null
-          softWrap: softWrap ?? defaultTextStyle.softWrap,
-          overflow: overflow ??
-              effectiveTextStyle?.overflow ??
-              defaultTextStyle.overflow,
-          textScaler: textScaler,
-          maxLines: maxLines ?? defaultTextStyle.maxLines,
-          strutStyle: strutStyle,
-          textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-          textHeightBehavior: textHeightBehavior ??
-              defaultTextStyle.textHeightBehavior ??
-              DefaultTextHeightBehavior.maybeOf(context),
-          selectionColor: selectionColor ??
-              DefaultSelectionStyle.of(context).selectionColor ??
-              DefaultSelectionStyle.defaultColor,
-          text: TextSpan(
+    // TODO(Renzo-Olivares): Investigate ways the framework can automatically
+    // apply MediaQueryData.paragraphSpacingOverride to its own text components.
+    // See: https://github.com/flutter/flutter/issues/177953 and https://github.com/flutter/flutter/issues/177408.
+    final double? lineHeightScaleFactor =
+        MediaQuery.maybeLineHeightScaleFactorOverrideOf(context);
+    final double? letterSpacing = MediaQuery.maybeLetterSpacingOverrideOf(
+      context,
+    );
+    final double? wordSpacing = MediaQuery.maybeWordSpacingOverrideOf(context);
+    final TextSpan effectiveTextSpan =
+        _OverridingTextStyleTextSpanUtils.applyTextSpacingOverrides(
+          lineHeightScaleFactor: lineHeightScaleFactor,
+          letterSpacing: letterSpacing,
+          wordSpacing: wordSpacing,
+          textSpan: TextSpan(
             style: effectiveTextStyle,
             text: data,
             locale: locale,
             children: textSpan != null ? <InlineSpan>[textSpan!] : null,
           ),
+        );
+    final StrutStyle? effectiveStrutStyle = strutStyle?.merge(
+      StrutStyle(height: lineHeightScaleFactor),
+    );
+    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
+    final TextScaler textScaler = switch ((this.textScaler, textScaleFactor)) {
+      (final TextScaler textScaler, _) => textScaler,
+      // For unmigrated apps, fall back to textScaleFactor.
+      (null, final double textScaleFactor) => TextScaler.linear(
+        textScaleFactor,
+      ),
+      (null, null) => MediaQuery.textScalerOf(context),
+    };
+    late Widget result;
+    if (registrar != null) {
+      result = MouseRegion(
+        cursor:
+            DefaultSelectionStyle.of(context).mouseCursor ??
+            SystemMouseCursors.text,
+        child: _SelectableTextContainer(
+          textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
+          textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+          locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+          softWrap: softWrap ?? defaultTextStyle.softWrap,
+          overflow:
+              overflow ??
+              effectiveTextStyle?.overflow ??
+              defaultTextStyle.overflow,
+          textScaler: textScaler,
+          maxLines: maxLines ?? defaultTextStyle.maxLines,
+          strutStyle: effectiveStrutStyle,
+          textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
+          textHeightBehavior:
+              textHeightBehavior ??
+              defaultTextStyle.textHeightBehavior ??
+              DefaultTextHeightBehavior.maybeOf(context),
+          selectionColor:
+              selectionColor ??
+              DefaultSelectionStyle.of(context).selectionColor ??
+              DefaultSelectionStyle.defaultColor,
+          text: effectiveTextSpan,
         ),
       );
     } else {
       result = RichText(
         textAlign: textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start,
-        textDirection:
-            textDirection, // RichText uses Directionality.of to obtain a default if this is null.
-        locale:
-            locale, // RichText uses Localizations.localeOf to obtain a default if this is null
+        textDirection: textDirection, // RichText uses Directionality.of to obtain a default if this is null.
+        locale: locale, // RichText uses Localizations.localeOf to obtain a default if this is null
         softWrap: softWrap ?? defaultTextStyle.softWrap,
-        overflow: overflow ??
+        overflow:
+            overflow ??
             effectiveTextStyle?.overflow ??
             defaultTextStyle.overflow,
         textScaler: textScaler,
         maxLines: maxLines ?? defaultTextStyle.maxLines,
-        strutStyle: strutStyle,
+        strutStyle: effectiveStrutStyle,
         textWidthBasis: textWidthBasis ?? defaultTextStyle.textWidthBasis,
-        textHeightBehavior: textHeightBehavior ??
+        textHeightBehavior:
+            textHeightBehavior ??
             defaultTextStyle.textHeightBehavior ??
             DefaultTextHeightBehavior.maybeOf(context),
-        selectionColor: selectionColor ??
+        selectionColor:
+            selectionColor ??
             DefaultSelectionStyle.of(context).selectionColor ??
             DefaultSelectionStyle.defaultColor,
-        text: TextSpan(
-          style: effectiveTextStyle,
-          text: data,
-          locale: locale,
-          children: textSpan != null ? <InlineSpan>[textSpan!] : null,
-        ),
+        text: effectiveTextSpan,
       );
     }
     if (semanticsLabel != null || semanticsIdentifier != null) {
@@ -4031,8 +4192,10 @@ class Text extends StatelessWidget {
         textDirection: textDirection,
         label: semanticsLabel,
         identifier: semanticsIdentifier,
-        child:
-            ExcludeSemantics(excluding: semanticsLabel != null, child: result),
+        child: ExcludeSemantics(
+          excluding: semanticsLabel != null,
+          child: result,
+        ),
       );
     }
     return result;
@@ -4045,16 +4208,25 @@ class Text extends StatelessWidget {
     if (textSpan != null) {
       properties.add(
         textSpan!.toDiagnosticsNode(
-            name: 'textSpan', style: DiagnosticsTreeStyle.transition),
+          name: 'textSpan',
+          style: DiagnosticsTreeStyle.transition,
+        ),
       );
     }
     style?.debugFillProperties(properties);
     properties.add(
-        EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
-        defaultValue: null));
-    properties
-        .add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
+      EnumProperty<TextAlign>('textAlign', textAlign, defaultValue: null),
+    );
+    properties.add(
+      EnumProperty<TextDirection>(
+        'textDirection',
+        textDirection,
+        defaultValue: null,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<Locale>('locale', locale, defaultValue: null),
+    );
     properties.add(
       FlagProperty(
         'softWrap',
@@ -4065,13 +4237,18 @@ class Text extends StatelessWidget {
       ),
     );
     properties.add(
-        EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null));
+      EnumProperty<TextOverflow>('overflow', overflow, defaultValue: null),
+    );
     properties.add(
-        DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null));
+      DoubleProperty('textScaleFactor', textScaleFactor, defaultValue: null),
+    );
     properties.add(IntProperty('maxLines', maxLines, defaultValue: null));
     properties.add(
-      EnumProperty<TextWidthBasis>('textWidthBasis', textWidthBasis,
-          defaultValue: null),
+      EnumProperty<TextWidthBasis>(
+        'textWidthBasis',
+        textWidthBasis,
+        defaultValue: null,
+      ),
     );
     properties.add(
       DiagnosticsProperty<ui.TextHeightBehavior>(
@@ -4084,690 +4261,10 @@ class Text extends StatelessWidget {
       properties.add(StringProperty('semanticsLabel', semanticsLabel));
     }
     if (semanticsIdentifier != null) {
-      properties
-          .add(StringProperty('semanticsIdentifier', semanticsIdentifier));
-    }
-  }
-}
-
-class _SelectableTextContainer extends StatefulWidget {
-  const _SelectableTextContainer({
-    required this.text,
-    required this.textAlign,
-    this.textDirection,
-    required this.softWrap,
-    required this.overflow,
-    required this.textScaler,
-    this.maxLines,
-    this.locale,
-    this.strutStyle,
-    required this.textWidthBasis,
-    this.textHeightBehavior,
-    required this.selectionColor,
-  });
-
-  final TextSpan text;
-  final TextAlign textAlign;
-  final TextDirection? textDirection;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final TextScaler textScaler;
-  final int? maxLines;
-  final Locale? locale;
-  final StrutStyle? strutStyle;
-  final TextWidthBasis textWidthBasis;
-  final ui.TextHeightBehavior? textHeightBehavior;
-  final Color selectionColor;
-
-  @override
-  State<_SelectableTextContainer> createState() =>
-      _SelectableTextContainerState();
-}
-
-class _SelectableTextContainerState extends State<_SelectableTextContainer> {
-  late final _SelectableTextContainerDelegate _selectionDelegate;
-  final GlobalKey _textKey = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-    _selectionDelegate = _SelectableTextContainerDelegate(_textKey);
-  }
-
-  @override
-  void dispose() {
-    _selectionDelegate.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SelectionContainer(
-      delegate: _selectionDelegate,
-      // Use [_RichText] wrapper so the underlying [RenderParagraph] can register
-      // its [Selectable]s to the [SelectionContainer] created by this widget.
-      child: _RichText(
-        textKey: _textKey,
-        textAlign: widget.textAlign,
-        textDirection: widget.textDirection,
-        locale: widget.locale,
-        softWrap: widget.softWrap,
-        overflow: widget.overflow,
-        textScaler: widget.textScaler,
-        maxLines: widget.maxLines,
-        strutStyle: widget.strutStyle,
-        textWidthBasis: widget.textWidthBasis,
-        textHeightBehavior: widget.textHeightBehavior,
-        selectionColor: widget.selectionColor,
-        text: widget.text,
-      ),
-    );
-  }
-}
-
-class _SelectableTextContainerDelegate
-    extends StaticSelectionContainerDelegate {
-  _SelectableTextContainerDelegate(GlobalKey textKey) : _textKey = textKey;
-
-  final GlobalKey _textKey;
-  RenderParagraph get paragraph =>
-      _textKey.currentContext!.findRenderObject()! as RenderParagraph;
-
-  @override
-  SelectionResult handleSelectParagraph(SelectParagraphSelectionEvent event) {
-    final SelectionResult result = _handleSelectParagraph(event);
-    super.didReceiveSelectionBoundaryEvents();
-    return result;
-  }
-
-  SelectionResult _handleSelectParagraph(SelectParagraphSelectionEvent event) {
-    if (event.absorb) {
-      for (int index = 0; index < selectables.length; index += 1) {
-        dispatchSelectionEventToChild(selectables[index], event);
-      }
-      currentSelectionStartIndex = 0;
-      currentSelectionEndIndex = selectables.length - 1;
-      return SelectionResult.next;
-    }
-
-    // First pass, if the position is on a placeholder then dispatch the selection
-    // event to the [Selectable] at the location and terminate.
-    for (int index = 0; index < selectables.length; index += 1) {
-      final bool selectableIsPlaceholder =
-          !paragraph.selectableBelongsToParagraph(
-        selectables[index],
+      properties.add(
+        StringProperty('semanticsIdentifier', semanticsIdentifier),
       );
-      if (selectableIsPlaceholder &&
-          selectables[index].boundingBoxes.isNotEmpty) {
-        for (final Rect rect in selectables[index].boundingBoxes) {
-          final Rect globalRect = MatrixUtils.transformRect(
-            selectables[index].getTransformTo(null),
-            rect,
-          );
-          if (globalRect.contains(event.globalPosition)) {
-            currentSelectionStartIndex = currentSelectionEndIndex = index;
-            return dispatchSelectionEventToChild(selectables[index], event);
-          }
-        }
-      }
     }
-
-    SelectionResult? lastSelectionResult;
-    bool foundStart = false;
-    int? lastNextIndex;
-    for (int index = 0; index < selectables.length; index += 1) {
-      if (!paragraph.selectableBelongsToParagraph(selectables[index])) {
-        if (foundStart) {
-          final SelectionEvent synthesizedEvent = SelectParagraphSelectionEvent(
-            globalPosition: event.globalPosition,
-            absorb: true,
-          );
-          final SelectionResult result = dispatchSelectionEventToChild(
-            selectables[index],
-            synthesizedEvent,
-          );
-          if (selectables.length - 1 == index) {
-            currentSelectionEndIndex = index;
-            _flushInactiveSelections();
-            return result;
-          }
-        }
-        continue;
-      }
-      final SelectionGeometry existingGeometry = selectables[index].value;
-      lastSelectionResult =
-          dispatchSelectionEventToChild(selectables[index], event);
-      if (index == selectables.length - 1 &&
-          lastSelectionResult == SelectionResult.next) {
-        if (foundStart) {
-          currentSelectionEndIndex = index;
-        } else {
-          currentSelectionStartIndex = currentSelectionEndIndex = index;
-        }
-        return SelectionResult.next;
-      }
-      if (lastSelectionResult == SelectionResult.next) {
-        if (selectables[index].value == existingGeometry && !foundStart) {
-          lastNextIndex = index;
-        }
-        if (selectables[index].value != existingGeometry && !foundStart) {
-          assert(selectables[index].boundingBoxes.isNotEmpty);
-          assert(selectables[index].value.selectionRects.isNotEmpty);
-          final bool selectionAtStartOfSelectable =
-              selectables[index].boundingBoxes[0].overlaps(
-                    selectables[index].value.selectionRects[0],
-                  );
-          int startIndex = 0;
-          if (lastNextIndex != null && selectionAtStartOfSelectable) {
-            startIndex = lastNextIndex + 1;
-          } else {
-            startIndex = lastNextIndex == null && selectionAtStartOfSelectable
-                ? 0
-                : index;
-          }
-          for (int i = startIndex; i < index; i += 1) {
-            final SelectionEvent synthesizedEvent =
-                SelectParagraphSelectionEvent(
-              globalPosition: event.globalPosition,
-              absorb: true,
-            );
-            dispatchSelectionEventToChild(selectables[i], synthesizedEvent);
-          }
-          currentSelectionStartIndex = startIndex;
-          foundStart = true;
-        }
-        continue;
-      }
-      if (index == 0 && lastSelectionResult == SelectionResult.previous) {
-        return SelectionResult.previous;
-      }
-      if (selectables[index].value != existingGeometry) {
-        if (!foundStart && lastNextIndex == null) {
-          currentSelectionStartIndex = 0;
-          for (int i = 0; i < index; i += 1) {
-            final SelectionEvent synthesizedEvent =
-                SelectParagraphSelectionEvent(
-              globalPosition: event.globalPosition,
-              absorb: true,
-            );
-            dispatchSelectionEventToChild(selectables[i], synthesizedEvent);
-          }
-        }
-        currentSelectionEndIndex = index;
-        // Geometry has changed as a result of select paragraph, need to clear the
-        // selection of other selectables to keep selection in sync.
-        _flushInactiveSelections();
-      }
-      return SelectionResult.end;
-    }
-    assert(lastSelectionResult == null);
-    return SelectionResult.end;
-  }
-
-  /// Initializes the selection of the selectable children.
-  ///
-  /// The goal is to find the selectable child that contains the selection edge.
-  /// Returns [SelectionResult.end] if the selection edge ends on any of the
-  /// children. Otherwise, it returns [SelectionResult.previous] if the selection
-  /// does not reach any of its children. Returns [SelectionResult.next]
-  /// if the selection reaches the end of its children.
-  ///
-  /// Ideally, this method should only be called twice at the beginning of the
-  /// drag selection, once for start edge update event, once for end edge update
-  /// event.
-  SelectionResult _initSelection(SelectionEdgeUpdateEvent event,
-      {required bool isEnd}) {
-    assert(
-      (isEnd && currentSelectionEndIndex == -1) ||
-          (!isEnd && currentSelectionStartIndex == -1),
-    );
-    SelectionResult? finalResult;
-    // Begin the search for the selection edge at the opposite edge if it exists.
-    final bool hasOppositeEdge = isEnd
-        ? currentSelectionStartIndex != -1
-        : currentSelectionEndIndex != -1;
-    int newIndex = switch ((isEnd, hasOppositeEdge)) {
-      (true, true) => currentSelectionStartIndex,
-      (true, false) => 0,
-      (false, true) => currentSelectionEndIndex,
-      (false, false) => 0,
-    };
-    bool? forward;
-    late SelectionResult currentSelectableResult;
-    // This loop sends the selection event to one of the following to determine
-    // the direction of the search.
-    //  - The opposite edge index if it exists.
-    //  - Index 0 if the opposite edge index does not exist.
-    //
-    // If the result is `SelectionResult.next`, this loop look backward.
-    // Otherwise, it looks forward.
-    //
-    // The terminate condition are:
-    // 1. the selectable returns end, pending, none.
-    // 2. the selectable returns previous when looking forward.
-    // 2. the selectable returns next when looking backward.
-    while (
-        newIndex < selectables.length && newIndex >= 0 && finalResult == null) {
-      currentSelectableResult =
-          dispatchSelectionEventToChild(selectables[newIndex], event);
-      switch (currentSelectableResult) {
-        case SelectionResult.end:
-        case SelectionResult.pending:
-        case SelectionResult.none:
-          finalResult = currentSelectableResult;
-        case SelectionResult.next:
-          if (forward == false) {
-            newIndex += 1;
-            finalResult = SelectionResult.end;
-          } else if (newIndex == selectables.length - 1) {
-            finalResult = currentSelectableResult;
-          } else {
-            forward = true;
-            newIndex += 1;
-          }
-        case SelectionResult.previous:
-          if (forward ?? false) {
-            newIndex -= 1;
-            finalResult = SelectionResult.end;
-          } else if (newIndex == 0) {
-            finalResult = currentSelectableResult;
-          } else {
-            forward = false;
-            newIndex -= 1;
-          }
-      }
-    }
-    if (isEnd) {
-      currentSelectionEndIndex = newIndex;
-    } else {
-      currentSelectionStartIndex = newIndex;
-    }
-    _flushInactiveSelections();
-    return finalResult!;
-  }
-
-  SelectionResult _adjustSelection(SelectionEdgeUpdateEvent event,
-      {required bool isEnd}) {
-    assert(() {
-      if (isEnd) {
-        assert(currentSelectionEndIndex < selectables.length &&
-            currentSelectionEndIndex >= 0);
-        return true;
-      }
-      assert(currentSelectionStartIndex < selectables.length &&
-          currentSelectionStartIndex >= 0);
-      return true;
-    }());
-    SelectionResult? finalResult;
-    // Determines if the edge being adjusted is within the current viewport.
-    //  - If so, we begin the search for the new selection edge position at the
-    //    currentSelectionEndIndex/currentSelectionStartIndex.
-    //  - If not, we attempt to locate the new selection edge starting from
-    //    the opposite end.
-    //  - If neither edge is in the current viewport, the search for the new
-    //    selection edge position begins at 0.
-    //
-    // This can happen when there is a scrollable child and the edge being adjusted
-    // has been scrolled out of view.
-    final bool isCurrentEdgeWithinViewport = isEnd
-        ? value.endSelectionPoint != null
-        : value.startSelectionPoint != null;
-    final bool isOppositeEdgeWithinViewport = isEnd
-        ? value.startSelectionPoint != null
-        : value.endSelectionPoint != null;
-    int newIndex = switch ((
-      isEnd,
-      isCurrentEdgeWithinViewport,
-      isOppositeEdgeWithinViewport
-    )) {
-      (true, true, true) => currentSelectionEndIndex,
-      (true, true, false) => currentSelectionEndIndex,
-      (true, false, true) => currentSelectionStartIndex,
-      (true, false, false) => 0,
-      (false, true, true) => currentSelectionStartIndex,
-      (false, true, false) => currentSelectionStartIndex,
-      (false, false, true) => currentSelectionEndIndex,
-      (false, false, false) => 0,
-    };
-    bool? forward;
-    late SelectionResult currentSelectableResult;
-    // This loop sends the selection event to one of the following to determine
-    // the direction of the search.
-    //  - currentSelectionEndIndex/currentSelectionStartIndex if the current edge
-    //    is in the current viewport.
-    //  - The opposite edge index if the current edge is not in the current viewport.
-    //  - Index 0 if neither edge is in the current viewport.
-    //
-    // If the result is `SelectionResult.next`, this loop look backward.
-    // Otherwise, it looks forward.
-    //
-    // The terminate condition are:
-    // 1. the selectable returns end, pending, none.
-    // 2. the selectable returns previous when looking forward.
-    // 2. the selectable returns next when looking backward.
-    while (
-        newIndex < selectables.length && newIndex >= 0 && finalResult == null) {
-      currentSelectableResult =
-          dispatchSelectionEventToChild(selectables[newIndex], event);
-      switch (currentSelectableResult) {
-        case SelectionResult.end:
-        case SelectionResult.pending:
-        case SelectionResult.none:
-          finalResult = currentSelectableResult;
-        case SelectionResult.next:
-          if (forward == false) {
-            newIndex += 1;
-            finalResult = SelectionResult.end;
-          } else if (newIndex == selectables.length - 1) {
-            finalResult = currentSelectableResult;
-          } else {
-            forward = true;
-            newIndex += 1;
-          }
-        case SelectionResult.previous:
-          if (forward ?? false) {
-            newIndex -= 1;
-            finalResult = SelectionResult.end;
-          } else if (newIndex == 0) {
-            finalResult = currentSelectableResult;
-          } else {
-            forward = false;
-            newIndex -= 1;
-          }
-      }
-    }
-    if (isEnd) {
-      final bool forwardSelection =
-          currentSelectionEndIndex >= currentSelectionStartIndex;
-      if (forward != null &&
-          ((!forwardSelection &&
-                  forward &&
-                  newIndex >= currentSelectionStartIndex) ||
-              (forwardSelection &&
-                  !forward &&
-                  newIndex <= currentSelectionStartIndex))) {
-        currentSelectionStartIndex = currentSelectionEndIndex;
-      }
-      currentSelectionEndIndex = newIndex;
-    } else {
-      final bool forwardSelection =
-          currentSelectionEndIndex >= currentSelectionStartIndex;
-      if (forward != null &&
-          ((!forwardSelection &&
-                  !forward &&
-                  newIndex <= currentSelectionEndIndex) ||
-              (forwardSelection &&
-                  forward &&
-                  newIndex >= currentSelectionEndIndex))) {
-        currentSelectionEndIndex = currentSelectionStartIndex;
-      }
-      currentSelectionStartIndex = newIndex;
-    }
-    _flushInactiveSelections();
-    return finalResult!;
-  }
-
-  /// The compare function this delegate used for determining the selection
-  /// order of the [Selectable]s.
-  ///
-  /// Sorts the [Selectable]s by their top left [Rect].
-  @override
-  Comparator<Selectable> get compareOrder => _compareScreenOrder;
-
-  static int _compareScreenOrder(Selectable a, Selectable b) {
-    // Attempt to sort the selectables under a [_SelectableTextContainerDelegate]
-    // by the top left rect.
-    final Rect rectA = MatrixUtils.transformRect(
-        a.getTransformTo(null), a.boundingBoxes.first);
-    final Rect rectB = MatrixUtils.transformRect(
-        b.getTransformTo(null), b.boundingBoxes.first);
-    final int result = _compareVertically(rectA, rectB);
-    if (result != 0) {
-      return result;
-    }
-    return _compareHorizontally(rectA, rectB);
-  }
-
-  /// Compares two rectangles in the screen order solely by their vertical
-  /// positions.
-  ///
-  /// Returns positive if a is lower, negative if a is higher, 0 if their
-  /// order can't be determine solely by their vertical position.
-  static int _compareVertically(Rect a, Rect b) {
-    // The rectangles overlap so defer to horizontal comparison.
-    if ((a.top - b.top < _kSelectableVerticalComparingThreshold &&
-            a.bottom - b.bottom > -_kSelectableVerticalComparingThreshold) ||
-        (b.top - a.top < _kSelectableVerticalComparingThreshold &&
-            b.bottom - a.bottom > -_kSelectableVerticalComparingThreshold)) {
-      return 0;
-    }
-    if ((a.top - b.top).abs() > _kSelectableVerticalComparingThreshold) {
-      return a.top > b.top ? 1 : -1;
-    }
-    return a.bottom > b.bottom ? 1 : -1;
-  }
-
-  /// Compares two rectangles in the screen order by their horizontal positions
-  /// assuming one of the rectangles enclose the other rect vertically.
-  ///
-  /// Returns positive if a is lower, negative if a is higher.
-  static int _compareHorizontally(Rect a, Rect b) {
-    // a encloses b.
-    if (a.left - b.left < precisionErrorTolerance &&
-        a.right - b.right > -precisionErrorTolerance) {
-      return -1;
-    }
-    // b encloses a.
-    if (b.left - a.left < precisionErrorTolerance &&
-        b.right - a.right > -precisionErrorTolerance) {
-      return 1;
-    }
-    if ((a.left - b.left).abs() > precisionErrorTolerance) {
-      return a.left > b.left ? 1 : -1;
-    }
-    return a.right > b.right ? 1 : -1;
-  }
-
-  /// This method calculates a local [SelectedContentRange] based on the list
-  /// of [selections] that are accumulated from the [Selectable] children under this
-  /// delegate. This calculation takes into account the accumulated content
-  /// length before the active selection, and returns null when either selection
-  /// edge has not been set.
-  SelectedContentRange? _calculateLocalRange(List<_SelectionInfo> selections) {
-    if (currentSelectionStartIndex == -1 || currentSelectionEndIndex == -1) {
-      return null;
-    }
-    int startOffset = 0;
-    int endOffset = 0;
-    bool foundStart = false;
-    bool forwardSelection =
-        currentSelectionEndIndex >= currentSelectionStartIndex;
-    if (currentSelectionEndIndex == currentSelectionStartIndex) {
-      // Determining selection direction is inaccurate if currentSelectionStartIndex == currentSelectionEndIndex.
-      // Use the range from the selectable within the selection as the source of truth for selection direction.
-      final SelectedContentRange rangeAtSelectableInSelection =
-          selectables[currentSelectionStartIndex].getSelection()!;
-      forwardSelection = rangeAtSelectableInSelection.endOffset >=
-          rangeAtSelectableInSelection.startOffset;
-    }
-    for (int index = 0; index < selections.length; index++) {
-      final _SelectionInfo selection = selections[index];
-      if (selection.range == null) {
-        if (foundStart) {
-          return SelectedContentRange(
-            startOffset: forwardSelection ? startOffset : endOffset,
-            endOffset: forwardSelection ? endOffset : startOffset,
-          );
-        }
-        startOffset += selection.contentLength;
-        endOffset = startOffset;
-        continue;
-      }
-      final int selectionStartNormalized = min(
-        selection.range!.startOffset,
-        selection.range!.endOffset,
-      );
-      final int selectionEndNormalized = max(
-        selection.range!.startOffset,
-        selection.range!.endOffset,
-      );
-      if (!foundStart) {
-        // Because a RenderParagraph may split its content into multiple selectables
-        // we have to consider at what offset a selectable starts at relative
-        // to the RenderParagraph, when the selectable is not the start of the content.
-        final bool shouldConsiderContentStart = index > 0 &&
-            paragraph.selectableBelongsToParagraph(selectables[index]);
-        startOffset += (selectionStartNormalized -
-                (shouldConsiderContentStart
-                    ? paragraph
-                        .getPositionForOffset(
-                          selectables[index].boundingBoxes.first.centerLeft,
-                        )
-                        .offset
-                    : 0))
-            .abs();
-        endOffset = startOffset +
-            (selectionEndNormalized - selectionStartNormalized).abs();
-        foundStart = true;
-      } else {
-        endOffset += (selectionEndNormalized - selectionStartNormalized).abs();
-      }
-    }
-    assert(
-      foundStart,
-      'The start of the selection has not been found despite this selection delegate having an existing currentSelectionStartIndex and currentSelectionEndIndex.',
-    );
-    return SelectedContentRange(
-      startOffset: forwardSelection ? startOffset : endOffset,
-      endOffset: forwardSelection ? endOffset : startOffset,
-    );
-  }
-
-  /// Returns a [SelectedContentRange] considering the [SelectedContentRange]
-  /// from each [Selectable] child managed under this delegate.
-  ///
-  /// When nothing is selected or either selection edge has not been set,
-  /// this method will return `null`.
-  @override
-  SelectedContentRange? getSelection() {
-    final List<_SelectionInfo> selections = <_SelectionInfo>[
-      for (final Selectable selectable in selectables)
-        (
-          contentLength: selectable.contentLength,
-          range: selectable.getSelection()
-        ),
-    ];
-    return _calculateLocalRange(selections);
-  }
-
-  // From [SelectableRegion].
-
-  // Clears the selection on all selectables not in the range of
-  // currentSelectionStartIndex..currentSelectionEndIndex.
-  //
-  // If one of the edges does not exist, then this method will clear the selection
-  // in all selectables except the existing edge.
-  //
-  // If neither of the edges exist this method immediately returns.
-  void _flushInactiveSelections() {
-    if (currentSelectionStartIndex == -1 && currentSelectionEndIndex == -1) {
-      return;
-    }
-    if (currentSelectionStartIndex == -1 || currentSelectionEndIndex == -1) {
-      final int skipIndex = currentSelectionStartIndex == -1
-          ? currentSelectionEndIndex
-          : currentSelectionStartIndex;
-      selectables
-          .where((Selectable target) => target != selectables[skipIndex])
-          .forEach(
-            (Selectable target) => dispatchSelectionEventToChild(
-                target, const ClearSelectionEvent()),
-          );
-      return;
-    }
-    final int skipStart =
-        min(currentSelectionStartIndex, currentSelectionEndIndex);
-    final int skipEnd =
-        max(currentSelectionStartIndex, currentSelectionEndIndex);
-    for (int index = 0; index < selectables.length; index += 1) {
-      if (index >= skipStart && index <= skipEnd) {
-        continue;
-      }
-      dispatchSelectionEventToChild(
-          selectables[index], const ClearSelectionEvent());
-    }
-  }
-
-  @override
-  SelectionResult handleSelectionEdgeUpdate(SelectionEdgeUpdateEvent event) {
-    if (event.granularity != TextGranularity.paragraph) {
-      return super.handleSelectionEdgeUpdate(event);
-    }
-    updateLastSelectionEdgeLocation(
-      globalSelectionEdgeLocation: event.globalPosition,
-      forEnd: event.type == SelectionEventType.endEdgeUpdate,
-    );
-    if (event.type == SelectionEventType.endEdgeUpdate) {
-      return currentSelectionEndIndex == -1
-          ? _initSelection(event, isEnd: true)
-          : _adjustSelection(event, isEnd: true);
-    }
-    return currentSelectionStartIndex == -1
-        ? _initSelection(event, isEnd: false)
-        : _adjustSelection(event, isEnd: false);
-  }
-}
-
-class _RichText extends StatelessWidget {
-  const _RichText({
-    this.textKey,
-    required this.text,
-    required this.textAlign,
-    this.textDirection,
-    required this.softWrap,
-    required this.overflow,
-    required this.textScaler,
-    this.maxLines,
-    this.locale,
-    this.strutStyle,
-    required this.textWidthBasis,
-    this.textHeightBehavior,
-    required this.selectionColor,
-  });
-
-  final GlobalKey? textKey;
-  final InlineSpan text;
-  final TextAlign textAlign;
-  final TextDirection? textDirection;
-  final bool softWrap;
-  final TextOverflow overflow;
-  final TextScaler textScaler;
-  final int? maxLines;
-  final Locale? locale;
-  final StrutStyle? strutStyle;
-  final TextWidthBasis textWidthBasis;
-  final ui.TextHeightBehavior? textHeightBehavior;
-  final Color selectionColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
-    return RichText(
-      key: textKey,
-      textAlign: textAlign,
-      textDirection: textDirection,
-      locale: locale,
-      softWrap: softWrap,
-      overflow: overflow,
-      textScaler: textScaler,
-      maxLines: maxLines,
-      strutStyle: strutStyle,
-      textWidthBasis: textWidthBasis,
-      textHeightBehavior: textHeightBehavior,
-      selectionRegistrar: registrar,
-      selectionColor: selectionColor,
-      text: text,
-    );
   }
 }
 
@@ -4783,7 +4280,11 @@ class _RichText extends StatelessWidget {
 ///
 /// Text displayed in a [RichText] widget must be explicitly styled. When
 /// picking which style to use, consider using [DefaultTextStyle.of] the current
-/// [BuildContext] to provide defaults. For more details on how to style text in
+/// [BuildContext] to provide defaults. [MediaQuery.maybeBoldTextOf],
+/// [MediaQuery.maybeLineHeightScaleFactorOverrideOf],
+/// [MediaQuery.maybeLetterSpacingOverrideOf], [MediaQuery.maybeWordSpacingOverrideOf],
+/// and [MediaQuery.maybeParagraphSpacingOverrideOf] can also be used to ensure the styling
+/// for your text is accessible. For more details on how to style text in
 /// a [RichText] widget, see the documentation for [TextStyle].
 ///
 /// Consider using the [Text] widget to integrate with the [DefaultTextStyle]
@@ -4820,9 +4321,14 @@ class _RichText extends StatelessWidget {
 /// subtree of a [SelectionArea] or [SelectableRegion] and a
 /// [SelectionRegistrar] needs to be assigned to the
 /// [RichText.selectionRegistrar]. One can use
-/// [SelectionContainer.maybeOf] to get the [SelectionRegistrar] from a
-/// context. This enables users to select the text in [RichText]s with mice or
-/// touch events.
+/// [SelectionContainer.maybeOf] to get the [SelectionRegistrar] from a context
+/// that is below the [SelectionArea] or [SelectableRegion] in the widget tree.
+/// This enables users to select the text in [RichText]s with mice or touch
+/// events.
+///
+/// If the same build method creates both the [SelectionArea] and the
+/// [RichText], use a [Builder] so that [SelectionContainer.maybeOf] is called
+/// with a [BuildContext] below the [SelectionArea] in the widget tree.
 ///
 /// The [selectionColor] also needs to be set if the selection is enabled to
 /// draw the selection highlights.
@@ -4835,10 +4341,16 @@ class _RichText extends StatelessWidget {
 /// ![](https://flutter.github.io/assets-for-api-docs/assets/widgets/rich_text.png)
 ///
 /// ```dart
-/// RichText(
-///   text: const TextSpan(text: 'Hello'),
-///   selectionRegistrar: SelectionContainer.maybeOf(context),
-///   selectionColor: const Color(0xAF6694e8),
+/// SelectionArea(
+///   child: Builder(
+///     builder: (BuildContext context) {
+///       return RichText(
+///         text: const TextSpan(text: 'Hello'),
+///         selectionRegistrar: SelectionContainer.maybeOf(context),
+///         selectionColor: const Color(0xAF6694e8),
+///       );
+///     },
+///   ),
 /// )
 /// ```
 /// {@end-tool}
@@ -4881,26 +4393,29 @@ class RichText extends MultiChildRenderObjectWidget {
     this.textHeightBehavior,
     this.selectionRegistrar,
     this.selectionColor,
-  })  : assert(maxLines == null || maxLines > 0),
-        assert(selectionRegistrar == null || selectionColor != null),
-        assert(
-          textScaleFactor == 1.0 || identical(textScaler, TextScaler.noScaling),
-          'Use textScaler instead.',
-        ),
-        textScaler = _effectiveTextScalerFrom(textScaler, textScaleFactor),
-        super(
-          children: WidgetSpan.extractFromInlineSpan(
-            text,
-            _effectiveTextScalerFrom(textScaler, textScaleFactor),
-          ),
-        );
+  }) : assert(maxLines == null || maxLines > 0),
+       assert(selectionRegistrar == null || selectionColor != null),
+       assert(
+         textScaleFactor == 1.0 || identical(textScaler, TextScaler.noScaling),
+         'Use textScaler instead.',
+       ),
+       textScaler = _effectiveTextScalerFrom(textScaler, textScaleFactor),
+       super(
+         children: WidgetSpan.extractFromInlineSpan(
+           text,
+           _effectiveTextScalerFrom(textScaler, textScaleFactor),
+         ),
+       );
 
   static TextScaler _effectiveTextScalerFrom(
-      TextScaler textScaler, double textScaleFactor) {
+    TextScaler textScaler,
+    double textScaleFactor,
+  ) {
     return switch ((textScaler, textScaleFactor)) {
       (final TextScaler scaler, 1.0) => scaler,
-      (TextScaler.noScaling, final double textScaleFactor) =>
-        TextScaler.linear(textScaleFactor),
+      (TextScaler.noScaling, final double textScaleFactor) => TextScaler.linear(
+        textScaleFactor,
+      ),
       (final TextScaler scaler, _) => scaler,
     };
   }
@@ -4992,6 +4507,11 @@ class RichText extends MultiChildRenderObjectWidget {
   /// widgets.
   final Color? selectionColor;
 
+  double _getDevicePixelRatio(BuildContext context) =>
+      MediaQuery.maybeDevicePixelRatioOf(context) ??
+      View.maybeOf(context)?.devicePixelRatio ??
+      1.0;
+
   @override
   RenderParagraph createRenderObject(BuildContext context) {
     assert(textDirection != null || debugCheckHasDirectionality(context));
@@ -5010,6 +4530,7 @@ class RichText extends MultiChildRenderObjectWidget {
       locale: locale ?? Localizations.maybeLocaleOf(context),
       registrar: selectionRegistrar,
       selectionColor: selectionColor,
+      devicePixelRatio: _getDevicePixelRatio(context),
     );
   }
 
@@ -5030,16 +4551,27 @@ class RichText extends MultiChildRenderObjectWidget {
       ..textHeightBehavior = textHeightBehavior
       ..locale = locale ?? Localizations.maybeLocaleOf(context)
       ..registrar = selectionRegistrar
-      ..selectionColor = selectionColor;
+      ..selectionColor = selectionColor
+      ..devicePixelRatio = _getDevicePixelRatio(context);
   }
 
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(EnumProperty<TextAlign>('textAlign', textAlign,
-        defaultValue: TextAlign.start));
-    properties.add(EnumProperty<TextDirection>('textDirection', textDirection,
-        defaultValue: null));
+    properties.add(
+      EnumProperty<TextAlign>(
+        'textAlign',
+        textAlign,
+        defaultValue: TextAlign.start,
+      ),
+    );
+    properties.add(
+      EnumProperty<TextDirection>(
+        'textDirection',
+        textDirection,
+        defaultValue: null,
+      ),
+    );
     properties.add(
       FlagProperty(
         'softWrap',
@@ -5050,12 +4582,18 @@ class RichText extends MultiChildRenderObjectWidget {
       ),
     );
     properties.add(
-      EnumProperty<TextOverflow>('overflow', overflow,
-          defaultValue: TextOverflow.clip),
+      EnumProperty<TextOverflow>(
+        'overflow',
+        overflow,
+        defaultValue: TextOverflow.clip,
+      ),
     );
     properties.add(
-      DiagnosticsProperty<TextScaler>('textScaler', textScaler,
-          defaultValue: TextScaler.noScaling),
+      DiagnosticsProperty<TextScaler>(
+        'textScaler',
+        textScaler,
+        defaultValue: TextScaler.noScaling,
+      ),
     );
     properties.add(IntProperty('maxLines', maxLines, ifNull: 'unlimited'));
     properties.add(
@@ -5066,10 +4604,16 @@ class RichText extends MultiChildRenderObjectWidget {
       ),
     );
     properties.add(StringProperty('text', text.toPlainText()));
-    properties
-        .add(DiagnosticsProperty<Locale>('locale', locale, defaultValue: null));
-    properties.add(DiagnosticsProperty<StrutStyle>('strutStyle', strutStyle,
-        defaultValue: null));
+    properties.add(
+      DiagnosticsProperty<Locale>('locale', locale, defaultValue: null),
+    );
+    properties.add(
+      DiagnosticsProperty<StrutStyle>(
+        'strutStyle',
+        strutStyle,
+        defaultValue: null,
+      ),
+    );
     properties.add(
       DiagnosticsProperty<TextHeightBehavior>(
         'textHeightBehavior',
@@ -5156,8 +4700,9 @@ class FittedBox extends SingleChildRenderObjectWidget {
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties.add(EnumProperty<BoxFit>('fit', fit));
-    properties
-        .add(DiagnosticsProperty<AlignmentGeometry>('alignment', alignment));
+    properties.add(
+      DiagnosticsProperty<AlignmentGeometry>('alignment', alignment),
+    );
   }
 }
 
@@ -5209,6 +4754,23 @@ class FittedBox extends SingleChildRenderObjectWidget {
 /// ```
 /// {@end-tool}
 ///
+/// Multiframe images, such as animated GIFs, are paused when [TickerMode] is
+/// disabled just like any other animation. They also paused when animations are
+/// disabled via [MediaQueryData.disableAnimations], such as for accessibility
+/// purposes. If the animation is paused when the image first loads, the first
+/// frame will be displayed and then animation will stop.
+///
+/// {@tool snippet}
+//// An example of pausing a multiframe image using [TickerMode].
+///
+/// ```dart
+/// TickerMode(
+///   enabled: !isPaused,
+///   child: Image(image: myAnimatedGif),
+/// ),
+/// ```
+/// {@end-tool}
+///
 /// ## Memory usage
 ///
 /// The image is stored in memory in uncompressed form (so that it can be
@@ -5231,7 +4793,7 @@ class FittedBox extends SingleChildRenderObjectWidget {
 ///
 /// ## Custom image providers
 ///
-/// {@tool dartpad}
+/// {@tool sample}
 /// In this example, a variant of [NetworkImage] is created that passes all the
 /// [ImageConfiguration] information (locale, platform, size, etc) to the server
 /// using query arguments in the image URL.
@@ -5253,10 +4815,6 @@ class Image extends StatefulWidget {
   ///
   /// To show an image from the network or from an asset bundle, consider using
   /// [Image.network] and [Image.asset] respectively.
-  ///
-  /// The `scale` argument specifies the linear scale factor for drawing this
-  /// image at its intended size and applies to both the width and the height.
-  /// {@macro flutter.painting.imageInfo.scale}
   ///
   /// Either the [width] and [height] arguments should be specified, or the
   /// widget should be placed in a context that sets tight layout constraints.
@@ -5381,18 +4939,18 @@ class Image extends StatefulWidget {
     int? cacheHeight,
     WebHtmlElementStrategy webHtmlElementStrategy =
         WebHtmlElementStrategy.never,
-  })  : image = ResizeImage.resizeIfNeeded(
-          cacheWidth,
-          cacheHeight,
-          NetworkImage(
-            src,
-            scale: scale,
-            headers: headers,
-            webHtmlElementStrategy: webHtmlElementStrategy,
-          ),
-        ),
-        assert(cacheWidth == null || cacheWidth > 0),
-        assert(cacheHeight == null || cacheHeight > 0);
+  }) : image = ResizeImage.resizeIfNeeded(
+         cacheWidth,
+         cacheHeight,
+         NetworkImage(
+           src,
+           scale: scale,
+           headers: headers,
+           webHtmlElementStrategy: webHtmlElementStrategy,
+         ),
+       ),
+       assert(cacheWidth == null || cacheWidth > 0),
+       assert(cacheHeight == null || cacheHeight > 0);
 
   /// Creates a widget that displays an [ImageStream] obtained from a [File].
   ///
@@ -5449,17 +5007,20 @@ class Image extends StatefulWidget {
     this.filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
-  })  : // FileImage is not supported on Flutter Web therefore neither this method.
-        assert(
-          !kIsWeb,
-          'Image.file is not supported on Flutter Web. '
-          'Consider using either Image.asset or Image.network instead.',
-        ),
-        image = ResizeImage.resizeIfNeeded(
-            cacheWidth, cacheHeight, FileImage(file, scale: scale)),
-        loadingBuilder = null,
-        assert(cacheWidth == null || cacheWidth > 0),
-        assert(cacheHeight == null || cacheHeight > 0);
+  }) : // FileImage is not supported on Flutter Web therefore neither this method.
+       assert(
+         !kIsWeb,
+         'Image.file is not supported on Flutter Web. '
+         'Consider using either Image.asset or Image.network instead.',
+       ),
+       image = ResizeImage.resizeIfNeeded(
+         cacheWidth,
+         cacheHeight,
+         FileImage(file, scale: scale),
+       ),
+       loadingBuilder = null,
+       assert(cacheWidth == null || cacheWidth > 0),
+       assert(cacheHeight == null || cacheHeight > 0);
 
   // TODO(ianh): Implement the following (see ../services/image_resolution.dart):
   //
@@ -5613,17 +5174,21 @@ class Image extends StatefulWidget {
     this.filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
-  })  : image = ResizeImage.resizeIfNeeded(
-          cacheWidth,
-          cacheHeight,
-          scale != null
-              ? ExactAssetImage(name,
-                  bundle: bundle, scale: scale, package: package)
-              : AssetImage(name, bundle: bundle, package: package),
-        ),
-        loadingBuilder = null,
-        assert(cacheWidth == null || cacheWidth > 0),
-        assert(cacheHeight == null || cacheHeight > 0);
+  }) : image = ResizeImage.resizeIfNeeded(
+         cacheWidth,
+         cacheHeight,
+         scale != null
+             ? ExactAssetImage(
+                 name,
+                 bundle: bundle,
+                 scale: scale,
+                 package: package,
+               )
+             : AssetImage(name, bundle: bundle, package: package),
+       ),
+       loadingBuilder = null,
+       assert(cacheWidth == null || cacheWidth > 0),
+       assert(cacheHeight == null || cacheHeight > 0);
 
   /// Creates a widget that displays an [ImageStream] obtained from a [Uint8List].
   ///
@@ -5676,14 +5241,14 @@ class Image extends StatefulWidget {
     this.filterQuality = FilterQuality.medium,
     int? cacheWidth,
     int? cacheHeight,
-  })  : image = ResizeImage.resizeIfNeeded(
-          cacheWidth,
-          cacheHeight,
-          MemoryImage(bytes, scale: scale),
-        ),
-        loadingBuilder = null,
-        assert(cacheWidth == null || cacheWidth > 0),
-        assert(cacheHeight == null || cacheHeight > 0);
+  }) : image = ResizeImage.resizeIfNeeded(
+         cacheWidth,
+         cacheHeight,
+         MemoryImage(bytes, scale: scale),
+       ),
+       loadingBuilder = null,
+       assert(cacheWidth == null || cacheWidth > 0),
+       assert(cacheHeight == null || cacheHeight > 0);
 
   /// The image to display.
   final ImageProvider image;
@@ -5799,8 +5364,9 @@ class Image extends StatefulWidget {
   /// the exception by providing a replacement widget, or rethrow the exception.
   ///
   /// {@tool dartpad}
-  /// The following sample uses [errorBuilder] to show a '😢' in place of the
-  /// image that fails to load, and prints the error to the console.
+  /// The following sample uses [errorBuilder] to show 'Image
+  /// failed to load' in place of the image that fails to load, and prints
+  /// the error to the console.
   ///
   /// ** See code in examples/api/lib/widgets/image/image.error_builder.0.dart **
   /// {@end-tool}
@@ -5996,34 +5562,148 @@ class Image extends StatefulWidget {
     super.debugFillProperties(properties);
     properties.add(DiagnosticsProperty<ImageProvider>('image', image));
     properties.add(DiagnosticsProperty<Function>('frameBuilder', frameBuilder));
-    properties
-        .add(DiagnosticsProperty<Function>('loadingBuilder', loadingBuilder));
+    properties.add(
+      DiagnosticsProperty<Function>('loadingBuilder', loadingBuilder),
+    );
     properties.add(DoubleProperty('width', width, defaultValue: null));
     properties.add(DoubleProperty('height', height, defaultValue: null));
     properties.add(ColorProperty('color', color, defaultValue: null));
-    properties.add(DiagnosticsProperty<Animation<double>?>('opacity', opacity,
-        defaultValue: null));
-    properties.add(EnumProperty<BlendMode>('colorBlendMode', colorBlendMode,
-        defaultValue: null));
+    properties.add(
+      DiagnosticsProperty<Animation<double>?>(
+        'opacity',
+        opacity,
+        defaultValue: null,
+      ),
+    );
+    properties.add(
+      EnumProperty<BlendMode>(
+        'colorBlendMode',
+        colorBlendMode,
+        defaultValue: null,
+      ),
+    );
     properties.add(EnumProperty<BoxFit>('fit', fit, defaultValue: null));
     properties.add(
-      DiagnosticsProperty<AlignmentGeometry>('alignment', alignment,
-          defaultValue: null),
-    );
-    properties.add(EnumProperty<ImageRepeat>('repeat', repeat,
-        defaultValue: ImageRepeat.noRepeat));
-    properties.add(DiagnosticsProperty<Rect>('centerSlice', centerSlice,
-        defaultValue: null));
-    properties.add(
-      FlagProperty('matchTextDirection',
-          value: matchTextDirection, ifTrue: 'match text direction'),
+      DiagnosticsProperty<AlignmentGeometry>(
+        'alignment',
+        alignment,
+        defaultValue: null,
+      ),
     );
     properties.add(
-        StringProperty('semanticLabel', semanticLabel, defaultValue: null));
-    properties.add(DiagnosticsProperty<bool>(
-        'this.excludeFromSemantics', excludeFromSemantics));
+      EnumProperty<ImageRepeat>(
+        'repeat',
+        repeat,
+        defaultValue: ImageRepeat.noRepeat,
+      ),
+    );
+    properties.add(
+      DiagnosticsProperty<Rect>('centerSlice', centerSlice, defaultValue: null),
+    );
+    properties.add(
+      FlagProperty(
+        'matchTextDirection',
+        value: matchTextDirection,
+        ifTrue: 'match text direction',
+      ),
+    );
+    properties.add(
+      StringProperty('semanticLabel', semanticLabel, defaultValue: null),
+    );
+    properties.add(
+      DiagnosticsProperty<bool>(
+        'this.excludeFromSemantics',
+        excludeFromSemantics,
+      ),
+    );
     properties.add(EnumProperty<FilterQuality>('filterQuality', filterQuality));
   }
+}
+
+/// A utility class for overriding the text styles of a [TextSpan] tree.
+// When changes are made to this class, the equivalent API in editable_text.dart
+// must also be updated.
+// TODO(Renzo-Olivares): Remove after investigating a solution for overriding all
+// styles for children in an [InlineSpan] tree, see: https://github.com/flutter/flutter/issues/177952.
+class _OverridingTextStyleTextSpanUtils {
+  static TextSpan applyTextSpacingOverrides({
+    double? lineHeightScaleFactor,
+    double? letterSpacing,
+    double? wordSpacing,
+    required TextSpan textSpan,
+  }) {
+    if (lineHeightScaleFactor == null &&
+        letterSpacing == null &&
+        wordSpacing == null) {
+      return textSpan;
+    }
+    return _applyTextStyleOverrides(
+      TextStyle(
+        height: lineHeightScaleFactor,
+        letterSpacing: letterSpacing,
+        wordSpacing: wordSpacing,
+      ),
+      textSpan,
+    );
+  }
+
+  static TextSpan _applyTextStyleOverrides(
+    TextStyle overrideTextStyle,
+    TextSpan textSpan,
+  ) {
+    return TextSpan(
+      text: textSpan.text,
+      children: textSpan.children?.map((InlineSpan child) {
+        if (child is TextSpan && child.runtimeType == TextSpan) {
+          return _applyTextStyleOverrides(overrideTextStyle, child);
+        }
+        return child;
+      }).toList(),
+      style: textSpan.style?.merge(overrideTextStyle) ?? overrideTextStyle,
+      recognizer: textSpan.recognizer,
+      mouseCursor: textSpan.mouseCursor,
+      onEnter: textSpan.onEnter,
+      onExit: textSpan.onExit,
+      semanticsLabel: textSpan.semanticsLabel,
+      semanticsIdentifier: textSpan.semanticsIdentifier,
+      locale: textSpan.locale,
+      spellOut: textSpan.spellOut,
+    );
+  }
+}
+
+class _SelectableTextContainer extends StatefulWidget {
+  const _SelectableTextContainer({
+    required this.text,
+    required this.textAlign,
+    this.textDirection,
+    required this.softWrap,
+    required this.overflow,
+    required this.textScaler,
+    this.maxLines,
+    this.locale,
+    this.strutStyle,
+    required this.textWidthBasis,
+    this.textHeightBehavior,
+    required this.selectionColor,
+  });
+
+  final TextSpan text;
+  final TextAlign textAlign;
+  final TextDirection? textDirection;
+  final bool softWrap;
+  final TextOverflow overflow;
+  final TextScaler textScaler;
+  final int? maxLines;
+  final Locale? locale;
+  final StrutStyle? strutStyle;
+  final TextWidthBasis textWidthBasis;
+  final ui.TextHeightBehavior? textHeightBehavior;
+  final Color selectionColor;
+
+  @override
+  State<_SelectableTextContainer> createState() =>
+      _SelectableTextContainerState();
 }
 
 class _ImageState extends State<Image> with WidgetsBindingObserver {
@@ -6038,6 +5718,11 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
   Object? _lastException;
   StackTrace? _lastStack;
   ImageStreamCompleterHandle? _completerHandle;
+
+  /// True when animations are disabled and the image should not update, such as
+  /// when [TickerMode] is disabled or [MediaQueryData.disableAnimations] is
+  /// true.
+  bool _isPaused = false;
 
   @override
   void initState() {
@@ -6062,10 +5747,14 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
     _updateInvertColors();
     _resolveImage();
 
-    if (TickerMode.of(context)) {
-      _listenToStream();
-    } else {
+    _isPaused =
+        !TickerMode.of(context) ||
+        (MediaQuery.maybeDisableAnimationsOf(context) ?? false);
+
+    if (_isPaused && _frameNumber != null) {
       _stopListeningToStream(keepStreamAlive: true);
+    } else {
+      _listenToStream();
     }
 
     super.didChangeDependencies();
@@ -6082,6 +5771,7 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
     }
     if (widget.image != oldWidget.image) {
       _resolveImage();
+      _listenToStream();
     }
   }
 
@@ -6100,12 +5790,13 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
   }
 
   void _updateInvertColors() {
-    _invertColors = MediaQuery.maybeInvertColorsOf(context) ??
+    _invertColors =
+        MediaQuery.maybeInvertColorsOf(context) ??
         SemanticsBinding.instance.accessibilityFeatures.invertColors;
   }
 
   void _resolveImage() {
-    final ScrollAwareImageProvider provider = ScrollAwareImageProvider<Object>(
+    final provider = ScrollAwareImageProvider<Object>(
       context: _scrollAwareContext,
       imageProvider: widget.image,
     );
@@ -6143,6 +5834,8 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
                 }());
               }
             : null,
+        // Only suppress error reporting when errorBuilder is provided.
+        reportErrors: widget.errorBuilder == null,
       );
     }
     return _imageStreamListener!;
@@ -6157,6 +5850,9 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
       _frameNumber = _frameNumber == null ? 0 : _frameNumber! + 1;
       _wasSynchronouslyLoaded = _wasSynchronouslyLoaded | synchronousCall;
     });
+    if (_isPaused) {
+      _stopListeningToStream(keepStreamAlive: true);
+    }
   }
 
   void _handleImageChunk(ImageChunkEvent event) {
@@ -6170,10 +5866,12 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
 
   void _replaceImage({required ImageInfo? info}) {
     final ImageInfo? oldImageInfo = _imageInfo;
-    SchedulerBinding.instance.addPostFrameCallback(
-      (_) => oldImageInfo?.dispose(),
-      debugLabel: 'Image.disposeOldInfo',
-    );
+    if (oldImageInfo != null) {
+      SchedulerBinding.instance.addPostFrameCallback(
+        (Duration duration) => oldImageInfo.dispose(),
+        debugLabel: 'Image.disposeOldInfo',
+      );
+    }
     _imageInfo = info;
   }
 
@@ -6212,11 +5910,10 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
       return;
     }
 
+    _isListeningToStream = true;
     _imageStream!.addListener(_getListener());
     _completerHandle?.dispose();
     _completerHandle = null;
-
-    _isListeningToStream = true;
   }
 
   /// Stops listening to the image stream, if this state object has attached a
@@ -6273,8 +5970,9 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
               '$error',
               textAlign: TextAlign.center,
               textDirection: TextDirection.ltr,
-              style:
-                  const TextStyle(shadows: <Shadow>[Shadow(blurRadius: 1.0)]),
+              style: const TextStyle(
+                shadows: <Shadow>[Shadow(blurRadius: 1.0)],
+              ),
             ),
           ),
         ),
@@ -6344,7 +6042,11 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
 
     if (widget.frameBuilder != null) {
       result = widget.frameBuilder!(
-          context, result, _frameNumber, _wasSynchronouslyLoaded);
+        context,
+        result,
+        _frameNumber,
+        _wasSynchronouslyLoaded,
+      );
     }
 
     if (widget.loadingBuilder != null) {
@@ -6359,10 +6061,614 @@ class _ImageState extends State<Image> with WidgetsBindingObserver {
     super.debugFillProperties(description);
     description.add(DiagnosticsProperty<ImageStream>('stream', _imageStream));
     description.add(DiagnosticsProperty<ImageInfo>('pixels', _imageInfo));
-    description.add(DiagnosticsProperty<ImageChunkEvent>(
-        'loadingProgress', _loadingProgress));
+    description.add(
+      DiagnosticsProperty<ImageChunkEvent>('loadingProgress', _loadingProgress),
+    );
     description.add(DiagnosticsProperty<int>('frameNumber', _frameNumber));
-    description.add(DiagnosticsProperty<bool>(
-        'wasSynchronouslyLoaded', _wasSynchronouslyLoaded));
+    description.add(
+      DiagnosticsProperty<bool>(
+        'wasSynchronouslyLoaded',
+        _wasSynchronouslyLoaded,
+      ),
+    );
   }
 }
+
+class _SelectableTextContainerState extends State<_SelectableTextContainer> {
+  late final _SelectableTextContainerDelegate _selectionDelegate;
+  final GlobalKey _textKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectionDelegate = _SelectableTextContainerDelegate(_textKey);
+  }
+
+  @override
+  void dispose() {
+    _selectionDelegate.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SelectionContainer(
+      delegate: _selectionDelegate,
+      // Use [_RichText] wrapper so the underlying [RenderParagraph] can register
+      // its [Selectable]s to the [SelectionContainer] created by this widget.
+      child: _RichText(
+        textKey: _textKey,
+        textAlign: widget.textAlign,
+        textDirection: widget.textDirection,
+        locale: widget.locale,
+        softWrap: widget.softWrap,
+        overflow: widget.overflow,
+        textScaler: widget.textScaler,
+        maxLines: widget.maxLines,
+        strutStyle: widget.strutStyle,
+        textWidthBasis: widget.textWidthBasis,
+        textHeightBehavior: widget.textHeightBehavior,
+        selectionColor: widget.selectionColor,
+        text: widget.text,
+      ),
+    );
+  }
+}
+
+class _SelectableTextContainerDelegate
+    extends StaticSelectionContainerDelegate {
+  _SelectableTextContainerDelegate(GlobalKey textKey) : _textKey = textKey;
+
+  final GlobalKey _textKey;
+  RenderParagraph get paragraph =>
+      _textKey.currentContext!.findRenderObject()! as RenderParagraph;
+
+  @override
+  SelectionResult handleSelectParagraph(SelectParagraphSelectionEvent event) {
+    final SelectionResult result = _handleSelectParagraph(event);
+    super.didReceiveSelectionBoundaryEvents();
+    return result;
+  }
+
+  SelectionResult _handleSelectParagraph(SelectParagraphSelectionEvent event) {
+    if (event.absorb) {
+      for (var index = 0; index < selectables.length; index += 1) {
+        dispatchSelectionEventToChild(selectables[index], event);
+      }
+      currentSelectionStartIndex = 0;
+      currentSelectionEndIndex = selectables.length - 1;
+      return SelectionResult.next;
+    }
+
+    // First pass, if the position is on a placeholder then dispatch the selection
+    // event to the [Selectable] at the location and terminate.
+    for (var index = 0; index < selectables.length; index += 1) {
+      final bool selectableIsPlaceholder = !paragraph
+          .selectableBelongsToParagraph(selectables[index]);
+      if (selectableIsPlaceholder &&
+          selectables[index].boundingBoxes.isNotEmpty) {
+        for (final Rect rect in selectables[index].boundingBoxes) {
+          final Rect globalRect = MatrixUtils.transformRect(
+            selectables[index].getTransformTo(null),
+            rect,
+          );
+          if (globalRect.contains(event.globalPosition)) {
+            currentSelectionStartIndex = currentSelectionEndIndex = index;
+            return dispatchSelectionEventToChild(selectables[index], event);
+          }
+        }
+      }
+    }
+
+    SelectionResult? lastSelectionResult;
+    var foundStart = false;
+    int? lastNextIndex;
+    for (var index = 0; index < selectables.length; index += 1) {
+      if (!paragraph.selectableBelongsToParagraph(selectables[index])) {
+        if (foundStart) {
+          final SelectionEvent synthesizedEvent = SelectParagraphSelectionEvent(
+            globalPosition: event.globalPosition,
+            absorb: true,
+          );
+          final SelectionResult result = dispatchSelectionEventToChild(
+            selectables[index],
+            synthesizedEvent,
+          );
+          if (selectables.length - 1 == index) {
+            currentSelectionEndIndex = index;
+            _flushInactiveSelections();
+            return result;
+          }
+        }
+        continue;
+      }
+      final SelectionGeometry existingGeometry = selectables[index].value;
+      lastSelectionResult = dispatchSelectionEventToChild(
+        selectables[index],
+        event,
+      );
+      if (index == selectables.length - 1 &&
+          lastSelectionResult == SelectionResult.next) {
+        if (foundStart) {
+          currentSelectionEndIndex = index;
+        } else {
+          currentSelectionStartIndex = currentSelectionEndIndex = index;
+        }
+        return SelectionResult.next;
+      }
+      if (lastSelectionResult == SelectionResult.next) {
+        if (selectables[index].value == existingGeometry && !foundStart) {
+          lastNextIndex = index;
+        }
+        if (selectables[index].value != existingGeometry && !foundStart) {
+          assert(selectables[index].boundingBoxes.isNotEmpty);
+          assert(selectables[index].value.selectionRects.isNotEmpty);
+          final bool selectionAtStartOfSelectable = selectables[index]
+              .boundingBoxes[0]
+              .overlaps(selectables[index].value.selectionRects[0]);
+          var startIndex = 0;
+          if (lastNextIndex != null && selectionAtStartOfSelectable) {
+            startIndex = lastNextIndex + 1;
+          } else {
+            startIndex = lastNextIndex == null && selectionAtStartOfSelectable
+                ? 0
+                : index;
+          }
+          for (var i = startIndex; i < index; i += 1) {
+            final SelectionEvent synthesizedEvent =
+                SelectParagraphSelectionEvent(
+                  globalPosition: event.globalPosition,
+                  absorb: true,
+                );
+            dispatchSelectionEventToChild(selectables[i], synthesizedEvent);
+          }
+          currentSelectionStartIndex = startIndex;
+          foundStart = true;
+        }
+        continue;
+      }
+      if (index == 0 && lastSelectionResult == SelectionResult.previous) {
+        return SelectionResult.previous;
+      }
+      if (selectables[index].value != existingGeometry) {
+        if (!foundStart && lastNextIndex == null) {
+          currentSelectionStartIndex = 0;
+          for (var i = 0; i < index; i += 1) {
+            final SelectionEvent synthesizedEvent =
+                SelectParagraphSelectionEvent(
+                  globalPosition: event.globalPosition,
+                  absorb: true,
+                );
+            dispatchSelectionEventToChild(selectables[i], synthesizedEvent);
+          }
+        }
+        currentSelectionEndIndex = index;
+        // Geometry has changed as a result of select paragraph, need to clear the
+        // selection of other selectables to keep selection in sync.
+        _flushInactiveSelections();
+      }
+      return SelectionResult.end;
+    }
+    assert(lastSelectionResult == null);
+    return SelectionResult.end;
+  }
+
+  SelectionResult _adjustSelection(
+    SelectionEdgeUpdateEvent event, {
+    required bool isEnd,
+  }) {
+    assert(() {
+      if (isEnd) {
+        assert(
+          currentSelectionEndIndex < selectables.length &&
+              currentSelectionEndIndex >= 0,
+        );
+        return true;
+      }
+      assert(
+        currentSelectionStartIndex < selectables.length &&
+            currentSelectionStartIndex >= 0,
+      );
+      return true;
+    }());
+    SelectionResult? finalResult;
+    // Determines if the edge being adjusted is within the current viewport.
+    //  - If so, we begin the search for the new selection edge position at the
+    //    currentSelectionEndIndex/currentSelectionStartIndex.
+    //  - If not, we attempt to locate the new selection edge starting from
+    //    the opposite end.
+    //  - If neither edge is in the current viewport, the search for the new
+    //    selection edge position begins at 0.
+    //
+    // This can happen when there is a scrollable child and the edge being adjusted
+    // has been scrolled out of view.
+    final isCurrentEdgeWithinViewport = isEnd
+        ? value.endSelectionPoint != null
+        : value.startSelectionPoint != null;
+    final isOppositeEdgeWithinViewport = isEnd
+        ? value.startSelectionPoint != null
+        : value.endSelectionPoint != null;
+    int newIndex = switch ((
+      isEnd,
+      isCurrentEdgeWithinViewport,
+      isOppositeEdgeWithinViewport,
+    )) {
+      (true, true, true) => currentSelectionEndIndex,
+      (true, true, false) => currentSelectionEndIndex,
+      (true, false, true) => currentSelectionStartIndex,
+      (true, false, false) => 0,
+      (false, true, true) => currentSelectionStartIndex,
+      (false, true, false) => currentSelectionStartIndex,
+      (false, false, true) => currentSelectionEndIndex,
+      (false, false, false) => 0,
+    };
+    bool? forward;
+    late SelectionResult currentSelectableResult;
+    // This loop sends the selection event to one of the following to determine
+    // the direction of the search.
+    //  - currentSelectionEndIndex/currentSelectionStartIndex if the current edge
+    //    is in the current viewport.
+    //  - The opposite edge index if the current edge is not in the current viewport.
+    //  - Index 0 if neither edge is in the current viewport.
+    //
+    // If the result is `SelectionResult.next`, this loop look backward.
+    // Otherwise, it looks forward.
+    //
+    // The terminate condition are:
+    // 1. the selectable returns end, pending, none.
+    // 2. the selectable returns previous when looking forward.
+    // 2. the selectable returns next when looking backward.
+    while (newIndex < selectables.length &&
+        newIndex >= 0 &&
+        finalResult == null) {
+      currentSelectableResult = dispatchSelectionEventToChild(
+        selectables[newIndex],
+        event,
+      );
+      switch (currentSelectableResult) {
+        case SelectionResult.end:
+        case SelectionResult.pending:
+        case SelectionResult.none:
+          finalResult = currentSelectableResult;
+        case SelectionResult.next:
+          if (forward == false) {
+            newIndex += 1;
+            finalResult = SelectionResult.end;
+          } else if (newIndex == selectables.length - 1) {
+            finalResult = currentSelectableResult;
+          } else {
+            forward = true;
+            newIndex += 1;
+          }
+        case SelectionResult.previous:
+          if (forward ?? false) {
+            newIndex -= 1;
+            finalResult = SelectionResult.end;
+          } else if (newIndex == 0) {
+            finalResult = currentSelectableResult;
+          } else {
+            forward = false;
+            newIndex -= 1;
+          }
+      }
+    }
+    if (isEnd) {
+      final bool forwardSelection =
+          currentSelectionEndIndex >= currentSelectionStartIndex;
+      if (forward != null &&
+          ((!forwardSelection &&
+                  forward &&
+                  newIndex >= currentSelectionStartIndex) ||
+              (forwardSelection &&
+                  !forward &&
+                  newIndex <= currentSelectionStartIndex))) {
+        currentSelectionStartIndex = currentSelectionEndIndex;
+      }
+      currentSelectionEndIndex = newIndex;
+    } else {
+      final bool forwardSelection =
+          currentSelectionEndIndex >= currentSelectionStartIndex;
+      if (forward != null &&
+          ((!forwardSelection &&
+                  !forward &&
+                  newIndex <= currentSelectionEndIndex) ||
+              (forwardSelection &&
+                  forward &&
+                  newIndex >= currentSelectionEndIndex))) {
+        currentSelectionEndIndex = currentSelectionStartIndex;
+      }
+      currentSelectionStartIndex = newIndex;
+    }
+    _flushInactiveSelections();
+    return finalResult!;
+  }
+
+  /// The compare function this delegate used for determining the selection
+  /// order of the [Selectable]s.
+  ///
+  /// Sorts the [Selectable]s by their top left [Rect].
+  @override
+  Comparator<Selectable> get compareOrder => _compareScreenOrder;
+
+  static int _compareScreenOrder(Selectable a, Selectable b) {
+    // Attempt to sort the selectables under a [_SelectableTextContainerDelegate]
+    // by the top left rect.
+    final Rect rectA = MatrixUtils.transformRect(
+      a.getTransformTo(null),
+      a.boundingBoxes.first,
+    );
+    final Rect rectB = MatrixUtils.transformRect(
+      b.getTransformTo(null),
+      b.boundingBoxes.first,
+    );
+    final int result = _compareVertically(rectA, rectB);
+    if (result != 0) {
+      return result;
+    }
+    return _compareHorizontally(rectA, rectB);
+  }
+
+  /// Compares two rectangles in the screen order solely by their vertical
+  /// positions.
+  ///
+  /// Returns positive if a is lower, negative if a is higher, 0 if their
+  /// order can't be determine solely by their vertical position.
+  static int _compareVertically(Rect a, Rect b) {
+    // The rectangles overlap so defer to horizontal comparison.
+    if ((a.top - b.top < _kSelectableVerticalComparingThreshold &&
+            a.bottom - b.bottom > -_kSelectableVerticalComparingThreshold) ||
+        (b.top - a.top < _kSelectableVerticalComparingThreshold &&
+            b.bottom - a.bottom > -_kSelectableVerticalComparingThreshold)) {
+      return 0;
+    }
+    if ((a.top - b.top).abs() > _kSelectableVerticalComparingThreshold) {
+      return a.top > b.top ? 1 : -1;
+    }
+    return a.bottom > b.bottom ? 1 : -1;
+  }
+
+  /// Compares two rectangles in the screen order by their horizontal positions
+  /// assuming one of the rectangles enclose the other rect vertically.
+  ///
+  /// Returns positive if a is lower, negative if a is higher.
+  static int _compareHorizontally(Rect a, Rect b) {
+    // a encloses b.
+    if (a.left - b.left < precisionErrorTolerance &&
+        a.right - b.right > -precisionErrorTolerance) {
+      return -1;
+    }
+    // b encloses a.
+    if (b.left - a.left < precisionErrorTolerance &&
+        b.right - a.right > -precisionErrorTolerance) {
+      return 1;
+    }
+    if ((a.left - b.left).abs() > precisionErrorTolerance) {
+      return a.left > b.left ? 1 : -1;
+    }
+    return a.right > b.right ? 1 : -1;
+  }
+
+  /// This method calculates a local [SelectedContentRange] based on the list
+  /// of [selections] that are accumulated from the [Selectable] children under this
+  /// delegate. This calculation takes into account the accumulated content
+  /// length before the active selection, and returns null when either selection
+  /// edge has not been set.
+  SelectedContentRange? _calculateLocalRange(List<_SelectionInfo> selections) {
+    if (currentSelectionStartIndex == -1 || currentSelectionEndIndex == -1) {
+      return null;
+    }
+    var startOffset = 0;
+    var endOffset = 0;
+    var foundStart = false;
+    bool forwardSelection =
+        currentSelectionEndIndex >= currentSelectionStartIndex;
+    if (currentSelectionEndIndex == currentSelectionStartIndex) {
+      // Determining selection direction is inaccurate if currentSelectionStartIndex == currentSelectionEndIndex.
+      // Use the range from the selectable within the selection as the source of truth for selection direction.
+      final SelectedContentRange rangeAtSelectableInSelection =
+          selectables[currentSelectionStartIndex].getSelection()!;
+      forwardSelection =
+          rangeAtSelectableInSelection.endOffset >=
+          rangeAtSelectableInSelection.startOffset;
+    }
+    for (var index = 0; index < selections.length; index++) {
+      final _SelectionInfo selection = selections[index];
+      if (selection.range == null) {
+        if (foundStart) {
+          return SelectedContentRange(
+            startOffset: forwardSelection ? startOffset : endOffset,
+            endOffset: forwardSelection ? endOffset : startOffset,
+          );
+        }
+        startOffset += selection.contentLength;
+        endOffset = startOffset;
+        continue;
+      }
+      final int selectionStartNormalized = min(
+        selection.range!.startOffset,
+        selection.range!.endOffset,
+      );
+      final int selectionEndNormalized = max(
+        selection.range!.startOffset,
+        selection.range!.endOffset,
+      );
+      if (!foundStart) {
+        // Because a RenderParagraph may split its content into multiple selectables
+        // we have to consider at what offset a selectable starts at relative
+        // to the RenderParagraph, when the selectable is not the start of the content.
+        final bool shouldConsiderContentStart =
+            index > 0 &&
+            paragraph.selectableBelongsToParagraph(selectables[index]);
+        startOffset +=
+            (selectionStartNormalized -
+                    (shouldConsiderContentStart
+                        ? paragraph
+                              .getPositionForOffset(
+                                selectables[index]
+                                    .boundingBoxes
+                                    .first
+                                    .centerLeft,
+                              )
+                              .offset
+                        : 0))
+                .abs();
+        endOffset =
+            startOffset +
+            (selectionEndNormalized - selectionStartNormalized).abs();
+        foundStart = true;
+      } else {
+        endOffset += (selectionEndNormalized - selectionStartNormalized).abs();
+      }
+    }
+    assert(
+      foundStart,
+      'The start of the selection has not been found despite this selection delegate having an existing currentSelectionStartIndex and currentSelectionEndIndex.',
+    );
+    return SelectedContentRange(
+      startOffset: forwardSelection ? startOffset : endOffset,
+      endOffset: forwardSelection ? endOffset : startOffset,
+    );
+  }
+
+  /// Returns a [SelectedContentRange] considering the [SelectedContentRange]
+  /// from each [Selectable] child managed under this delegate.
+  ///
+  /// When nothing is selected or either selection edge has not been set,
+  /// this method will return `null`.
+  @override
+  SelectedContentRange? getSelection() {
+    final selections = <_SelectionInfo>[
+      for (final Selectable selectable in selectables)
+        (
+          contentLength: selectable.contentLength,
+          range: selectable.getSelection(),
+        ),
+    ];
+    return _calculateLocalRange(selections);
+  }
+
+  // From [SelectableRegion].
+
+  // Clears the selection on all selectables not in the range of
+  // currentSelectionStartIndex..currentSelectionEndIndex.
+  //
+  // If one of the edges does not exist, then this method will clear the selection
+  // in all selectables except the existing edge.
+  //
+  // If neither of the edges exist this method immediately returns.
+  void _flushInactiveSelections() {
+    if (currentSelectionStartIndex == -1 && currentSelectionEndIndex == -1) {
+      return;
+    }
+    if (currentSelectionStartIndex == -1 || currentSelectionEndIndex == -1) {
+      final int skipIndex = currentSelectionStartIndex == -1
+          ? currentSelectionEndIndex
+          : currentSelectionStartIndex;
+      for (var i = 0; i < selectables.length; i++) {
+        if (i == skipIndex) {
+          continue;
+        }
+        dispatchSelectionEventToChild(
+          selectables[i],
+          const ClearSelectionEvent(),
+        );
+      }
+      return;
+    }
+    final int skipStart = min(
+      currentSelectionStartIndex,
+      currentSelectionEndIndex,
+    );
+    final int skipEnd = max(
+      currentSelectionStartIndex,
+      currentSelectionEndIndex,
+    );
+    for (var index = 0; index < selectables.length; index += 1) {
+      if (index >= skipStart && index <= skipEnd) {
+        continue;
+      }
+      dispatchSelectionEventToChild(
+        selectables[index],
+        const ClearSelectionEvent(),
+      );
+    }
+  }
+
+  @override
+  SelectionResult handleSelectionEdgeUpdate(SelectionEdgeUpdateEvent event) {
+    if (event.granularity != TextGranularity.paragraph) {
+      return super.handleSelectionEdgeUpdate(event);
+    }
+    updateLastSelectionEdgeLocation(
+      globalSelectionEdgeLocation: event.globalPosition,
+      forEnd: event.type == SelectionEventType.endEdgeUpdate,
+    );
+    if (event.type == SelectionEventType.endEdgeUpdate) {
+      return currentSelectionEndIndex == -1
+          ? super.handleSelectionEdgeUpdate(event)
+          : _adjustSelection(event, isEnd: true);
+    }
+    return currentSelectionStartIndex == -1
+        ? super.handleSelectionEdgeUpdate(event)
+        : _adjustSelection(event, isEnd: false);
+  }
+}
+
+class _RichText extends StatelessWidget {
+  const _RichText({
+    this.textKey,
+    required this.text,
+    required this.textAlign,
+    this.textDirection,
+    required this.softWrap,
+    required this.overflow,
+    required this.textScaler,
+    this.maxLines,
+    this.locale,
+    this.strutStyle,
+    required this.textWidthBasis,
+    this.textHeightBehavior,
+    required this.selectionColor,
+  });
+
+  final GlobalKey? textKey;
+  final InlineSpan text;
+  final TextAlign textAlign;
+  final TextDirection? textDirection;
+  final bool softWrap;
+  final TextOverflow overflow;
+  final TextScaler textScaler;
+  final int? maxLines;
+  final Locale? locale;
+  final StrutStyle? strutStyle;
+  final TextWidthBasis textWidthBasis;
+  final ui.TextHeightBehavior? textHeightBehavior;
+  final Color selectionColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final SelectionRegistrar? registrar = SelectionContainer.maybeOf(context);
+    return RichText(
+      key: textKey,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      locale: locale,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaler: textScaler,
+      maxLines: maxLines,
+      strutStyle: strutStyle,
+      textWidthBasis: textWidthBasis,
+      textHeightBehavior: textHeightBehavior,
+      selectionRegistrar: registrar,
+      selectionColor: selectionColor,
+      text: text,
+    );
+  }
+}
+
+const double _kSelectableVerticalComparingThreshold = 3.0;
+
+/// The length of the content that can be selected, and the range that is
+/// selected.
+typedef _SelectionInfo = ({int contentLength, SelectedContentRange? range});
