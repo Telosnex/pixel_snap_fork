@@ -1,15 +1,20 @@
 name: Upstream
 
-# Tells, before a Flutter release reaches the pinned version, what it needs
-# here: new generated widgets, merges into the forks, analyzer or test
-# failures. The steps run even when an earlier one fails, so one run shows
-# every problem.
+# Tells what the package needs for the next Flutter: new generated widgets,
+# merges into the forks, analyzer or test failures. After the setup, the
+# checks run even when an earlier one fails, so one run shows every problem.
+#
+# Flutter stable tests main. Flutter beta tests the flutter-beta branch, which
+# keeps the package for the next Flutter: main cannot compile on a beta that
+# needs new code. The beta job fails when the branch does not exist, or does
+# not pass on the current beta. Fix the branch to make it pass again. See
+# "Release for a new Flutter version" in generator/README.md.
 
 on:
   push:
     # ci/** branches run it too: a new workflow cannot be started by hand
-    # before it is on main.
-    branches: ['ci/**']
+    # before it is on main. A push to flutter-beta runs the beta job.
+    branches: ['ci/**', flutter-beta]
   schedule:
     - cron: '17 7 * * *'
   workflow_dispatch:
@@ -26,32 +31,46 @@ defaults:
     shell: bash
 
 jobs:
-  # The jobs share the steps of the first (YAML anchor).
+  # The jobs share the steps of the first (YAML anchor). BRANCH is the branch
+  # that the job tests.
   flutter-stable:
     name: Flutter stable
+    # flutter-beta is for the next Flutter.
+    if: github.ref_name != 'flutter-beta'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
       FLUTTER: stable
+      BRANCH: ${{ github.ref_name }}
     steps: &upstream_steps
+      - name: Branch exists
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh api --silent "repos/$GITHUB_REPOSITORY/branches/$BRANCH"; then
+            echo "::error::The branch $BRANCH does not exist. Make it from main: git push origin main:$BRANCH"
+            exit 1
+          fi
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ env.BRANCH }}
           persist-credentials: false
       - uses: Telosnex/telosnex_ci_tools/actions/setup-flutter@0554f3662445d678e2effbd838d15968d673f7af # v0.5.6
         with:
           version: ${{ env.FLUTTER }}
-      - run: flutter pub get && (cd generator && dart pub get)
+      - id: setup
+        run: flutter pub get && (cd generator && dart pub get)
       - name: Generated widgets are current
         run: |
           (cd generator && dart run bin/generate.dart)
           git diff --stat --exit-code lib/src/generated
       - name: Forks are current
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: dart run bin/forks.dart check
         working-directory: generator
-      - if: ${{ !cancelled() }}
+      - if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: flutter analyze
-      - if: ${{ !cancelled() }}
+      - if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: flutter test -r expanded
 
   flutter-beta:
@@ -60,4 +79,5 @@ jobs:
     timeout-minutes: 30
     env:
       FLUTTER: beta
+      BRANCH: flutter-beta
     steps: *upstream_steps

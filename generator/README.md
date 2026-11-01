@@ -40,21 +40,28 @@ Each release of the package works with one Flutter version and the versions afte
 
 Pub ignores a maximum on `flutter:`. A release can say "3.47 or newer", but not "3.47 to 3.49". Thus an app on a newer Flutter can get a release that does not compile on it. The minimum is the only thing that keeps an app on an older Flutter away from a new release.
 
-### When the Upstream workflow fails
+### The `flutter-beta` branch
 
-- **Flutter beta fails:** the next Flutter release needs changes in the package. You cannot merge them to `main` yet, because the code for the new Flutter does not compile on the pinned Flutter. Do the work on a branch (for example `flutter-3.50`), or wait for the stable release.
-- **Flutter stable fails:** a stable Flutter needs a new release of the package. Apps that change to that Flutter cannot compile until the release is available.
+`main` works with the pinned Flutter. The `flutter-beta` branch keeps the package for the next Flutter: there you do the steps of [Update for a new Flutter release](#update-for-a-new-flutter-release) with Flutter beta. You cannot do this work on `main`, because the code for the next Flutter does not compile on the pinned Flutter.
+
+The Upstream workflow runs every night, and at each push to `flutter-beta`:
+
+- **Flutter stable** tests `main`. If it fails, a stable Flutter needs a new release of the package.
+- **Flutter beta** tests `flutter-beta`. It fails if the branch does not exist, or if the branch does not pass on the current beta. Fix the branch, and the job passes again until a new beta needs more changes.
+
+Keep `flutter:` in `pubspec.yaml` of `flutter-beta` at the minimum of `main`. A beta such as `3.50.0-0.3.pre` is lower than `3.50.0`, so `">=3.50.0"` excludes it. Merge `main` into `flutter-beta` when `main` changes, so that the release merge is small.
 
 ### Steps
 
-1. Do the steps in [Update for a new Flutter release](#update-for-a-new-flutter-release).
+1. Merge `flutter-beta` into a new branch from `main`. If the stable Flutter is different from the beta that `flutter-beta` was tested with, do the steps in [Update for a new Flutter release](#update-for-a-new-flutter-release) again with the stable Flutter.
 2. In `pubspec.yaml`, set `flutter:` to the new Flutter version, for example `">=3.50.0"`. Set `sdk:` to the Dart version of that Flutter (`flutter --version` shows it), for example `^3.14.0`.
 3. Change the Flutter of CI. The workflows install the Flutter in `flutter_version.txt` of Telosnex/telosnex_ci_tools, at the commit that they pin. Release telosnex_ci_tools with the new version, then change the commit and the version comment of each `Telosnex/telosnex_ci_tools/...@` line in `.github/workflows/`. Until then, the Unit workflow fails on the new code.
 4. In `CHANGELOG.md`, add the new version. Write the new minimum Flutter version as **BREAKING**. Give the new parameters and the fixes from Flutter.
 5. In `pubspec.yaml`, change `version:`. Increase the minor version (for example 0.2.x to 0.3.0): apps on the old Flutter cannot use the release.
-6. Merge to `main`. Make sure that the Unit and Integration workflows pass, and the Flutter stable job of the Upstream workflow. The Flutter beta job can fail if the next beta changed more.
+6. Merge to `main`. Make sure that the Unit and Integration workflows pass, and the Flutter stable job of the Upstream workflow.
 7. In the package root, run `dart pub publish --dry-run`, then `dart pub publish`.
 8. In Telosnex, change the Flutter version and the pixel_snap_fork version in the same change. Run its tests. A change in Flutter's widgets can also change the tests that find text or measure layouts.
+9. Reset `flutter-beta` to `main` (`git push --force origin main:flutter-beta`). Then do the work for the next beta on it.
 
 ## How the fork merge works
 
