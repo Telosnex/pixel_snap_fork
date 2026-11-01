@@ -217,4 +217,4 @@ PixelSnapSize( // Ensure that child size is properly pixel snapped
 
 ## Maintenance
 
-Most of the pixel-snapped widgets are generated from the Flutter source. See [generator/README.md](generator/README.md) for how to update the package for a new Flutter release.
+Most of the pixel-snapped widgets are generated from the Flutter source. See [generator/README.md](generator/README.md) for how to update and release the package for a new Flutter version.
