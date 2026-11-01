@@ -34,6 +34,7 @@ class RawImage extends widgets.RawImage {
     super.invertColors = false,
     super.filterQuality = FilterQuality.low,
     super.isAntiAlias = false,
+    super.blendMode,
   });
 
   @override
@@ -60,6 +61,7 @@ class RawImage extends widgets.RawImage {
       invertColors: invertColors,
       isAntiAlias: isAntiAlias,
       filterQuality: filterQuality,
+      blendMode: blendMode,
     );
   }
 
@@ -93,6 +95,7 @@ class RawImage extends widgets.RawImage {
           : null
       ..invertColors = invertColors
       ..isAntiAlias = isAntiAlias
-      ..filterQuality = filterQuality;
+      ..filterQuality = filterQuality
+      ..blendMode = blendMode;
   }
 }

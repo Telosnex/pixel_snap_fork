@@ -22,6 +22,7 @@ class RenderImagePixelSnap extends RenderImage {
     super.invertColors,
     super.isAntiAlias,
     super.filterQuality,
+    super.blendMode,
     required this._pixelSnap,
   });
 

@@ -129,6 +129,21 @@ void main() {
     });
   });
 
+  testWidgets('RawImage passes blendMode to the render object', (tester) async {
+    Future<void> pump(BlendMode mode) => tester.pumpWidget(
+      _app(RawImage(width: 10, height: 10, blendMode: mode)),
+    );
+    await pump(BlendMode.multiply);
+    final render = tester.renderObject<ps.RenderImagePixelSnap>(
+      find.byType(RawImage),
+    );
+    expect(render.blendMode, BlendMode.multiply);
+
+    await pump(BlendMode.screen);
+
+    expect(render.blendMode, BlendMode.screen);
+  });
+
   testWidgets('FittedBox is a Flutter FittedBox', (tester) async {
     await tester.pumpWidget(
       _app(const FittedBox(fit: BoxFit.fill, child: SizedBox(width: 1))),
