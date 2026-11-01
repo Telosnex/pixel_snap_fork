@@ -8,6 +8,10 @@ class GeneratePixelSnapFork<T> {
   const GeneratePixelSnapFork();
 }
 
+class GeneratePixelSnapSubclass<T> {
+  const GeneratePixelSnapSubclass();
+}
+
 // Feeds widget generation.
 @GeneratePixelSnap<Align>()
 @GeneratePixelSnap<Baseline>()
@@ -35,10 +39,10 @@ class GeneratePixelSnapFork<T> {
 @GeneratePixelSnapFork<Flex>()
 @GeneratePixelSnapFork<Row>()
 @GeneratePixelSnapFork<Column>()
-@GeneratePixelSnapFork<FractionallySizedBox>()
+@GeneratePixelSnapSubclass<FractionallySizedBox>()
 @GeneratePixelSnapFork<Center>()
-@GeneratePixelSnapFork<Text>()
-@GeneratePixelSnapFork<RichText>()
-@GeneratePixelSnapFork<FittedBox>()
-@GeneratePixelSnapFork<Image>()
+@GeneratePixelSnapSubclass<Text>()
+@GeneratePixelSnapSubclass<RichText>()
+@GeneratePixelSnapSubclass<FittedBox>()
+@GeneratePixelSnapSubclass<Image>()
 void generate() {}

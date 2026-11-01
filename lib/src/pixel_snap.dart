@@ -72,11 +72,7 @@ class PixelSnap {
 
   /// Snaps the [value] to nearest physical pixel according to provided [mode].
   double call(double value, [PixelSnapMode mode = PixelSnapMode.snap]) {
-    return pixelSnapFunction(
-      value,
-      devicePixelRatio,
-      mode,
-    );
+    return pixelSnapFunction(value, devicePixelRatio, mode);
   }
 
   @override
@@ -124,10 +120,7 @@ class _PixelSnapCacheKey {
 /// Descendant pixel-snapped widgets then perform one simple inherited lookup
 /// instead of independently resolving [MediaQuery.devicePixelRatioOf].
 class PixelSnapScope extends StatelessWidget {
-  const PixelSnapScope({
-    super.key,
-    required this.child,
-  });
+  const PixelSnapScope({super.key, required this.child});
 
   final Widget child;
 

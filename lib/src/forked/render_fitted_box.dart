@@ -12,9 +12,9 @@ class RenderFittedBox extends rendering.RenderFittedBox {
     super.clipBehavior,
     super.textDirection,
     required PixelSnap pixelSnap,
-  })  : _pixelSnap = pixelSnap,
-        _originalAlignment = alignment,
-        super(alignment: alignment.pixelSnap(pixelSnap));
+  }) : _pixelSnap = pixelSnap,
+       _originalAlignment = alignment,
+       super(alignment: alignment.pixelSnap(pixelSnap));
 
   PixelSnap _pixelSnap;
   AlignmentGeometry _originalAlignment;
@@ -22,7 +22,7 @@ class RenderFittedBox extends rendering.RenderFittedBox {
   PixelSnap get pixelSnap => _pixelSnap;
 
   set pixelSnap(PixelSnap value) {
-    if (value != value) {
+    if (_pixelSnap != value) {
       _pixelSnap = value;
       alignment = _originalAlignment;
       markNeedsLayout();
@@ -53,9 +53,11 @@ class RenderFittedBox extends rendering.RenderFittedBox {
         return true;
       }());
       if (invalidChildSize) {
-        assert(debugCannotComputeDryLayout(
-          reason: 'Child provided invalid size of $childSize.',
-        ));
+        assert(
+          debugCannotComputeDryLayout(
+            reason: 'Child provided invalid size of $childSize.',
+          ),
+        );
         return Size.zero;
       }
 
@@ -64,9 +66,9 @@ class RenderFittedBox extends rendering.RenderFittedBox {
           final BoxConstraints sizeConstraints = constraints.loosen();
           final Size unconstrainedSize = sizeConstraints
               .pixelSnapConstrainSizeAndAttemptToPreserveAspectRatio(
-            pixelSnap,
-            childSize,
-          );
+                pixelSnap,
+                childSize,
+              );
           return constraints.constrain(unconstrainedSize);
         case BoxFit.contain:
         case BoxFit.cover:
@@ -76,9 +78,9 @@ class RenderFittedBox extends rendering.RenderFittedBox {
         case BoxFit.none:
           return constraints
               .pixelSnapConstrainSizeAndAttemptToPreserveAspectRatio(
-            pixelSnap,
-            childSize,
-          );
+                pixelSnap,
+                childSize,
+              );
       }
     } else {
       return constraints.smallest;
@@ -102,8 +104,9 @@ class RenderFittedBox extends rendering.RenderFittedBox {
         case BoxFit.fitHeight:
         case BoxFit.fitWidth:
         case BoxFit.none:
-          size = constraints
-              .constrainSizeAndAttemptToPreserveAspectRatio(child!.size);
+          size = constraints.constrainSizeAndAttemptToPreserveAspectRatio(
+            child!.size,
+          );
           break;
       }
     }

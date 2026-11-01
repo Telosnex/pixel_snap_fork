@@ -10,19 +10,13 @@ extension PixelSnapExtNum on num {
 
 extension PixelSnapExtOffset on Offset {
   Offset pixelSnap(PixelSnap ps, [PixelSnapMode mode = PixelSnapMode.snap]) {
-    return Offset(
-      dx.pixelSnap(ps, mode),
-      dy.pixelSnap(ps, mode),
-    );
+    return Offset(dx.pixelSnap(ps, mode), dy.pixelSnap(ps, mode));
   }
 }
 
 extension PixelSnapExtSize on Size {
   Size pixelSnap(PixelSnap ps, [PixelSnapMode mode = PixelSnapMode.snap]) {
-    return Size(
-      width.pixelSnap(ps, mode),
-      height.pixelSnap(ps, mode),
-    );
+    return Size(width.pixelSnap(ps, mode), height.pixelSnap(ps, mode));
   }
 }
 
@@ -72,8 +66,10 @@ extension PixelSnapExtAlignmentDirctional on AlignmentDirectional {
 }
 
 extension PixelSnapExtEdgeInsetsGeometry on EdgeInsetsGeometry {
-  EdgeInsetsGeometry pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  EdgeInsetsGeometry pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     if (this is EdgeInsets) {
       return (this as EdgeInsets).pixelSnap(ps, mode);
     } else if (this is EdgeInsetsDirectional) {
@@ -85,8 +81,10 @@ extension PixelSnapExtEdgeInsetsGeometry on EdgeInsetsGeometry {
 }
 
 extension PixelSnapExtEdgeInsets on EdgeInsets {
-  EdgeInsets pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  EdgeInsets pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return EdgeInsets.only(
       left: left.pixelSnap(ps, mode),
       top: top.pixelSnap(ps, mode),
@@ -97,8 +95,10 @@ extension PixelSnapExtEdgeInsets on EdgeInsets {
 }
 
 extension PixelSnapEdgeInsetDirectional on EdgeInsetsDirectional {
-  EdgeInsetsDirectional pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  EdgeInsetsDirectional pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return EdgeInsetsDirectional.only(
       start: start.pixelSnap(ps, mode),
       top: top.pixelSnap(ps, mode),
@@ -109,8 +109,10 @@ extension PixelSnapEdgeInsetDirectional on EdgeInsetsDirectional {
 }
 
 extension PixelSnapExtConstraints on BoxConstraints {
-  BoxConstraints pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BoxConstraints pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BoxConstraints(
       minWidth: minWidth.pixelSnap(ps, mode),
       maxWidth: maxWidth.pixelSnap(ps, mode),
@@ -163,17 +165,17 @@ extension PixelSnapExtConstraints on BoxConstraints {
 
     Size result = Size(
       constrainWidth(width.pixelSnap(ps, PixelSnapMode.snap)),
-      constrainHeight(
-        height.pixelSnap(ps, PixelSnapMode.ceil),
-      ),
+      constrainHeight(height.pixelSnap(ps, PixelSnapMode.ceil)),
     );
     return result;
   }
 }
 
 extension PixelSnapExtBorderSide on BorderSide {
-  BorderSide pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BorderSide pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BorderSide(
       color: color,
       width: width.pixelSnap(ps, mode),
@@ -185,10 +187,7 @@ extension PixelSnapExtBorderSide on BorderSide {
 
 extension PixelSnapExtRadius on Radius {
   Radius pixelSnap(PixelSnap ps, [PixelSnapMode mode = PixelSnapMode.snap]) {
-    return Radius.elliptical(
-      x.pixelSnap(ps, mode),
-      y.pixelSnap(ps, mode),
-    );
+    return Radius.elliptical(x.pixelSnap(ps, mode), y.pixelSnap(ps, mode));
   }
 }
 
@@ -204,8 +203,10 @@ extension PixelSnapExtBorder on Border {
 }
 
 extension PixelSnapExtBorderDireciton on BorderDirectional {
-  BorderDirectional pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BorderDirectional pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BorderDirectional(
       top: top.pixelSnap(ps, mode),
       start: start.pixelSnap(ps, mode),
@@ -239,15 +240,18 @@ extension PixelSnapExtBoxShadow on BoxShadow {
 }
 
 extension PixelSnapExtBoxDecoration on BoxDecoration {
-  BoxDecoration pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BoxDecoration pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BoxDecoration(
       color: color,
       image: image,
       border: border?.pixelSnap(ps, mode),
       borderRadius: borderRadius?.pixelSnap(ps, mode),
-      boxShadow:
-          boxShadow?.map((e) => e.pixelSnap(ps, mode)).toList(growable: false),
+      boxShadow: boxShadow
+          ?.map((e) => e.pixelSnap(ps, mode))
+          .toList(growable: false),
       gradient: gradient,
       backgroundBlendMode: backgroundBlendMode,
       shape: shape,
@@ -256,8 +260,10 @@ extension PixelSnapExtBoxDecoration on BoxDecoration {
 }
 
 extension PixelSnapExtDecoration on Decoration {
-  Decoration pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  Decoration pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     if (this is BoxDecoration) {
       return (this as BoxDecoration).pixelSnap(ps, mode);
     } else {
@@ -267,8 +273,10 @@ extension PixelSnapExtDecoration on Decoration {
 }
 
 extension PixelSnapExtBordeRadiusGeometry on BorderRadiusGeometry {
-  BorderRadiusGeometry pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BorderRadiusGeometry pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     if (this is BorderRadius) {
       return (this as BorderRadius).pixelSnap(ps, mode);
     } else if (this is BorderRadiusDirectional) {
@@ -280,8 +288,10 @@ extension PixelSnapExtBordeRadiusGeometry on BorderRadiusGeometry {
 }
 
 extension PixelSnapExtBorderRadius on BorderRadius {
-  BorderRadius pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BorderRadius pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BorderRadius.only(
       topLeft: topLeft.pixelSnap(ps, mode),
       topRight: topRight.pixelSnap(ps, mode),
@@ -292,8 +302,10 @@ extension PixelSnapExtBorderRadius on BorderRadius {
 }
 
 extension PixelSnapBorderRadiusDirecitonal on BorderRadiusDirectional {
-  BorderRadiusDirectional pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  BorderRadiusDirectional pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return BorderRadiusDirectional.only(
       topStart: topStart.pixelSnap(ps, mode),
       topEnd: topEnd.pixelSnap(ps, mode),
@@ -304,8 +316,10 @@ extension PixelSnapBorderRadiusDirecitonal on BorderRadiusDirectional {
 }
 
 extension PixelSnapExtRoundedRectangleBorder on RoundedRectangleBorder {
-  RoundedRectangleBorder pixelSnap(PixelSnap ps,
-      [PixelSnapMode mode = PixelSnapMode.snap]) {
+  RoundedRectangleBorder pixelSnap(
+    PixelSnap ps, [
+    PixelSnapMode mode = PixelSnapMode.snap,
+  ]) {
     return RoundedRectangleBorder(
       side: side.pixelSnap(ps, mode),
       borderRadius: borderRadius.pixelSnap(ps, mode),

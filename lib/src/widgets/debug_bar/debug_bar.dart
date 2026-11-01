@@ -116,9 +116,7 @@ class _PixelSnapDebugBar extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 child: Row(
                   children: [
-                    const PixelSnapSize(
-                      child: Text('Pixel Snapping'),
-                    ),
+                    const PixelSnapSize(child: Text('Pixel Snapping')),
                     const SizedBox(width: 8),
                     CustomButton(
                       onPressed: () {
@@ -126,9 +124,7 @@ class _PixelSnapDebugBar extends StatelessWidget {
                       },
                       selected: state.enabled,
                       builder: _buttonBuilder,
-                      child: const PixelSnapSize(
-                        child: Text('Enabled'),
-                      ),
+                      child: const PixelSnapSize(child: Text('Enabled')),
                     ),
                     const SizedBox(width: 16),
                     ...<Widget>[
@@ -164,10 +160,7 @@ class _OverrideButton extends StatelessWidget {
   final double? ratio;
   final _PixelSnapState state;
 
-  const _OverrideButton({
-    this.ratio,
-    required this.state,
-  });
+  const _OverrideButton({this.ratio, required this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -192,20 +185,24 @@ Widget _buttonBuilder(BuildContext context, ButtonState state, Widget? child) {
 
   var backgroundColor = Colors.white.withValues(alpha: 0.05);
   if (state.hovered) {
-    backgroundColor =
-        backgroundColor.withValues(alpha: backgroundColor.a + 0.1);
+    backgroundColor = backgroundColor.withValues(
+      alpha: backgroundColor.a + 0.1,
+    );
   }
   if (state.pressed) {
-    backgroundColor =
-        backgroundColor.withValues(alpha: backgroundColor.a + 0.1);
+    backgroundColor = backgroundColor.withValues(
+      alpha: backgroundColor.a + 0.1,
+    );
   }
   if (state.focused) {
-    backgroundColor =
-        backgroundColor.withValues(alpha: backgroundColor.a + 0.1);
+    backgroundColor = backgroundColor.withValues(
+      alpha: backgroundColor.a + 0.1,
+    );
   }
   if (state.selected) {
-    backgroundColor =
-        backgroundColor.withValues(alpha: backgroundColor.a + 0.2);
+    backgroundColor = backgroundColor.withValues(
+      alpha: backgroundColor.a + 0.2,
+    );
   }
 
   decoration = BoxDecoration(

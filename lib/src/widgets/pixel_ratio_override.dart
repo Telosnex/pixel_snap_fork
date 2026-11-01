@@ -17,7 +17,8 @@ class PixelRatioOverrideWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _OverrideTransform(
-      newScale: (newDevicePixelRatio ?? originalDevicePixelRatio) /
+      newScale:
+          (newDevicePixelRatio ?? originalDevicePixelRatio) /
           originalDevicePixelRatio,
       child: child,
     );
@@ -25,10 +26,7 @@ class PixelRatioOverrideWidget extends StatelessWidget {
 }
 
 class _InflateLayout extends SingleChildRenderObjectWidget {
-  const _InflateLayout({
-    required super.child,
-    required this.scale,
-  });
+  const _InflateLayout({required super.child, required this.scale});
 
   final double scale;
 
@@ -38,13 +36,15 @@ class _InflateLayout extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, covariant _RenderInflateLayout renderObject) {
+    BuildContext context,
+    covariant _RenderInflateLayout renderObject,
+  ) {
     renderObject.scale = scale;
   }
 }
 
 class _RenderInflateLayout extends RenderShiftedBox {
-  _RenderInflateLayout(RenderBox? child, this._scale) : super(child);
+  _RenderInflateLayout(super.child, this._scale);
 
   double _scale;
 
@@ -84,10 +84,7 @@ class _RenderInflateLayout extends RenderShiftedBox {
 }
 
 class _OverrideTransform extends StatelessWidget {
-  const _OverrideTransform({
-    required this.newScale,
-    required this.child,
-  });
+  const _OverrideTransform({required this.newScale, required this.child});
 
   final double newScale;
   final Widget child;
@@ -97,10 +94,7 @@ class _OverrideTransform extends StatelessWidget {
     return Transform.scale(
       alignment: Alignment.topLeft,
       scale: newScale,
-      child: _InflateLayout(
-        scale: 1.0 / newScale,
-        child: child,
-      ),
+      child: _InflateLayout(scale: 1.0 / newScale, child: child),
     );
   }
 }

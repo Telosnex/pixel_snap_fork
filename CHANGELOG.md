@@ -1,5 +1,16 @@
 # Change Log
 
+## Unreleased
+
+ - **BREAKING**: requires Dart 3.13 (Flutter 3.47 already requires it).
+ - `Text` and `RichText` are subclasses of Flutter's `Text` and `RichText`. `find.text`, `find.textContaining`, `find.widgetWithText` and `tester.widget<Text>` find them. A test that used `find.text` and expected only other widgets (for example an `EditableText`) can now find one more widget. `find.byType` still needs the exact class: `find.byType(Text)` with the import of this package.
+ - `Image`, `FittedBox` and `FractionallySizedBox` are subclasses of Flutter's. `find.image` and `tester.widget<Image>` with Flutter's `Image` find them.
+ - Regenerated widgets for Flutter 3.47. `Container.isAntiAlias`, `ImageIcon.useOriginalColors`, `AnimatedCrossFade.clipBehavior` and `AnimatedCrossFade.onEnd` are available. `Text` uses the letter spacing, word spacing and line height overrides of `MediaQuery`.
+ - Merged the Flutter 3.47 changes into `RenderFlex`: dry baselines, and children without a baseline in a baseline-aligned row.
+ - **FIX**: in a `Row` or `Column` with `spacing` and free space, the last child took the free space as its gap.
+ - **FIX**: `FittedBox` did not use a new device pixel ratio for its alignment.
+ - **FIX**: the dry layout of `PixelSnapSize` laid out its child. A new `pixelSnapMode` had no effect until the next layout.
+
 ## 0.1.5
 
  - Use MediaQuery.devicePixelRatioOf(context) instead of MediaQuery.of(context).devicePixelRatio (#19).

@@ -6,8 +6,8 @@ export 'package:cupertino_ui/cupertino_ui.dart'
         Flex,
         Row,
         Column,
-        FractionallySizedBox,
         Center,
+        FractionallySizedBox,
         Text,
         RichText,
         FittedBox,
@@ -35,4 +35,5 @@ export 'package:cupertino_ui/cupertino_ui.dart'
         AnimatedPadding,
         AnimatedPhysicalModel,
         AnimatedSize;
+
 export 'widgets.dart';

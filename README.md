@@ -107,6 +107,8 @@ With this in place, the example above can be rewritten as:
 **This import will also give you modified `Flex`, `Row` and `Column` widgets that will ensure that the all children are properly pixel-snapped.**
 
 #### Here is list of Widgets that has been amended to pixel-snap automatically:
+- Flex
+- Row
 - Column
 - Text
 - RichText
@@ -134,6 +136,7 @@ With this in place, the example above can be rewritten as:
 - AnimatedContainer
 - AnimatedCrossFade
 - AnimatedPositioned
+- AnimatedPadding
 - AnimatedPhysicalModel
 - AnimatedSize
 
@@ -143,7 +146,7 @@ If you stick to these, you application should be pixel-perfect with very little 
 
 * If you are using foreign widgets that are not physical pixels aware but are customizable enough so that they let you specify padding, insets or border, you can use the `.pixelSnap()` extension method to pixel snap them.
 
-* For scroll views you can use `PixelSnapScrollController` or simply `ScrollController` after importing `pixel_snap/widgets.dart` or `pixel_snap/material.dart`. The scroll controller will ensure that the scroll offset is always snapped to physical pixels.ƒ
+* For scroll views you can use `PixelSnapScrollController` or simply `ScrollController` after importing `pixel_snap_fork/widgets.dart` or `pixel_snap_fork/material.dart`. The scroll controller will ensure that the scroll offset is always snapped to physical pixels.
 
 ## Simulating different device pixel ratios
 
@@ -193,7 +196,7 @@ It is possible to disable pixel snapping for arbitrary subviews using the `Pixel
 
 ```dart
 PixelSnapOverride(
-    pixelSnapFunction: (value, _, __) => value, // Disable pixel snapping
+    pixelSnapFunction: (value, _, _) => value, // Disable pixel snapping
     child: ...
 ```
 
@@ -204,6 +207,16 @@ you can wrap the widget in a `PixelSnapSize` widget:
 ```dart
 PixelSnapSize( // Ensure that child size is properly pixel snapped
     child: PixelSnapOverride(
-    pixelSnapFunction: (value, _, __) => value,
+    pixelSnapFunction: (value, _, _) => value,
     child: ...
 ```
+
+## Tests
+
+`Text`, `RichText`, `Image`, `FittedBox` and `FractionallySizedBox` of this package are subclasses of Flutter's. The finders of `flutter_test`, such as `find.text` and `find.image`, find them. Code that tests for Flutter's class, such as `tester.widget<Image>` with Flutter's `Image`, finds them too.
+
+`Flex`, `Row`, `Column` and `Center` are not subclasses. `find.byType` with Flutter's class does not find them: use the class of this package.
+
+## Maintenance
+
+Most of the pixel-snapped widgets are generated from the Flutter source. See [generator/README.md](generator/README.md) for how to update and release the package for a new Flutter version.

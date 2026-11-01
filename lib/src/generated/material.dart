@@ -6,8 +6,8 @@ export 'package:material_ui/material_ui.dart'
         Flex,
         Row,
         Column,
-        FractionallySizedBox,
         Center,
+        FractionallySizedBox,
         Text,
         RichText,
         FittedBox,
@@ -35,4 +35,5 @@ export 'package:material_ui/material_ui.dart'
         AnimatedPadding,
         AnimatedPhysicalModel,
         AnimatedSize;
+
 export 'widgets.dart';

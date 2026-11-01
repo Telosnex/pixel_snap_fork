@@ -17,9 +17,9 @@ class RenderFractionallySizedOverflowBox
     required AlignmentGeometry alignment,
     required PixelSnap pixelSnap,
     super.textDirection,
-  })  : _pixelSnap = pixelSnap,
-        _originalAlignment = alignment,
-        super(alignment: alignment.pixelSnap(pixelSnap));
+  }) : _pixelSnap = pixelSnap,
+       _originalAlignment = alignment,
+       super(alignment: alignment.pixelSnap(pixelSnap));
 
   PixelSnap _pixelSnap;
   AlignmentGeometry _originalAlignment;
@@ -70,7 +70,8 @@ class RenderFractionallySizedOverflowBox
       result = super.computeMinIntrinsicWidth(height);
     } else {
       result = child!.getMinIntrinsicWidth(
-          (height * (heightFactor ?? 1.0)).pixelSnap(pixelSnap));
+        (height * (heightFactor ?? 1.0)).pixelSnap(pixelSnap),
+      );
     }
     assert(result.isFinite);
     return (result / (widthFactor ?? 1.0)).pixelSnap(pixelSnap);
@@ -83,7 +84,8 @@ class RenderFractionallySizedOverflowBox
       result = super.computeMaxIntrinsicWidth(height);
     } else {
       result = child!.getMaxIntrinsicWidth(
-          (height * (heightFactor ?? 1.0)).pixelSnap(pixelSnap));
+        (height * (heightFactor ?? 1.0)).pixelSnap(pixelSnap),
+      );
     }
     assert(result.isFinite);
     return (result / (widthFactor ?? 1.0)).pixelSnap(pixelSnap);
@@ -96,7 +98,8 @@ class RenderFractionallySizedOverflowBox
       result = super.computeMinIntrinsicHeight(width);
     } else {
       result = child!.getMinIntrinsicHeight(
-          (width * (widthFactor ?? 1.0)).pixelSnap(pixelSnap));
+        (width * (widthFactor ?? 1.0)).pixelSnap(pixelSnap),
+      );
     }
     assert(result.isFinite);
     return (result / (heightFactor ?? 1.0)).pixelSnap(pixelSnap);
@@ -109,7 +112,8 @@ class RenderFractionallySizedOverflowBox
       result = super.computeMaxIntrinsicHeight(width);
     } else {
       result = child!.getMaxIntrinsicHeight(
-          (width * (widthFactor ?? 1.0)).pixelSnap(pixelSnap));
+        (width * (widthFactor ?? 1.0)).pixelSnap(pixelSnap),
+      );
     }
     assert(result.isFinite);
     return (result / (heightFactor ?? 1.0)).pixelSnap(pixelSnap);
@@ -118,24 +122,29 @@ class RenderFractionallySizedOverflowBox
   @override
   Size computeDryLayout(covariant BoxConstraints constraints) {
     if (child != null) {
-      final Size childSize =
-          child!.getDryLayout(_getInnerConstraintsPixelSnapped(constraints));
+      final Size childSize = child!.getDryLayout(
+        _getInnerConstraintsPixelSnapped(constraints),
+      );
       return constraints.constrain(childSize);
     }
     return constraints.constrain(
-        _getInnerConstraintsPixelSnapped(constraints).constrain(Size.zero));
+      _getInnerConstraintsPixelSnapped(constraints).constrain(Size.zero),
+    );
   }
 
   @override
   void performLayout() {
     if (child != null) {
-      child!.layout(_getInnerConstraintsPixelSnapped(constraints),
-          parentUsesSize: true);
+      child!.layout(
+        _getInnerConstraintsPixelSnapped(constraints),
+        parentUsesSize: true,
+      );
       size = constraints.constrain(child!.size);
       alignChild();
     } else {
       size = constraints.constrain(
-          _getInnerConstraintsPixelSnapped(constraints).constrain(Size.zero));
+        _getInnerConstraintsPixelSnapped(constraints).constrain(Size.zero),
+      );
     }
   }
 }
