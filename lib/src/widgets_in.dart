@@ -39,10 +39,10 @@ class GeneratePixelSnapSubclass<T> {
 @GeneratePixelSnapFork<Flex>()
 @GeneratePixelSnapFork<Row>()
 @GeneratePixelSnapFork<Column>()
-@GeneratePixelSnapFork<FractionallySizedBox>()
+@GeneratePixelSnapSubclass<FractionallySizedBox>()
 @GeneratePixelSnapFork<Center>()
 @GeneratePixelSnapSubclass<Text>()
 @GeneratePixelSnapSubclass<RichText>()
-@GeneratePixelSnapFork<FittedBox>()
-@GeneratePixelSnapFork<Image>()
+@GeneratePixelSnapSubclass<FittedBox>()
+@GeneratePixelSnapSubclass<Image>()
 void generate() {}

@@ -213,7 +213,9 @@ PixelSnapSize( // Ensure that child size is properly pixel snapped
 
 ## Tests
 
-`Text` and `RichText` of this package are subclasses of Flutter's. The finders of `flutter_test`, such as `find.text`, find them.
+`Text`, `RichText`, `Image`, `FittedBox` and `FractionallySizedBox` of this package are subclasses of Flutter's. The finders of `flutter_test`, such as `find.text` and `find.image`, find them. Code that tests for Flutter's class, such as `tester.widget<Image>` with Flutter's `Image`, finds them too.
+
+`Flex`, `Row`, `Column` and `Center` are not subclasses. `find.byType` with Flutter's class does not find them: use the class of this package.
 
 ## Maintenance
 

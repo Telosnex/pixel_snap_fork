@@ -210,6 +210,22 @@ class Box extends SingleChildRenderObjectWidget {
       expect(richText, isNot(contains('_effectiveTextScalerFrom')));
     });
 
+    test('makes Image a subclass of Flutter\'s', () {
+      final image = contents.forkedClasses
+          .singleWhere((c) => c.className == 'Image')
+          .contents;
+      expect(image, contains('class Image extends widgets.Image {'));
+      // Named constructors take positional arguments as super parameters.
+      expect(image, contains('Image.network(super.src, {'));
+      expect(image, contains('}) : super.network();'));
+      expect(image, contains('State<Image> createState() => _ImageState();'));
+      // The state is private: it is copied as a helper.
+      expect(
+        contents.helpers,
+        contains(contains('class _ImageState extends State<Image>')),
+      );
+    });
+
     test("uses this package's render objects", () {
       expect(contents.localImports, contains('../forked/render_flex.dart'));
       expect(

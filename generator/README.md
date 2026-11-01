@@ -13,7 +13,10 @@ The tools use the Flutter SDK that the package root resolves to. Run `flutter pu
 
 - `@GeneratePixelSnap<T>()` makes a wrapper. The wrapper is a `StatelessWidget` with the same constructors and fields as `T`. Its `build` method snaps the sizes, paddings, decorations and alignments, and then builds Flutter's `T`.
 - `@GeneratePixelSnapSubclass<T>()` makes a subclass of Flutter's `T`. The constructors pass every argument to Flutter's constructors. The subclass copies the methods that make the widget tree or the render object (`build`, `createRenderObject`, `updateRenderObject`), and the private members that they use. The fields and the other members come from Flutter's class. The widget is a Flutter `T`, so `find.text`, `tester.widget<T>` and other code that tests for `T` work. Use it when you can.
-- `@GeneratePixelSnapFork<T>()` copies the Flutter source of `T`. Use it when a subclass cannot do the work. For example, a subclass cannot copy a method that uses a private field.
+- `@GeneratePixelSnapFork<T>()` copies the Flutter source of `T`. Use it when a subclass cannot do the work:
+  - A copied method uses a private field of the class.
+  - The widget must make a render object that is not a subclass of Flutter's. For example, the `RenderFlex` of the package is a full copy, and Flutter's `Flex.createRenderObject` returns Flutter's `RenderFlex`. Thus `Flex`, `Row` and `Column` are forks.
+  - The method to change is in a superclass of `T`. The subclass copies only the methods of `T`. For example, `Center` gets its render object from `Align`.
 
 In the copied code, the generator gives each `Render*` object the `PixelSnap` of the context.
 
