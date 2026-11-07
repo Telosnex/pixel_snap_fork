@@ -1,3 +1,7 @@
+## 1.0.0
+
+- First stable release.
+
 # Change Log
 
 ## 0.2.0
