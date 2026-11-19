@@ -22,6 +22,7 @@ class RenderParagraph extends rendering.RenderParagraph {
     super.strutStyle,
     super.textWidthBasis,
     super.textHeightBehavior,
+    super.hyphens,
     super.selectionColor,
     super.registrar,
     super.devicePixelRatio,

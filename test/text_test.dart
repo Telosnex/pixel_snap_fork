@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:material_ui/material_ui.dart' as fl;
 import 'package:flutter/rendering.dart' as rendering;
 import 'package:flutter_test/flutter_test.dart';
@@ -61,6 +63,20 @@ void main() {
     final size = paragraph.size * 2.0;
     expect(size.width, size.width.roundToDouble());
     expect(size.height, size.height.roundToDouble());
+  });
+
+  testWidgets('Text forwards hyphenation on creation and update', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      _app(const Text('soft\u00adhyphen', hyphens: ui.Hyphens.hidden)),
+    );
+    final paragraph = tester.renderObject<ps.RenderParagraph>(
+      find.byType(RichText),
+    );
+    expect(paragraph.hyphens, ui.Hyphens.hidden);
+    await tester.pumpWidget(_app(const Text('soft\u00adhyphen')));
+    expect(paragraph.hyphens, ui.Hyphens.manual);
   });
 
   testWidgets('selectable Text uses the pixel-snapping RenderParagraph', (

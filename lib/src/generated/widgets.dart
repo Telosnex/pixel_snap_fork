@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart' hide RawImage;
 import 'package:flutter/widgets.dart' as widgets;
 
 import 'dart:math' show max, min;
-import 'dart:ui' as ui show TextHeightBehavior;
+import 'dart:ui' as ui show Hyphens, TextHeightBehavior;
 
 import 'package:flutter/foundation.dart'
     show
@@ -2973,11 +2973,10 @@ class Flex extends MultiChildRenderObjectWidget {
     this.spacing = 0.0,
     super.children,
   }) : assert(
-         !identical(crossAxisAlignment, CrossAxisAlignment.baseline) ||
+         (crossAxisAlignment != CrossAxisAlignment.baseline) ||
              textBaseline != null,
          'textBaseline is required if you specify the crossAxisAlignment with CrossAxisAlignment.baseline',
        );
-  // Cannot use == in the assert above instead of identical because of https://github.com/dart-lang/language/issues/1811.
 
   /// The direction to use as the main axis.
   ///
@@ -3788,14 +3787,14 @@ class FractionallySizedBox extends widgets.FractionallySizedBox {
 ///
 /// [Text] is not selectable by default. To make a [Text] selectable, one can
 /// wrap a subtree with a [SelectionArea] widget. To exclude a part of a subtree
-/// under [SelectionArea] from selection, once can also wrap that part of the
+/// under [SelectionArea] from selection, one can also wrap that part of the
 /// subtree with [SelectionContainer.disabled].
 ///
 /// {@tool dartpad}
 /// This sample demonstrates how to disable selection for a Text under a
 /// SelectionArea.
 ///
-/// ** See code in examples/api/lib/material/selection_container/selection_container_disabled.0.dart **
+/// ** See code in examples/api/lib/widgets/selection_container/selection_container_disabled.0.dart **
 /// {@end-tool}
 ///
 /// See also:
@@ -3835,6 +3834,7 @@ class Text extends widgets.Text {
     super.semanticsIdentifier,
     super.textWidthBasis,
     super.textHeightBehavior,
+    super.hyphens,
     super.selectionColor,
   });
 
@@ -3868,6 +3868,7 @@ class Text extends widgets.Text {
     super.semanticsIdentifier,
     super.textWidthBasis,
     super.textHeightBehavior,
+    super.hyphens,
     super.selectionColor,
   }) : super.rich();
 
@@ -3939,6 +3940,7 @@ class Text extends widgets.Text {
               textHeightBehavior ??
               defaultTextStyle.textHeightBehavior ??
               DefaultTextHeightBehavior.maybeOf(context),
+          hyphens: hyphens ?? ui.Hyphens.manual,
           selectionColor:
               selectionColor ??
               DefaultSelectionStyle.of(context).selectionColor ??
@@ -3964,6 +3966,7 @@ class Text extends widgets.Text {
             textHeightBehavior ??
             defaultTextStyle.textHeightBehavior ??
             DefaultTextHeightBehavior.maybeOf(context),
+        hyphens: hyphens ?? ui.Hyphens.manual,
         selectionColor:
             selectionColor ??
             DefaultSelectionStyle.of(context).selectionColor ??
@@ -4109,6 +4112,7 @@ class RichText extends widgets.RichText {
     super.strutStyle,
     super.textWidthBasis,
     super.textHeightBehavior,
+    super.hyphens,
     super.selectionRegistrar,
     super.selectionColor,
   });
@@ -4133,6 +4137,7 @@ class RichText extends widgets.RichText {
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
+      hyphens: hyphens,
       locale: locale ?? Localizations.maybeLocaleOf(context),
       registrar: selectionRegistrar,
       selectionColor: selectionColor,
@@ -4155,6 +4160,7 @@ class RichText extends widgets.RichText {
       ..strutStyle = strutStyle
       ..textWidthBasis = textWidthBasis
       ..textHeightBehavior = textHeightBehavior
+      ..hyphens = hyphens
       ..locale = locale ?? Localizations.maybeLocaleOf(context)
       ..registrar = selectionRegistrar
       ..selectionColor = selectionColor
@@ -4380,6 +4386,11 @@ class Image extends widgets.Image {
   /// regardless of these parameters. These parameters are primarily intended
   /// to reduce the memory usage of [ImageCache].
   ///
+  /// If [useLogicalCacheSize] is true, [cacheWidth] and [cacheHeight] are
+  /// interpreted as logical pixels instead of physical pixels. Set this to
+  /// true when [cacheWidth] and [cacheHeight] describe the image's on-screen
+  /// size in logical pixels.
+  ///
   /// In the case where the network image is on the Web platform, the [cacheWidth]
   /// and [cacheHeight] parameters are ignored as the web engine delegates
   /// image decoding to the web which does not support custom decode sizes.
@@ -4442,6 +4453,7 @@ class Image extends widgets.Image {
     super.headers,
     super.cacheWidth,
     super.cacheHeight,
+    super.useLogicalCacheSize,
     super.webHtmlElementStrategy,
   }) : super.network();
 
@@ -4468,6 +4480,11 @@ class Image extends widgets.Image {
   /// will be rendered to the constraints of the layout or [width] and [height]
   /// regardless of these parameters. These parameters are primarily intended
   /// to reduce the memory usage of [ImageCache].
+  ///
+  /// If [useLogicalCacheSize] is true, [cacheWidth] and [cacheHeight] are
+  /// interpreted as logical pixels instead of physical pixels. Set this to
+  /// true when [cacheWidth] and [cacheHeight] describe the image's on-screen
+  /// size in logical pixels.
   ///
   /// Loading an image from a file creates an in memory copy of the file,
   /// which is retained in the [ImageCache]. The underlying file is not
@@ -4500,6 +4517,7 @@ class Image extends widgets.Image {
     super.filterQuality,
     super.cacheWidth,
     super.cacheHeight,
+    super.useLogicalCacheSize,
   }) : super.file();
 
   /// Creates a widget that displays an [ImageStream] obtained from an asset
@@ -4530,6 +4548,11 @@ class Image extends widgets.Image {
   /// will be rendered to the constraints of the layout or [width] and [height]
   /// regardless of these parameters. These parameters are primarily intended
   /// to reduce the memory usage of [ImageCache].
+  ///
+  /// If [useLogicalCacheSize] is true, [cacheWidth] and [cacheHeight] are
+  /// interpreted as logical pixels instead of physical pixels. Set this to
+  /// true when [cacheWidth] and [cacheHeight] describe the image's on-screen
+  /// size in logical pixels.
   ///
   /// Either the [width] and [height] arguments should be specified, or the
   /// widget should be placed in a context that sets tight layout constraints.
@@ -4645,6 +4668,7 @@ class Image extends widgets.Image {
     super.filterQuality,
     super.cacheWidth,
     super.cacheHeight,
+    super.useLogicalCacheSize,
   }) : super.asset();
 
   /// Creates a widget that displays an [ImageStream] obtained from a [Uint8List].
@@ -4675,6 +4699,11 @@ class Image extends widgets.Image {
   /// will be rendered to the constraints of the layout or [width] and [height]
   /// regardless of these parameters. These parameters are primarily intended
   /// to reduce the memory usage of [ImageCache].
+  ///
+  /// If [useLogicalCacheSize] is true, [cacheWidth] and [cacheHeight] are
+  /// interpreted as logical pixels instead of physical pixels. Set this to
+  /// true when [cacheWidth] and [cacheHeight] describe the image's on-screen
+  /// size in logical pixels.
   Image.memory(
     super.bytes, {
     super.key,
@@ -4698,6 +4727,7 @@ class Image extends widgets.Image {
     super.filterQuality,
     super.cacheWidth,
     super.cacheHeight,
+    super.useLogicalCacheSize,
   }) : super.memory();
 
   @override
@@ -4769,6 +4799,7 @@ class _SelectableTextContainer extends StatefulWidget {
     this.strutStyle,
     required this.textWidthBasis,
     this.textHeightBehavior,
+    required this.hyphens,
     required this.selectionColor,
   });
 
@@ -4783,6 +4814,7 @@ class _SelectableTextContainer extends StatefulWidget {
   final StrutStyle? strutStyle;
   final TextWidthBasis textWidthBasis;
   final ui.TextHeightBehavior? textHeightBehavior;
+  final ui.Hyphens hyphens;
   final Color selectionColor;
 
   @override
@@ -5192,6 +5224,7 @@ class _SelectableTextContainerState extends State<_SelectableTextContainer> {
         strutStyle: widget.strutStyle,
         textWidthBasis: widget.textWidthBasis,
         textHeightBehavior: widget.textHeightBehavior,
+        hyphens: widget.hyphens,
         selectionColor: widget.selectionColor,
         text: widget.text,
       ),
@@ -5712,6 +5745,7 @@ class _RichText extends StatelessWidget {
     this.strutStyle,
     required this.textWidthBasis,
     this.textHeightBehavior,
+    required this.hyphens,
     required this.selectionColor,
   });
 
@@ -5727,6 +5761,7 @@ class _RichText extends StatelessWidget {
   final StrutStyle? strutStyle;
   final TextWidthBasis textWidthBasis;
   final ui.TextHeightBehavior? textHeightBehavior;
+  final ui.Hyphens hyphens;
   final Color selectionColor;
 
   @override
@@ -5744,6 +5779,7 @@ class _RichText extends StatelessWidget {
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
+      hyphens: hyphens,
       selectionRegistrar: registrar,
       selectionColor: selectionColor,
       text: text,
